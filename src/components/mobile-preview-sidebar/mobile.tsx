@@ -28,8 +28,8 @@ const MobilePreview = ({ children }: { children: React.ReactNode }) => {
   if (previewDark === null) return null; // Prevent rendering until state is set
   return (
     <div className="flex flex-col grow justify-center w-full p-[25px] gap-[26px] ">
-      <div className="w-fit shrink-0 h-[716px] relative overflow-hidden ">
-        <Mobile className="text-mobile-layout z-10 relative pointer-events-none" />
+      <div className="shrink-0 h-[716px] relative overflow-hidden ">
+        <Mobile className="text-mobile-layout z-10 relative pointer-events-none h-full w-full" />
         <div
           className={`absolute w-[calc(100%-32px)] h-[calc(100%-32px)] rounded-[41px] px-6 top-4 left-4 z-0  ${
             previewDark == "dark"
