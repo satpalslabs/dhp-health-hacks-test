@@ -1,0 +1,145 @@
+[
+    {
+        "id": 1,
+        "title": "Epilepsy Journey",
+        "primary-color": "#8D2CA8",
+        "background-color": "#F9E5FF",
+        "createdAt": "2025-01-09T12:40:33.959Z",
+        "updatedAt": "2025-02-05T06:33:37.594Z",
+        "sections": [
+            {
+                "title": "Basics of Epilepsy",
+                "units": [
+                    {
+                        "title": "What is Epilepsy?",
+                        "heart-points": 250,
+                        "gems": 150,
+                        "steps": [
+                            {
+                                "type": "video",
+                                "source": "you-tube",
+                                "url": ""
+                            }
+                        ]
+                    },
+                    {
+                        "title": "Causes of Epilepsy",
+                        "heart-points": 150,
+                        "gems": 75,
+                        "steps": [
+                            {
+                                "type": "video",
+                                "source": "you-tube",
+                                "url": ""
+                            }
+                        ]
+                    },
+                    {
+                        "title": "Seizure Types",
+                        "heart-points": 100,
+                        "gems": 50,
+                        "steps": [
+                            {
+                                "type": "video",
+                                "source": "you-tube",
+                                "url": ""
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "title": "Basics of Epilepsy",
+                "units": [
+                    {
+                        "title": "What is Epilepsy?",
+                        "heart-points": 250,
+                        "gems": 150,
+                        "steps": [
+                            {
+                                "type": "video",
+                                "source": "you-tube",
+                                "url": ""
+                            }
+                        ]
+                    },
+                    {
+                        "title": "Causes of Epilepsy",
+                        "heart-points": 150,
+                        "gems": 75,
+                        "steps": [
+                            {
+                                "type": "video",
+                                "source": "you-tube",
+                                "url": ""
+                            }
+                        ]
+                    },
+                    {
+                        "title": "Seizure Types",
+                        "heart-points": 100,
+                        "gems": 50,
+                        "steps": [
+                            {
+                                "type": "video",
+                                "source": "you-tube",
+                                "url": ""
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "id": 2,
+        "title": "Allergy Journey",
+        "primary-color": "#104CB7",
+        "background-color": "#104CB71a",
+        "createdAt": "2025-02-15T12:40:33.959Z",
+        "updatedAt": "2025-02-09T06:33:37.594Z",
+        "sections": [
+            {
+                "title": "Basics of Allergy",
+                "units": [
+                    {
+                        "title": "What is Allergy?",
+                        "heart-points": 250,
+                        "gems": 150,
+                        "steps": [
+                            {
+                                "type": "video",
+                                "source": "you-tube",
+                                "url": ""
+                            }
+                        ]
+                    },
+                    {
+                        "title": "Causes of Allergy",
+                        "heart-points": 150,
+                        "gems": 75,
+                        "steps": [
+                            {
+                                "type": "video",
+                                "source": "you-tube",
+                                "url": ""
+                            }
+                        ]
+                    },
+                    {
+                        "title": "Seizure Types",
+                        "heart-points": 100,
+                        "gems": 50,
+                        "steps": [
+                            {
+                                "type": "video",
+                                "source": "you-tube",
+                                "url": ""
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+]
