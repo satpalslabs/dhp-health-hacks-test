@@ -34,15 +34,15 @@ const JourneyPreviewSection = () => {
         </div>
         <div className="flex gap-3 text-center">
           <div className="flex flex-col gap-[3px]">
-            <Streak />
+            <Streak className="w-[22px] h-fit" />
             <span className="text-[11.7px]">2</span>
           </div>
           <div className="flex flex-col items-center gap-[3px] pt-[3px]">
-            <Heart className="grow" />
+            <Heart className="grow w-[22px] h-fit" />
             <span className="text-[11.7px]">130</span>
           </div>
           <div className="flex items-center flex-col gap-[3px]">
-            <Diamond />
+            <Diamond className="w-[22px] h-fit" />
             <span className="text-[11.7px]">200</span>
           </div>
         </div>
