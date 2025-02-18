@@ -340,7 +340,7 @@ const JourneyPreviewSection = ({
                   color: activeData?.journey["primary-color"],
                 }}
               >
-                <EndJourney />
+                <EndJourney className="h-[166px] w-[216px]" />
               </div>
             </div>
           </div>
