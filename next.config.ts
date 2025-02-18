@@ -1,7 +1,10 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-
+  reactStrictMode: false,
+  images: {
+    domains: ['img.youtube.com'],
+  },
   /* config options here */
   webpack(config) {
     config.module.rules.push({

@@ -11,7 +11,8 @@ export default {
 		extend: {
 			fontFamily: {
 				poppins: "var(--font-poppins)",
-				mulish: "var(--font-mulish)"
+				mulish: "var(--font-mulish)",
+				inter: "var(--font-inter)"
 			},
 			colors: {
 				background: 'hsl(var(--background))',
@@ -98,6 +99,6 @@ export default {
 			}
 		}
 	},
-	
+
 	plugins: [require("tailwindcss-animate")],
 } satisfies Config;

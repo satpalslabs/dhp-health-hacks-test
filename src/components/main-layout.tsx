@@ -5,7 +5,7 @@ export default async function MainLayout({
   pageTitle,
   children,
 }: {
-  pageTitle: string;
+  pageTitle: string[] | null;
   children: React.ReactNode;
 }) {
   return (

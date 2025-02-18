@@ -2,15 +2,12 @@
 /* eslint-disable  @typescript-eslint/no-explicit-any */
 
 import React, { createContext, useState } from "react";
-export const NavigationPathContext = createContext<{
+export const DataContext = createContext<{
   data: any;
   setData: React.Dispatch<React.SetStateAction<any>> | undefined;
-}>({
-  data: [],
-  setData: undefined,
-});
+} | null>(null);
 
-const TopNavigationProvider = ({
+const DataProvider = ({
   children,
   value,
 }: {
@@ -20,15 +17,15 @@ const TopNavigationProvider = ({
   const [data, setData] = useState(value);
 
   return (
-    <NavigationPathContext.Provider
+    <DataContext.Provider
       value={{
         data,
         setData,
       }}
     >
       {children}
-    </NavigationPathContext.Provider>
+    </DataContext.Provider>
   );
 };
 
-export default TopNavigationProvider;
+export default DataProvider;

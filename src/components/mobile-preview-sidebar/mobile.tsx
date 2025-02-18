@@ -1,11 +1,8 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import Mobile from "@/mobile.svg";
-import { Tabs, TabsList, TabsTrigger } from "../ui/tabs";
-import { Sun } from "lucide-react";
-import Moon from "@/moon-01.svg";
 import { useTheme } from "next-themes";
-import MobileHeader from "./mobile-header";
+import SwitchTheme from "../ui/theme-switcher";
 
 const MobilePreview = ({ children }: { children: React.ReactNode }) => {
   const { resolvedTheme } = useTheme();
@@ -31,33 +28,17 @@ const MobilePreview = ({ children }: { children: React.ReactNode }) => {
       <div className="shrink-0 h-[716px] relative overflow-hidden ">
         <Mobile className="text-mobile-layout z-10 relative pointer-events-none h-full w-full" />
         <div
-          className={`absolute w-[calc(100%-32px)] h-[calc(100%-32px)] rounded-[41px] px-6 top-4 left-4 z-0  ${
+          className={`absolute group w-[calc(100%-32px)] h-[calc(100%-32px)] overflow-hidden rounded-[41px] top-4 left-5 z-0  ${
             previewDark == "dark"
               ? "bg-mobile-dark-background text-white"
               : "bg-white text-black"
           } `}
+          data-mode={previewDark == "dark" ? "dark" : "light"}
         >
-          <MobileHeader />
-          <div>{children}</div>
+          {children}
         </div>
       </div>
-      <Tabs
-        defaultValue={previewDark}
-        value={previewDark}
-        className="w-full"
-        onValueChange={(e: string) => {
-          setPreviewDark(e);
-        }}
-      >
-        <TabsList className="w-full p-1 rounded-xl gap-1 px-1">
-          <TabsTrigger value="light" className="w-1/2 rounded-lg">
-            <Sun className="w-6 h-6" />
-          </TabsTrigger>
-          <TabsTrigger value="dark" className="w-1/2 rounded-lg">
-            <Moon className="w-6 h-6" />
-          </TabsTrigger>
-        </TabsList>
-      </Tabs>
+      <SwitchTheme theme={previewDark} setTheme={setPreviewDark} />
     </div>
   );
 };

@@ -27,7 +27,7 @@ const ColorPicker: React.FC<ColorPickerProps> = ({
         <Button
           onClick={() => setOpen(true)}
           variant="outline"
-          className=" pl-2 aspect-square flex gap-4 justify-start first-line: place-items-start"
+          className=" pl-2 aspect-square w-full flex gap-4 justify-start first-line: place-items-start"
         >
           <div
             className={`w-[18px] rounded h-[18px] `}
@@ -35,7 +35,7 @@ const ColorPicker: React.FC<ColorPickerProps> = ({
               background: color,
             }}
           />
-          <div className="font-normal text-sm">{color}</div>
+          <div className="font-normal text-sm uppercase">{color}</div>
         </Button>
       </PopoverTrigger>
 
@@ -43,7 +43,7 @@ const ColorPicker: React.FC<ColorPickerProps> = ({
         <div className="flex flex-col items-center">
           <HexColorPicker color={color} onChange={handleColorChange} />
           <Input
-            className="mt-2 font-mono"
+            className="mt-2 font-mono uppercase"
             value={color}
             maxLength={7}
             onChange={(e) => handleColorChange(e.currentTarget.value)}

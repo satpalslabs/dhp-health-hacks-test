@@ -1,8 +1,7 @@
 "use client";
 
-import { LogOut, Sun } from "lucide-react";
+import { LogOut } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import Moon from "@/moon-01.svg";
 import {
   SidebarMenu,
   SidebarMenuButton,
@@ -11,8 +10,8 @@ import {
 import { deleteCookie } from "@/lib/cookie-service";
 import { useContext } from "react";
 import { AuthContext, User } from "../providers/auth-provider";
-import { Tabs, TabsList, TabsTrigger } from "../ui/tabs";
 import { useTheme } from "next-themes";
+import SwitchTheme from "../ui/theme-switcher";
 
 export const NavUser = () => {
   const currentUser: User | null = useContext(AuthContext);
@@ -23,23 +22,7 @@ export const NavUser = () => {
   return (
     <SidebarMenu>
       <div className="border-t border-border p-2 group-data-[collapsible=icon]:px-0 group-data-[collapsible=icon]:w-0 group-data-[collapsible=icon]:h-0 group-data-[collapsible=icon]:border-0 group-data-[collapsible=icon]:p-0 overflow-hidden transition-[width] w-full">
-        <Tabs
-          defaultValue={resolvedTheme}
-          value={resolvedTheme}
-          className="w-full"
-          onValueChange={(e: string) => {
-            setTheme(e);
-          }}
-        >
-          <TabsList className="w-full p-1 rounded-xl gap-1 px-1">
-            <TabsTrigger value="light" className="w-1/2 rounded-lg">
-              <Sun className="w-6 h-6" />
-            </TabsTrigger>
-            <TabsTrigger value="dark" className="w-1/2 rounded-lg">
-              <Moon className="w-6 h-6" />
-            </TabsTrigger>
-          </TabsList>
-        </Tabs>
+        <SwitchTheme theme={resolvedTheme} setTheme={setTheme} />
       </div>
       <SidebarMenuItem className="border-t border-border px-2 group-data-[collapsible=icon]:px-0">
         <SidebarMenuButton

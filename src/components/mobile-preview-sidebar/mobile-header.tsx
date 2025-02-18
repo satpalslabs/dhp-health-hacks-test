@@ -10,7 +10,7 @@ const MobileHeader = () => {
     hour12: true,
   });
   return (
-    <div className="relative pt-[17px] ">
+    <div className="sticky pt-[17px] bg-transparent">
       <div className="text-inherit flex justify-between items-center text-xs">
         <div>{currentTime}</div>
         <div className="flex items-center gap-1 h-8">

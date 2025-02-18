@@ -4,68 +4,95 @@ import data from "@/lib/static-data/journey-data.json";
 export interface JourneyData {
   id: number;
   title: string;
-  createdAt: string
-  updatedAt: string
+  createdAt: string;
+  updatedAt: string;
   "primary-color": string;
   "background-color": string;
   sections: JourneySection[];
-};
+}
 
 export interface JourneySection {
+  id: number;
   title: string;
   units: JourneyUnit[];
 }
+
 export interface JourneyUnit {
+  id: number;
   title: string;
   "heart-points": number;
   gems: number;
-  steps: JourneySteps[]
+  published: boolean;
+  steps: JourneyStep[];
 }
 
-export interface JourneySteps {
-  type: string;
+/** Common structure for all journey steps */
+interface BaseStep {
+  id: number;
+  title: string;
+  type: "video" | "article" | "pair" | "multi-select" | "single-select"; // Added 'multi-select' and 'single-select'
+}
+
+/** Different step types */
+export interface VideoStep extends BaseStep {
+  type: "video";
   source: string;
   url: string;
+  description: string;
+}
+
+export interface ArticleStep extends BaseStep {
+  type: "article";
+  articles: {
+    title: string;
+    description: string;
+  }[];
+}
+
+export interface PairStep extends BaseStep {
+  type: "pair";
+  pairs: { // Changed 'options' to 'pairs'
+    id: number;
+    option: string;
+    match: string;
+  }[];
 }
 
 
-export async function getJourneys() {
-  return data;
+export interface MultiSelectStep extends BaseStep {
+  type: "multi-select";
+  options: {
+    text: string; // Changed 'option' to 'text'
+    isCorrect: boolean;
+  }[];
 }
 
-export async function getJourneyById(id: number) {
-  const result: JourneyData | undefined = data.find((item) => item.id === id);
+export interface SingleSelectStep extends BaseStep {
+  type: "single-select";
+  options: {
+    text: string; // Changed 'option' to 'text'
+    isCorrect: boolean;
+  }[];
+}
+
+/** Union type for steps */
+export type JourneyStep = VideoStep | ArticleStep | PairStep | MultiSelectStep | SingleSelectStep; // Added MultiSelectStep and SingleSelectStep
+
+
+export async function getJourneyById(id: number): Promise<JourneyData | undefined> {
+  const result: JourneyData | undefined = data.find((item) => item.id === id) as JourneyData;
   return result;
 
 }
 
-// export async function createJourney(newJourney: any) {
-//   const response = await fetch(BASE_URL, {
-//     method: "POST",
-//     headers: { "Content-Type": "application/json" },
-//     body: JSON.stringify(newJourney),
-//   });
+export async function getJourneys(): Promise<JourneyData[]> {
+  return data as JourneyData[];
+}
 
-//   if (!response.ok) throw new Error("Failed to create journey");
-//   return response.json();
-// }
 
-// export async function updateJourney(id: number, updatedData: any) {
-//   const response = await fetch(`${BASE_URL}/${id}`, {
-//     method: "PUT",
-//     headers: { "Content-Type": "application/json" },
-//     body: JSON.stringify(updatedData),
-//   });
-
-//   if (!response.ok) throw new Error("Failed to update journey");
-//   return response.json();
-// }
-
-// export async function deleteJourney(id: number) {
-//   const response = await fetch(`${BASE_URL}/${id}`, {
-//     method: "DELETE",
-//   });
-
-//   if (!response.ok) throw new Error("Failed to delete journey");
-//   return response.json();
-// }
+export async function handleJourneyDeletion(data: JourneyData[], id: number | null): Promise<JourneyData[]> {
+  const selectedRowIndex = data.findIndex((item) => item.id === id);
+  const newData = [...data];
+  newData.splice(selectedRowIndex, 1);
+  return newData;
+}

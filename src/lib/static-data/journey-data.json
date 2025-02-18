@@ -9,81 +9,165 @@
         "sections": [
             {
                 "title": "Basics of Epilepsy",
+                "id": 1,
                 "units": [
                     {
                         "title": "What is Epilepsy?",
                         "heart-points": 250,
+                        "id": 1,
                         "gems": 150,
+                        "published": false,
                         "steps": [
                             {
+                                "id": 10,
                                 "type": "video",
-                                "source": "you-tube",
-                                "url": ""
+                                "title": "Epilepsy in the Workplace: Rights and Accommodations",
+                                "description": "You can’t compress the program without quantifying the open-source SSL certificate You can’t compress the program without quantifying the open-source SSL certificate You can’t compress the program without quantifying the open-source SSL certificate ",
+                                "source": "YouTube",
+                                "url": "https://www.youtube.com/watch?v=PzfLDi-sL3w"
                             }
                         ]
                     },
                     {
                         "title": "Causes of Epilepsy",
                         "heart-points": 150,
+                        "id": 2,
                         "gems": 75,
+                        "published": true,
                         "steps": [
                             {
-                                "type": "video",
-                                "source": "you-tube",
-                                "url": ""
+                                "id": 11,
+                                "type": "article",
+                                "title": "Recognizing and treating anaphylaxis ",
+                                "articles": [
+                                    {
+                                        "title": "Recognizing and Treating Anaphylaxis: A Life-Saving Guide",
+                                        "description": "Epilepsy is a common condition that affects the brain and causes frequent seizures. Seizures are bursts of electrical activity in the brain that temporarily affect how it works. They can cause a wide range of symptoms. Epilepsy can start at any age, but usually starts either in childhood or in people over 60. It's often lifelong, but can sometimes get slowly."
+                                    },
+                                    {
+                                        "title": "Anaphylaxis: How to Identify and Respond to Severe Allergic Reactions",
+                                        "description": "Epilepsy is a common condition that affects the brain and causes frequent seizures. Seizures are bursts of electrical activity in the brain that temporarily affect how it works. They can cause a wide range of symptoms. Epilepsy can start at any age, but usually starts either in childhood or in people over 60. It's often lifelong, but can sometimes get slowly."
+                                    },
+                                    {
+                                        "title": "The Dangers of Anaphylaxis: Signs, Symptoms, and Emergency Treatment",
+                                        "description": "Epilepsy is a common condition that affects the brain and causes frequent seizures. Seizures are bursts of electrical activity in the brain that temporarily affect how it works. They can cause a wide range of symptoms. Epilepsy can start at any age, but usually starts either in childhood or in people over 60. It's often lifelong, but can sometimes get slowly."
+                                    }
+                                ]
                             }
                         ]
                     },
                     {
                         "title": "Seizure Types",
                         "heart-points": 100,
+                        "id": 3,
                         "gems": 50,
+                        "published": true,
                         "steps": [
                             {
-                                "type": "video",
-                                "source": "you-tube",
-                                "url": ""
+                                "id": 12,
+                                "type": "pair",
+                                "title": "Connect symptoms to corresponding types of seizures",
+                                "pairs": [
+                                    {
+                                        "id": 1,
+                                        "option": "Daydreaming",
+                                        "match": "Absence seizure  "
+                                    },
+                                    {
+                                        "id": 2,
+                                        "option": "Twitching / jerking",
+                                        "match": "Clonic"
+                                    },
+                                    {
+                                        "id": 3,
+                                        "option": "Stiffening muscles",
+                                        "match": "Tonic"
+                                    },
+                                    {
+                                        "id": 4,
+                                        "option": "Relaxing muscles/falling",
+                                        "match": "Atonic"
+                                    }
+                                ]
                             }
                         ]
                     }
                 ]
             },
             {
-                "title": "Basics of Epilepsy",
+                "title": "Living with Epilepsy",
+                "id": 2,
                 "units": [
                     {
                         "title": "What is Epilepsy?",
                         "heart-points": 250,
+                        "id": 1,
                         "gems": 150,
+                        "published": true,
                         "steps": [
                             {
-                                "type": "video",
-                                "source": "you-tube",
-                                "url": ""
+                                "id": 13,
+                                "type": "multi-select",
+                                "title": "Which part of your body is affected by epilepsy?",
+                                "options": [
+                                    {
+                                        "text": "Brain",
+                                        "isCorrect": true
+                                    },
+                                    {
+                                        "text": "Lungs ",
+                                        "isCorrect": false
+                                    },
+                                    {
+                                        "text": "Stomach",
+                                        "isCorrect": true
+                                    },
+                                    {
+                                        "text": "Arms",
+                                        "isCorrect": false
+                                    }
+                                ]
                             }
                         ]
                     },
                     {
                         "title": "Causes of Epilepsy",
                         "heart-points": 150,
+                        "id": 2,
                         "gems": 75,
+                        "published": true,
                         "steps": [
                             {
-                                "type": "video",
-                                "source": "you-tube",
-                                "url": ""
+                                "id": 14,
+                                "type": "single-select",
+                                "title": "Seizures are bursts of electrical activity in the brain that temporarily affect how it works.",
+                                "options": [
+                                    {
+                                        "text": "True",
+                                        "isCorrect": true
+                                    },
+                                    {
+                                        "text": "False ",
+                                        "isCorrect": false
+                                    }
+                                ]
                             }
                         ]
                     },
                     {
                         "title": "Seizure Types",
                         "heart-points": 100,
+                        "id": 3,
                         "gems": 50,
+                        "published": true,
                         "steps": [
                             {
                                 "type": "video",
-                                "source": "you-tube",
-                                "url": ""
+                                "title": "step",
+                                "description": "",
+                                "id": 15,
+                                "source": "YouTube",
+                                "url": "https://www.youtube.com/watch?v=PzfLDi-sL3w"
                             }
                         ]
                     }
@@ -95,46 +179,62 @@
         "id": 2,
         "title": "Allergy Journey",
         "primary-color": "#104CB7",
-        "background-color": "#104CB71a",
+        "background-color": "#ECF1F9",
         "createdAt": "2025-02-15T12:40:33.959Z",
         "updatedAt": "2025-02-09T06:33:37.594Z",
         "sections": [
             {
                 "title": "Basics of Allergy",
+                "id": 1,
                 "units": [
                     {
                         "title": "What is Allergy?",
                         "heart-points": 250,
+                        "id": 7,
                         "gems": 150,
+                        "published": true,
                         "steps": [
                             {
                                 "type": "video",
-                                "source": "you-tube",
-                                "url": ""
+                                "title": "step",
+                                "description": "",
+                                "id": 16,
+                                "source": "YouTube",
+                                "url": "https://www.youtube.com/watch?v=PzfLDi-sL3w"
                             }
                         ]
                     },
                     {
                         "title": "Causes of Allergy",
                         "heart-points": 150,
+                        "id": 8,
                         "gems": 75,
+                        "published": true,
                         "steps": [
                             {
                                 "type": "video",
-                                "source": "you-tube",
-                                "url": ""
+                                "title": "step",
+                                "description": "",
+                                "id": 17,
+                                "source": "YouTube",
+                                "url": "https://www.youtube.com/watch?v=PzfLDi-sL3w"
                             }
                         ]
                     },
                     {
                         "title": "Seizure Types",
                         "heart-points": 100,
+                        "id": 9,
                         "gems": 50,
+                        "published": true,
                         "steps": [
                             {
                                 "type": "video",
-                                "source": "you-tube",
-                                "url": ""
+                                "title": "step",
+                                "description": "",
+                                "id": 18,
+                                "source": "YouTube",
+                                "url": "https://www.youtube.com/watch?v=PzfLDi-sL3w"
                             }
                         ]
                     }

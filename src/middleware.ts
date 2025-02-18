@@ -15,6 +15,18 @@ export function middleware(request: NextRequest) {
     if (pathname.startsWith("/sign-in")) {
         return authUser ? NextResponse.redirect(new URL("/", request.url)) : NextResponse.next();
     }
+    if (authUser && email && password) {
+        const now = new Date();
+        now.setHours(now.getHours() + 2); // Extend cookie expiry by 2 hours
+
+        // Create a new response with updated cookies
+        const response = NextResponse.next();
+
+        response.cookies.set("email", email, { expires: now });
+        response.cookies.set("password", password, { expires: now });
+
+        return response;
+    }
 
     return authUser ? NextResponse.next() : NextResponse.redirect(new URL("/sign-in", request.url));
 }
