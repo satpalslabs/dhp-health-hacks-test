@@ -28,6 +28,7 @@ const JourneySection = ({
   addOrEditSection,
   setAddOrEditSection,
   setJourney,
+  activeSection,
 }: {
   section: JourneySection;
   sectionIndex: number;
@@ -35,6 +36,7 @@ const JourneySection = ({
   addOrEditSection: null | number;
   setAddOrEditSection: React.Dispatch<React.SetStateAction<number | null>>;
   setJourney: React.Dispatch<React.SetStateAction<JourneyData>>;
+  activeSection: undefined | JourneySection;
 }) => {
   const [deleteJourneySection, setDeleteJourneySection] = useState(false);
   const { data, setData } = useContext(DataContext) ?? {};
@@ -69,7 +71,7 @@ const JourneySection = ({
         <>
           <Collapsible
             className="group/collapsible border border-border rounded-lg p-3"
-            // defaultOpen={sectionIndex === 0 && addOrEditSection != section.id}
+            defaultOpen={activeSection ? activeSection.id == section.id : true}
             ref={provided.innerRef}
             {...provided.draggableProps}
           >

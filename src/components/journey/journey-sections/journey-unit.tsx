@@ -23,6 +23,7 @@ import { DataContext } from "@/components/providers/data-provider";
 import { DropdownMenuItem } from "@radix-ui/react-dropdown-menu";
 import AddOrEditUnitDialog from "./add-edit-unit";
 import { CollapsibleContent } from "@/components/ui/collapsible";
+import Link from "next/link";
 
 export function handleUnit(
   operation: string,
@@ -98,7 +99,7 @@ const JourneyUnits = ({
       >
         {(unit_provided) => (
           <CollapsibleContent
-            className="border-t border-border"
+            className="border-t mt-2 border-border"
             ref={unit_provided.innerRef}
             {...unit_provided.droppableProps}
           >
@@ -221,19 +222,28 @@ const JourneyUnit = ({
               <Diamond className="grow w-[22px] h-fit" />
               <div className="w-[72px]">{unit.gems}</div>
             </div>
-            <Button
-              variant="default"
-              className="bg-muted hover:shadow-none h-fit w-fit text-primary dark:text-white"
-              onClick={() => {
-                setSelectedRow(unitIndex);
-                setOpen(true);
-              }}
+            <Link
+              href={`/journey/${journey}/${section.id}/${unit.id}`}
+              className="bg-muted hover:shadow-none h-[32px] font-medium w-fit font-inter text-primary dark:text-white flex gap-2 items-center py-2 px-3 [&_svg]:size-4 text-[13px] rounded-md"
             >
               <PencilLine />
               Edit Content
-            </Button>
+            </Link>
             <DropdownActions>
               <>
+                <Button
+                  variant="ghost"
+                  className="hover:bg-muted bg-transparent items-center  w-full"
+                  onClick={() => {
+                    setSelectedRow(unitIndex);
+                    setOpen(true);
+                  }}
+                >
+                  <PencilLine />
+                  <div className="text-sm grow text-left font-normal ">
+                    Edit
+                  </div>
+                </Button>
                 <Button
                   variant="ghost"
                   className=" bg-transparent hover:bg-muted w-full"

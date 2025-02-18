@@ -17,7 +17,7 @@ import {
 import { AuthContext } from "../providers/auth-provider";
 import { DataContext } from "../providers/data-provider";
 import MobileHeader from "../mobile-preview-sidebar/mobile-header";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Inbox } from "lucide-react";
 import EndJourney from "@/end-journey.svg";
 
 const JourneyPreviewSection = ({
@@ -51,11 +51,11 @@ const JourneyPreviewSection = ({
           transform: `translateX(calc(-${steps * 100}% ))`,
         }}
       >
-        <div className="relative flex flex-col shrink-0  w-full h-full ">
+        <div className="grid grid-rows-[min-content_auto] shrink-0  w-full h-full ">
           <div className="px-4">
             <MobileHeader />
           </div>
-          <div className="flex flex-col gap-[13px] font-poppins w-full shrink-0 px-4 ">
+          <div className="flex flex-col gap-[13px] font-poppins w-full overflow-auto no-scrollbar pb-4 px-4 ">
             <div className="flex justify-between  font-mulish">
               <div className="flex gap-3 text-sm leading-[16.8px]">
                 <div className="rounded-full bg-[#FFEFAE] w-fit h-fit">
@@ -87,74 +87,85 @@ const JourneyPreviewSection = ({
                 </div>
               </div>
             </div>
-            {data.map((journey: JourneyData, ix: number) => (
-              <div
-                key={ix}
-                className={`p-[13.4px]  rounded-lg flex flex-col gap-[13.4px] `}
-                style={{
-                  background: journey["background-color"],
-                }}
-              >
-                <div className="flex flex-col gap-5">
-                  <div
-                    className={` text-[15.12px] font-semibold`}
-                    style={{
-                      color: journey["primary-color"],
-                    }}
-                  >
-                    {journey.title}
-                  </div>
-                  <div className="w-fit relative">
-                    <div className="flex gap-[10px] relative z-10">
-                      {[0, 1, 2, 3, 4].map((i: number) => (
-                        <div
-                          key={i}
-                          className={`flex items-center justify-center relative rounded-full w-[26.88px] h-[26.88px] shadow-unit `}
-                          style={{
-                            background:
-                              i == 0 ? journey["primary-color"] : "#C1C1C1",
-                          }}
-                        >
-                          {i == 0 ? <Star /> : <Lock />}
-                          {i == 0 && (
-                            <ArrowDown
-                              className=" absolute top-[-5.04px] -translate-y-full left-1/2 -translate-x-1/2"
-                              style={{
-                                stroke: journey["primary-color"],
-                                fill: journey["primary-color"],
-                              }}
-                            />
-                          )}
-                        </div>
-                      ))}
-                    </div>
-                    <div
-                      className={
-                        "absolute w-full left-0 top-1/2 -translate-y-1/2 border-t-[1.68px] border-dashed"
-                      }
-                      style={{
-                        borderColor: journey["primary-color"],
-                      }}
-                    ></div>
-                  </div>
-                </div>
-                <Button
-                  className="shadow-unit rounded-full uppercase"
+            {data.length > 0 ? (
+              data.map((journey: JourneyData, ix: number) => (
+                <div
+                  key={ix}
+                  className={`p-[13.4px]  rounded-lg flex flex-col gap-[13.4px] `}
                   style={{
-                    background: journey["primary-color"],
-                  }}
-                  onClick={() => {
-                    setActiveData({
-                      journey: journey,
-                      section: undefined,
-                    });
-                    setSteps(1);
+                    background: journey["background-color"],
                   }}
                 >
-                  Start Journey
-                </Button>
+                  <div className="flex flex-col gap-5">
+                    <div
+                      className={` text-[15.12px] font-semibold`}
+                      style={{
+                        color: journey["primary-color"],
+                      }}
+                    >
+                      {journey.title}
+                    </div>
+                    <div className="w-fit relative">
+                      <div className="flex gap-[10px] relative z-10">
+                        {[0, 1, 2, 3, 4].map((i: number) => (
+                          <div
+                            key={i}
+                            className={`flex items-center justify-center relative rounded-full w-[26.88px] h-[26.88px] shadow-unit `}
+                            style={{
+                              background:
+                                i == 0 ? journey["primary-color"] : "#C1C1C1",
+                            }}
+                          >
+                            {i == 0 ? <Star /> : <Lock />}
+                            {i == 0 && (
+                              <ArrowDown
+                                className=" absolute top-[-5.04px] -translate-y-full left-1/2 -translate-x-1/2"
+                                style={{
+                                  stroke: journey["primary-color"],
+                                  fill: journey["primary-color"],
+                                }}
+                              />
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                      <div
+                        className={
+                          "absolute w-full left-0 top-1/2 -translate-y-1/2 border-t-[1.68px] border-dashed"
+                        }
+                        style={{
+                          borderColor: journey["primary-color"],
+                        }}
+                      ></div>
+                    </div>
+                  </div>
+                  <Button
+                    className="shadow-unit rounded-full uppercase"
+                    style={{
+                      background: journey["primary-color"],
+                    }}
+                    onClick={() => {
+                      setActiveData({
+                        journey: journey,
+                        section: undefined,
+                      });
+                      setSteps(1);
+                    }}
+                  >
+                    Start Journey
+                  </Button>
+                </div>
+              ))
+            ) : (
+              <div className="flex flex-col gap-5 justify-center grow px-4">
+                <div className="flex flex-col gap-2  text-center items-center text-gray-500">
+                  <Inbox className="w-[83px] h-[74px] stroke--gray-600 stroke-[0.8px]" />
+                  <div className="font-inter text-lg">
+                    {"You haven't added any Journey yet."}
+                  </div>
+                </div>
               </div>
-            ))}
+            )}
           </div>
         </div>
         <div className="relative flex flex-col shrink-0  w-full h-full ">
@@ -192,7 +203,7 @@ const JourneyPreviewSection = ({
                   <div className="w-full grow text-end">2 days </div>
                 </div>
                 <div className=" bg-blend-luminosity bg-[#2828282a]  flex  relative h-[23px] font-mulish font-bold w-[79px] pr-3 rounded-full text-sm [&_svg]:size-[24px]">
-                  <Heart className="absolute left-0 mt-[2px] -translate-x-[5px]" />
+                  <Heart className="absolute left-0 -translate-x-[10%]" />
                   <div className="w-full grow text-end">
                     {activeData?.journey.sections
                       .flatMap((section) => section.units)

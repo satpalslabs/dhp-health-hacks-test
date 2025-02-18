@@ -25,6 +25,29 @@
                                 "description": "You can’t compress the program without quantifying the open-source SSL certificate You can’t compress the program without quantifying the open-source SSL certificate You can’t compress the program without quantifying the open-source SSL certificate ",
                                 "source": "YouTube",
                                 "url": "https://www.youtube.com/watch?v=PzfLDi-sL3w"
+                            },
+                            {
+                                "id": 13,
+                                "type": "multi-select",
+                                "title": "Which part of your body is affected by epilepsy?",
+                                "options": [
+                                    {
+                                        "text": "Brain",
+                                        "isCorrect": true
+                                    },
+                                    {
+                                        "text": "Lungs ",
+                                        "isCorrect": false
+                                    },
+                                    {
+                                        "text": "Stomach",
+                                        "isCorrect": true
+                                    },
+                                    {
+                                        "text": "Arms",
+                                        "isCorrect": false
+                                    }
+                                ]
                             }
                         ]
                     },

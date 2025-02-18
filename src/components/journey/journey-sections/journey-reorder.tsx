@@ -16,8 +16,10 @@ import DeleteDialog from "../delete-dialog";
 
 const JourneySections = ({
   journeyData: initialData,
+  section: activeSection,
 }: {
   journeyData: JourneyData;
+  section: undefined | JourneySection;
 }) => {
   const [openJourneyDialog, setOpenJourneyDialog] = useState(false);
   const [journeyData, setJourneyData] = useState(initialData);
@@ -197,6 +199,7 @@ const JourneySections = ({
                           addOrEditSection={addOrEditSection}
                           setAddOrEditSection={setAddOrEditSection}
                           setJourney={setJourneyData}
+                          activeSection={activeSection}
                         />
                       )
                     )

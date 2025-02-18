@@ -14,35 +14,39 @@ const JourneyTable = () => {
   const [filteredData, setFilteredData] = useState<JourneyData[]>([...data]);
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4 h-full grow">
       <JourneyTableHeader
         setOpenDialog={setOpenDialog}
         setData={setFilteredData}
       />
-      <div className="flex flex-col border border-border rounded-lg">
+      <div className="grow">
         {filteredData.length > 0 ? (
-          filteredData.map((journey: JourneyData, ix: number) => (
-            <TableRow journey={journey} ix={ix} key={ix} />
-          ))
+          <div className="flex flex-col border border-border grow rounded-lg">
+            {filteredData.map((journey: JourneyData, ix: number) => (
+              <TableRow journey={journey} ix={ix} key={ix} />
+            ))}
+          </div>
         ) : (
-          <div className="flex flex-col gap-5 py-6 px-4">
-            <div className="flex flex-col gap-2  text-center items-center text-gray-400">
-              <Inbox className="w-[83px] h-[74px] stroke--gray-600 stroke-[0.8px]" />
-              <div className="font-inter text-sm">
-                {"You haven't added any Journey yet."}
-                <br />
-                {"Tap ‘Add Journey’ to create a new journey."}
+          <div className="flex flex-col border border-border h-full rounded-lg justify-center">
+            <div className="flex flex-col gap-5 py-6 px-4">
+              <div className="flex flex-col gap-2  text-center items-center text-gray-400">
+                <Inbox className="w-[83px] h-[74px] stroke--gray-600 stroke-[0.8px]" />
+                <div className="font-inter text-sm">
+                  {"You haven't added any Journey yet."}
+                  <br />
+                  {"Tap ‘Add Journey’ to create a new journey."}
+                </div>
               </div>
+              <Button
+                variant="default"
+                className="bg-muted w-full hover:shadow-sm text-primary dark:text-white"
+                onClick={() => {
+                  setOpenDialog(true);
+                }}
+              >
+                <Plus /> Add Journey
+              </Button>
             </div>
-            <Button
-              variant="default"
-              className="bg-muted w-full hover:shadow-sm text-primary dark:text-white"
-              onClick={() => {
-                setOpenDialog(true);
-              }}
-            >
-              <Plus /> Add Journey
-            </Button>
           </div>
         )}
       </div>

@@ -2,15 +2,20 @@ import PageHeader from "./page-header";
 import { SidebarProvider, SidebarTrigger } from "./ui/sidebar";
 
 export default async function MainLayout({
-  pageTitle,
+  pageNavigation,
   children,
 }: {
-  pageTitle: string[] | null;
+  pageNavigation:
+    | {
+        text: string;
+        link: string;
+      }[]
+    | null;
   children: React.ReactNode;
 }) {
   return (
     <div>
-      <PageHeader path={pageTitle} />
+      <PageHeader path={pageNavigation} />
       <SidebarProvider
         className="max-h-[calc(100vh-76px)] min-h-[calc(100vh-76px)] overflow-hidden"
         style={

@@ -11,7 +11,7 @@ export default async function Journey() {
   const journeyData: JourneyData[] = await getJourneys();
   return (
     <DataProvider value={journeyData}>
-      <MainLayout pageTitle={null}>
+      <MainLayout pageNavigation={null}>
         <SidebarInset className="p-6 min-h-auto w-full overflow-hidden">
           <JourneyTable />
         </SidebarInset>

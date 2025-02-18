@@ -2,8 +2,18 @@
 
 import { usePathname, useRouter } from "next/navigation";
 import { Separator } from "./ui/separator";
+import Link from "next/link";
 
-const PageHeader = ({ path }: { path: string[] | null }) => {
+const PageHeader = ({
+  path,
+}: {
+  path:
+    | {
+        text: string;
+        link: string;
+      }[]
+    | null;
+}) => {
   let pathname = usePathname();
   const router = useRouter();
   pathname = pathname.substring(1);
@@ -27,20 +37,31 @@ const PageHeader = ({ path }: { path: string[] | null }) => {
         />
         <div className="capitalize">{pathname.split("/")[0]}</div>
       </div>
-      {path?.map((i: string, ix: number) => (
-        <div
-          className={`flex items-center gap-1  ${
-            i == "..." ? "text-zinc-500" : "text-foreground cursor-pointer"
-          }`}
-          key={ix}
-        >
-          <Separator
-            orientation="vertical"
-            className="mr-2 h-4 rotate-45 bg-zinc-500"
-          />
-          <div className="capitalize">{i}</div>
-        </div>
-      ))}
+      {path?.map(
+        (
+          i: {
+            text: string;
+            link: string;
+          },
+          ix: number
+        ) => (
+          <Link
+            className={`flex items-center gap-1  ${
+              i.text == "..."
+                ? "text-zinc-500"
+                : "text-foreground cursor-pointer"
+            }`}
+            href={i.link}
+            key={ix}
+          >
+            <Separator
+              orientation="vertical"
+              className="mr-2 h-4 rotate-45 bg-zinc-500"
+            />
+            <div className="capitalize">{i.text}</div>
+          </Link>
+        )
+      )}
     </header>
   );
 };
