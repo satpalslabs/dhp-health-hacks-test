@@ -478,7 +478,7 @@ const JourneyUnitComponent = ({
           </DragDropContext>
         </div>
       </div>
-      <div className="w-full border-t flex justify-between px-6 pt-3 pb-5">
+      <div className="w-full border-t flex justify-between px-6 pt-[17px] pb-5">
         <span>
           {(activeUnitIndex == 0 ? activeSectionIndex != 0 : true) && (
             <Link
