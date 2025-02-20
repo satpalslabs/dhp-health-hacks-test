@@ -36,7 +36,22 @@ export const getIcon = (type: string) => {
   }
 };
 
-export const AddStepButtonAndDropDown = () => (
+export const AddStepButtonAndDropDown = ({
+  setShowStepsInMOdal,
+  setOpen,
+}: {
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setShowStepsInMOdal: React.Dispatch<
+    React.SetStateAction<
+      | "videos"
+      | "articles"
+      | "pairs"
+      | "multi-select"
+      | "single-select"
+      | undefined
+    >
+  >;
+}) => (
   <DropdownMenu>
     <DropdownMenuTrigger asChild>
       <Button
@@ -49,23 +64,53 @@ export const AddStepButtonAndDropDown = () => (
     </DropdownMenuTrigger>
     <DropdownMenuContent className="w-[236px]">
       <DropdownMenuGroup>
-        <DropdownMenuItem className="cursor-pointer">
+        <DropdownMenuItem
+          onClick={() => {
+            setShowStepsInMOdal("videos");
+            setOpen(true);
+          }}
+          className="cursor-pointer"
+        >
           <PlayCircle />
           <span>Video</span>
         </DropdownMenuItem>
-        <DropdownMenuItem className="cursor-pointer">
+        <DropdownMenuItem
+          onClick={() => {
+            setShowStepsInMOdal("articles");
+            setOpen(true);
+          }}
+          className="cursor-pointer"
+        >
           <Article />
           <span>Article</span>
         </DropdownMenuItem>
-        <DropdownMenuItem className="cursor-pointer">
+        <DropdownMenuItem
+          onClick={() => {
+            setShowStepsInMOdal("pairs");
+            setOpen(true);
+          }}
+          className="cursor-pointer"
+        >
           <Quiz />
           <span>Matching Pairs Question</span>
         </DropdownMenuItem>
-        <DropdownMenuItem className="cursor-pointer">
+        <DropdownMenuItem
+          onClick={() => {
+            setShowStepsInMOdal("multi-select");
+            setOpen(true);
+          }}
+          className="cursor-pointer"
+        >
           <MultiCheck />
           <span>Multiple Choice Question</span>
         </DropdownMenuItem>
-        <DropdownMenuItem className="cursor-pointer">
+        <DropdownMenuItem
+          onClick={() => {
+            setShowStepsInMOdal("single-select");
+            setOpen(true);
+          }}
+          className="cursor-pointer"
+        >
           <CircleHelp />
           <span>True/False Question</span>
         </DropdownMenuItem>
@@ -212,4 +257,3 @@ export function Step({ type, step }: { type: string; step: JourneyStep }) {
       <>test</>;
   }
 }
-

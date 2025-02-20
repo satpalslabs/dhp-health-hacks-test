@@ -51,12 +51,12 @@ const AddOrEditJourneyDialog = ({
     resolver: zodResolver(formSchema),
     defaultValues: {
       title: "",
-      "primary-color": "#ffffff",
-      "background-color": "#ffffff",
+      "primary-color": "",
+      "background-color": "",
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  function onSubmit(isDraft: boolean, values: z.infer<typeof formSchema>) {
     if (setData) {
       if (id) {
         setData((prev: JourneyData[]) => {
@@ -78,6 +78,7 @@ const AddOrEditJourneyDialog = ({
           {
             id: data.length + 1,
             title: values.title,
+            _status: isDraft ? "draft" : "published",
             createdAt: new Date(),
             updatedAt: new Date(),
             "primary-color": values["primary-color"],
@@ -87,8 +88,8 @@ const AddOrEditJourneyDialog = ({
         ]);
       }
       setOpen(false);
-      form.reset();
       form.clearErrors();
+      form.reset();
     }
   }
 
@@ -104,6 +105,10 @@ const AddOrEditJourneyDialog = ({
       form.reset();
     }
   }, [id, data, form]);
+
+  useEffect(() => {
+    form.clearErrors();
+  }, [open, form]);
 
   const fieldConfigs = [
     {
@@ -148,7 +153,10 @@ const AddOrEditJourneyDialog = ({
         </DialogHeader>
         <Form {...form}>
           <form
-            onSubmit={form.handleSubmit(onSubmit)}
+            onSubmit={form.handleSubmit((values) => {
+              console.log(values);
+              onSubmit(false, values);
+            })}
             className="space-y-[6px] text-sm"
           >
             {fieldConfigs.map((field) => (
@@ -168,21 +176,35 @@ const AddOrEditJourneyDialog = ({
                       </InputTooltip>
                     </FormLabel>
                     <FormControl>
-                      <field.component
-                        {...field.props}
-                        {...formField}
-                        onColorChange={formField.onChange}
-                      />
+                      {field.component === ColorPicker ? (
+                        <ColorPicker
+                          {...field.props}
+                          onColorChange={formField.onChange}
+                          {...formField}
+                        />
+                      ) : (
+                        <Input {...field.props} {...formField} />
+                      )}
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
             ))}
-
-            <Button type="submit" className="!mt-[116px]">
-              Save
-            </Button>
+            <div className="flex gap-3 !mt-[116px]">
+              <Button type="submit">Save</Button>
+              {id == null && (
+                <Button
+                  className="bg-muted text-primary"
+                  onClick={() => {
+                    onSubmit(true, form.getValues());
+                    form.reset();
+                  }}
+                >
+                  Save as Draft
+                </Button>
+              )}
+            </div>
           </form>
         </Form>
       </DialogContent>

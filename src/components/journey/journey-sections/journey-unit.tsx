@@ -193,7 +193,9 @@ const JourneyUnit = ({
   return (
     <Draggable
       key={unit.id}
-      draggableId={unit.id.toString() + section.id.toString()}
+      draggableId={
+        unit.id.toString() + unitIndex.toString() + section.id.toString()
+      }
       index={unitIndex}
     >
       {(unit_drag) => (
@@ -224,7 +226,7 @@ const JourneyUnit = ({
             </div>
             <Link
               href={`/journey/${journey}/${section.id}/${unit.id}`}
-              className="bg-muted hover:shadow-none h-[32px] font-medium w-fit font-inter text-primary dark:text-white flex gap-2 items-center py-2 px-3 [&_svg]:size-4 text-[13px] rounded-md"
+              className="bg-muted hover:shadow-none h-[32px] shrink-0 font-medium w-fit font-inter text-primary dark:text-white flex gap-2 items-center py-2 px-3 [&_svg]:size-4 text-[13px] rounded-md"
             >
               <PencilLine />
               Edit Content
@@ -261,7 +263,7 @@ const JourneyUnit = ({
                     }
                   }}
                 >
-                  <DropdownMenuItem className="w-full flex items-center  gap-2">
+                  <DropdownMenuItem className="w-full flex items-center outline-none gap-2">
                     <>{unit.published ? <Ban /> : <Globe />}</>
                     <div className="text-sm grow text-left font-normal ">
                       {unit.published ? "Unpublish" : "Publish"}

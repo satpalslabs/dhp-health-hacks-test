@@ -19,7 +19,6 @@ import DeleteDialog from "../delete-dialog";
 import { DataContext } from "@/components/providers/data-provider";
 import JourneyUnits from "./journey-unit";
 import { Input } from "@/components/ui/input";
-import Link from "next/link";
 
 const JourneySection = ({
   section,
@@ -29,6 +28,8 @@ const JourneySection = ({
   setAddOrEditSection,
   setJourney,
   activeSection,
+  defaultCollapseContainers,
+  inputValue,
 }: {
   section: JourneySection;
   sectionIndex: number;
@@ -37,6 +38,8 @@ const JourneySection = ({
   setAddOrEditSection: React.Dispatch<React.SetStateAction<number | null>>;
   setJourney: React.Dispatch<React.SetStateAction<JourneyData>>;
   activeSection: undefined | JourneySection;
+  defaultCollapseContainers: number[];
+  inputValue: string;
 }) => {
   const [deleteJourneySection, setDeleteJourneySection] = useState(false);
   const { data, setData } = useContext(DataContext) ?? {};
@@ -71,7 +74,13 @@ const JourneySection = ({
         <>
           <Collapsible
             className="group/collapsible border border-border rounded-lg p-3"
-            defaultOpen={activeSection ? activeSection.id == section.id : true}
+            defaultOpen={
+              activeSection && inputValue == ""
+                ? activeSection.id == section.id
+                : inputValue != ""
+                ? defaultCollapseContainers.includes(section.id)
+                : true
+            }
             ref={provided.innerRef}
             {...provided.draggableProps}
           >
@@ -82,17 +91,10 @@ const JourneySection = ({
               >
                 <GripVertical className="stroke-gray-400 w-4 h-4" />
               </div>
-              <div className="grow flex justify-between items-center">
+              <div className="grow flex justify-between items-center font-inter text-sm">
                 {addOrEditSection != section.id ? (
                   <>
-                    <Button
-                      variant="ghost"
-                      className="p-0 h-fit hover:bg-transparent font-normal font-inter flex items-center justify-between"
-                    >
-                      <Link href={`/journey/${journey}/${section.id}`}>
-                        {section.title}
-                      </Link>
-                    </Button>
+                    <p>{section.title}</p>
                     <CollapsibleTrigger
                       className="cursor-pointer text-left"
                       asChild

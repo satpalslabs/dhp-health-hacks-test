@@ -1,0 +1,46 @@
+[
+  {
+    "id": 1,
+    "collection_name": "Social Life",
+    "section": [
+      3
+    ],
+    "sub_section": [
+      2
+    ],
+    "collection_description": ""
+  },
+  {
+    "id": 2,
+    "collection_name": "Education",
+    "section": [
+      3
+    ],
+    "sub_section": [
+      2
+    ],
+    "collection_description": ""
+  },
+  {
+    "id": 3,
+    "collection_name": "Work",
+    "section": [
+      3
+    ],
+    "sub_section": [
+      2
+    ],
+    "collection_description": ""
+  },
+  {
+    "id": 4,
+    "collection_name": "Your Rights",
+    "section": [
+      3
+    ],
+    "sub_section": [
+      2
+    ],
+    "collection_description": ""
+  }
+]

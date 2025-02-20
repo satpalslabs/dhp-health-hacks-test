@@ -1,0 +1,42 @@
+[
+  {
+    "subsection_name": "Transition",
+    "section": [
+      3
+    ],
+    "subsection_description": "Transferring to adult care",
+    "id": 1
+  },
+  {
+    "subsection_name": "Health and Lifestyle",
+    "section": [
+      3
+    ],
+    "subsection_description": "Living life well",
+    "id": 2
+  },
+  {
+    "subsection_name": "Knowledge",
+    "section": [
+      3
+    ],
+    "subsection_description": "Learning about asthma",
+    "id": 3
+  },
+  {
+    "subsection_name": "Psychosocial",
+    "section": [
+      3
+    ],
+    "subsection_description": "Managing Your Emotions",
+    "id": 4
+  },
+  {
+    "subsection_name": "Self-Advocacy",
+    "section": [
+      3
+    ],
+    "subsection_description": "Speaking up for yourself",
+    "id": 5
+  }
+]

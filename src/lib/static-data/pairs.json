@@ -1,0 +1,337 @@
+[
+    {
+        "id": 1,
+        "title": "Match the vitamins with their primary benefits",
+        "type": "pair",
+        "collection": [
+            2,
+            3
+        ],
+        "pairs": [
+            {
+                "id": 1,
+                "option": "Vitamin A",
+                "match": "Good for vision"
+            },
+            {
+                "id": 2,
+                "option": "Vitamin C",
+                "match": "Boosts immune system"
+            },
+            {
+                "id": 3,
+                "option": "Vitamin D",
+                "match": "Strengthens bones"
+            },
+            {
+                "id": 4,
+                "option": "Vitamin K",
+                "match": "Helps in blood clotting"
+            }
+        ]
+    },
+    {
+        "id": 2,
+        "title": "Match the organs with their functions",
+        "type": "pair",
+        "collection": [
+            2,
+            3
+        ],
+        "pairs": [
+            {
+                "id": 1,
+                "option": "Liver",
+                "match": "Detoxifies blood"
+            },
+            {
+                "id": 2,
+                "option": "Heart",
+                "match": "Pumps blood"
+            },
+            {
+                "id": 3,
+                "option": "Lungs",
+                "match": "Oxygenate blood"
+            },
+            {
+                "id": 4,
+                "option": "Kidneys",
+                "match": "Filter waste"
+            }
+        ]
+    },
+    {
+        "id": 3,
+        "title": "Match the diseases with their causes",
+        "type": "pair",
+        "collection": [
+            2,
+            3
+        ],
+        "pairs": [
+            {
+                "id": 1,
+                "option": "Diabetes",
+                "match": "Insulin resistance"
+            },
+            {
+                "id": 2,
+                "option": "Hypertension",
+                "match": "High blood pressure"
+            },
+            {
+                "id": 3,
+                "option": "Osteoporosis",
+                "match": "Calcium deficiency"
+            },
+            {
+                "id": 4,
+                "option": "Scurvy",
+                "match": "Vitamin C deficiency"
+            }
+        ]
+    },
+    {
+        "id": 4,
+        "title": "Match the food with its nutrient category",
+        "type": "pair",
+        "collection": [
+            2,
+            3
+        ],
+        "pairs": [
+            {
+                "id": 1,
+                "option": "Salmon",
+                "match": "Protein"
+            },
+            {
+                "id": 2,
+                "option": "Spinach",
+                "match": "Iron"
+            },
+            {
+                "id": 3,
+                "option": "Banana",
+                "match": "Potassium"
+            },
+            {
+                "id": 4,
+                "option": "Almonds",
+                "match": "Healthy fats"
+            }
+        ]
+    },
+    {
+        "id": 5,
+        "title": "Match the muscle groups with their exercises",
+        "type": "pair",
+        "collection": [
+            2,
+            3
+        ],
+        "pairs": [
+            {
+                "id": 1,
+                "option": "Biceps",
+                "match": "Curls"
+            },
+            {
+                "id": 2,
+                "option": "Quadriceps",
+                "match": "Squats"
+            },
+            {
+                "id": 3,
+                "option": "Chest",
+                "match": "Bench press"
+            },
+            {
+                "id": 4,
+                "option": "Back",
+                "match": "Pull-ups"
+            }
+        ]
+    },
+    {
+        "id": 6,
+        "title": "Match the medical terms with their meanings",
+        "type": "pair",
+        "collection": [
+            1
+        ],
+        "pairs": [
+            {
+                "id": 1,
+                "option": "Hypertension",
+                "match": "High blood pressure"
+            },
+            {
+                "id": 2,
+                "option": "Anemia",
+                "match": "Low red blood cells"
+            },
+            {
+                "id": 3,
+                "option": "Hyperglycemia",
+                "match": "High blood sugar"
+            },
+            {
+                "id": 4,
+                "option": "Hypoxia",
+                "match": "Low oxygen in blood"
+            }
+        ]
+    },
+    {
+        "id": 7,
+        "title": "Match the brain lobes with their functions",
+        "type": "pair",
+        "collection": [
+            1
+        ],
+        "pairs": [
+            {
+                "id": 1,
+                "option": "Frontal lobe",
+                "match": "Decision making"
+            },
+            {
+                "id": 2,
+                "option": "Temporal lobe",
+                "match": "Memory & hearing"
+            },
+            {
+                "id": 3,
+                "option": "Parietal lobe",
+                "match": "Touch & spatial awareness"
+            },
+            {
+                "id": 4,
+                "option": "Occipital lobe",
+                "match": "Vision processing"
+            }
+        ]
+    },
+    {
+        "id": 8,
+        "title": "Match the medical symbols with their meanings",
+        "type": "pair",
+        "collection": [
+            1
+        ],
+        "pairs": [
+            {
+                "id": 1,
+                "option": "Rx",
+                "match": "Prescription"
+            },
+            {
+                "id": 2,
+                "option": "Bp",
+                "match": "Blood pressure"
+            },
+            {
+                "id": 3,
+                "option": "HR",
+                "match": "Heart rate"
+            },
+            {
+                "id": 4,
+                "option": "O2",
+                "match": "Oxygen level"
+            }
+        ]
+    },
+    {
+        "id": 9,
+        "title": "Match the body parts with their functions",
+        "type": "pair",
+        "collection": [
+            1
+        ],
+        "pairs": [
+            {
+                "id": 1,
+                "option": "Stomach",
+                "match": "Digests food"
+            },
+            {
+                "id": 2,
+                "option": "Skin",
+                "match": "Protects the body"
+            },
+            {
+                "id": 3,
+                "option": "Eyes",
+                "match": "Provide vision"
+            },
+            {
+                "id": 4,
+                "option": "Ears",
+                "match": "Help in hearing"
+            }
+        ]
+    },
+    {
+        "id": 10,
+        "title": "Match the hormones with their functions",
+        "type": "pair",
+        "collection": [
+            4
+        ],
+        "pairs": [
+            {
+                "id": 1,
+                "option": "Insulin",
+                "match": "Regulates blood sugar"
+            },
+            {
+                "id": 2,
+                "option": "Adrenaline",
+                "match": "Triggers fight-or-flight response"
+            },
+            {
+                "id": 3,
+                "option": "Melatonin",
+                "match": "Regulates sleep cycle"
+            },
+            {
+                "id": 4,
+                "option": "Testosterone",
+                "match": "Regulates male characteristics"
+            }
+        ]
+    },
+    {
+        "id": 11,
+        "title": "Match the medical instruments with their uses",
+        "type": "pair",
+        "collection": [
+            4
+        ],
+        "pairs": [
+            {
+                "id": 1,
+                "option": "Stethoscope",
+                "match": "Listen to heart sounds"
+            },
+            {
+                "id": 2,
+                "option": "Sphygmomanometer",
+                "match": "Measure blood pressure"
+            },
+            {
+                "id": 3,
+                "option": "Otoscope",
+                "match": "Examine the ear"
+            },
+            {
+                "id": 4,
+                "option": "Thermometer",
+                "match": "Measure body temperature"
+            }
+        ]
+    }
+]

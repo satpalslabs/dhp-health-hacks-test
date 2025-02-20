@@ -5,7 +5,15 @@ import { DragDropContext, Droppable, DropResult } from "react-beautiful-dnd";
 import { Input } from "@/components/ui/input";
 import { handleJourneyDeletion, JourneyData } from "@/lib/journey-services";
 import type { JourneySection } from "@/lib/journey-services";
-import { Inbox, PencilLine, Plus, Search, Trash2 } from "lucide-react";
+import {
+  Ban,
+  Globe,
+  Inbox,
+  PencilLine,
+  Plus,
+  Search,
+  Trash2,
+} from "lucide-react";
 import React, { useContext, useEffect, useState } from "react";
 import JourneySectionComponent from "./journey-section";
 import AddOrEditJourneyDialog from "../add-edit-journey";
@@ -13,6 +21,7 @@ import DropdownActions from "./dropdown-actions";
 import { DataContext } from "@/components/providers/data-provider";
 import { useRouter } from "next/navigation";
 import DeleteDialog from "../delete-dialog";
+import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
 
 const JourneySections = ({
   journeyData: initialData,
@@ -23,9 +32,13 @@ const JourneySections = ({
 }) => {
   const [openJourneyDialog, setOpenJourneyDialog] = useState(false);
   const [journeyData, setJourneyData] = useState(initialData);
+  const [defaultCollapseContainers, setDefaultCollapseContainers] = useState<
+    number[]
+  >([]);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const { data, setData } = useContext(DataContext) ?? {};
   const [addOrEditSection, setAddOrEditSection] = useState<number | null>(null);
+  const [inputValue, setInputValue] = useState<string>("");
   const router = useRouter();
 
   const onDragEnd = (result: DropResult) => {
@@ -89,14 +102,58 @@ const JourneySections = ({
     }
   };
 
+  const activeJourneyIndex = data.findIndex(
+    (i: JourneyData) => i.id === journeyData.id
+  );
   useEffect(() => {
-    const activeJourneyIndex = data.findIndex(
-      (i: JourneyData) => i.id === journeyData.id
-    );
     if (activeJourneyIndex != -1) {
       setJourneyData({ ...data[activeJourneyIndex] });
     }
-  }, [data, journeyData.id]);
+  }, [activeJourneyIndex, data]);
+
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      const newCollapseContainers: number[] = [];
+
+      // Filter sections based on the input value
+      const journeyDataSections = data[activeJourneyIndex].sections
+        .map((section: JourneySection) => {
+          // If section title matches search input, keep the entire section
+          if (section.title.toLowerCase().includes(inputValue.toLowerCase())) {
+            return section;
+          }
+
+          // Filter units within the section that match the search input
+          const filteredUnits = section.units.filter((unit) =>
+            JSON.stringify(unit)
+              .toLowerCase()
+              .includes(inputValue.toLowerCase())
+          );
+
+          // If matching units are found, keep the section with filtered units
+          if (filteredUnits.length > 0) {
+            return { ...section, units: filteredUnits };
+          } else {
+            // Otherwise, mark this section for collapsing
+            newCollapseContainers.push(section.id);
+            return null;
+          }
+        })
+        .filter(Boolean) as JourneySection[]; // Remove null values from array
+
+      // Update collapsed sections efficiently
+      setDefaultCollapseContainers((prev) => [
+        ...prev.filter((id) => !newCollapseContainers.includes(id)), // Remove uncollapsed sections
+        ...newCollapseContainers, // Add newly collapsed sections
+      ]);
+
+      // Update journey data with the filtered sections
+      setJourneyData((prev) => ({ ...prev, sections: journeyDataSections }));
+    }, 500);
+
+    // Cleanup function to clear the timeout
+    return () => clearTimeout(timeoutId);
+  }, [inputValue, data, activeJourneyIndex]);
 
   return (
     <div className="flex flex-col gap-4">
@@ -105,6 +162,10 @@ const JourneySections = ({
         <Input
           placeholder="Search"
           className="max-w-sm w-[264px] pl-[36px] border-input-border focus-visible:ring-0 focus-visible:ring-offset-0"
+          onChange={(e) => {
+            setInputValue(e.target.value);
+          }}
+          value={inputValue}
         />
       </div>
       <div className="w-full rounded-lg border border-border ">
@@ -131,6 +192,34 @@ const JourneySections = ({
                 >
                   <PencilLine />
                   <div className="text-sm grow text-left font-normal">Edit</div>
+                </Button>
+                <Button
+                  variant="ghost"
+                  className="flex bg-transparent gap-2 justify-center w-full"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    if (setData) {
+                      setData((prev: JourneyData[]) => {
+                        prev[activeJourneyIndex]._status =
+                          journeyData._status == "published"
+                            ? "unpublished"
+                            : "published";
+                        setJourneyData(prev[activeJourneyIndex]);
+                        return [...prev];
+                      });
+                    }
+                  }}
+                >
+                  <DropdownMenuItem className="w-full px-0 flex items-center  gap-2 cursor-pointer">
+                    <>
+                      {journeyData._status == "published" ? <Ban /> : <Globe />}
+                    </>
+                    <div className="text-sm grow text-left font-normal ">
+                      {journeyData._status == "published"
+                        ? "Unpublish"
+                        : "Publish"}
+                    </div>
+                  </DropdownMenuItem>
                 </Button>
                 <Button
                   variant="ghost"
@@ -200,6 +289,8 @@ const JourneySections = ({
                           setAddOrEditSection={setAddOrEditSection}
                           setJourney={setJourneyData}
                           activeSection={activeSection}
+                          defaultCollapseContainers={defaultCollapseContainers}
+                          inputValue={inputValue}
                         />
                       )
                     )

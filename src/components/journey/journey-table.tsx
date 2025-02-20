@@ -10,11 +10,13 @@ import Link from "next/link";
 
 const JourneyTable = () => {
   const [openDialog, setOpenDialog] = useState(false);
-  const { data } = useContext(DataContext) ?? {};
-  const [filteredData, setFilteredData] = useState<JourneyData[]>([...data]);
+  const { data: initialData } = useContext(DataContext) ?? {};
+  const [filteredData, setFilteredData] = useState<JourneyData[]>([
+    ...initialData,
+  ]);
 
   return (
-    <div className="flex flex-col gap-4 h-full grow">
+    <div className="flex flex-col gap-4 h-full grow overflow-auto">
       <JourneyTableHeader
         setOpenDialog={setOpenDialog}
         setData={setFilteredData}
@@ -90,11 +92,24 @@ const TableRow = ({ journey, ix }: { journey: JourneyData; ix: number }) => (
         </div>
       </div>
     </div>
-    <Button
-      variant={"ghost"}
-      className="p-2 h-fit text-gray-800 [&_svg]:size-5"
-    >
-      <ChevronRight />
-    </Button>
+    <div className="flex gap-4 items-center">
+      {journey._status !== "published" && (
+        <div
+          className={` rounded-md capitalize text-sm px-2 py-1 hover:text-red h-fit w-fit ${
+            journey._status == "draft"
+              ? "bg-button-status-darkGray text-text-darkGray"
+              : "bg-red-100 text-[red] "
+          }`}
+        >
+          {journey._status}
+        </div>
+      )}
+      <Button
+        variant={"ghost"}
+        className="p-2 h-fit text-text-darkGray [&_svg]:size-5"
+      >
+        <ChevronRight />
+      </Button>
+    </div>
   </Link>
 );

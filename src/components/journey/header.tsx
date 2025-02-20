@@ -1,5 +1,5 @@
 import { JourneyData } from "@/lib/journey-services";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { DateRange } from "react-day-picker";
 import { Plus, Search, Settings2 } from "lucide-react";
 import { Input } from "../ui/input";
@@ -14,6 +14,13 @@ import { Checkbox } from "../ui/checkbox";
 import { DatePickerWithRange } from "../ui/date-picker-with-range";
 import { DataContext } from "../providers/data-provider";
 
+type filterType = {
+  dateFilter: {
+    updatedAt: undefined | DateRange;
+    createdAt: undefined | DateRange;
+  };
+  inputValue: string;
+};
 const JourneyTableHeader = ({
   setOpenDialog,
   setData,
@@ -21,18 +28,18 @@ const JourneyTableHeader = ({
   setOpenDialog: React.Dispatch<React.SetStateAction<boolean>>;
   setData: React.Dispatch<React.SetStateAction<JourneyData[]>>;
 }) => {
-  const [filterDates, setFilterDates] = useState<{
-    updatedAt: undefined | DateRange;
-    createdAt: undefined | DateRange;
-  }>({
-    updatedAt: {
-      from: undefined,
-      to: undefined,
+  const [filters, setFilters] = useState<filterType>({
+    dateFilter: {
+      updatedAt: {
+        from: undefined,
+        to: undefined,
+      },
+      createdAt: {
+        from: undefined,
+        to: undefined,
+      },
     },
-    createdAt: {
-      from: undefined,
-      to: undefined,
-    },
+    inputValue: "",
   });
   const { data } = useContext(DataContext) ?? {};
 
@@ -40,6 +47,19 @@ const JourneyTableHeader = ({
     updatedAt: false,
     createdAt: false,
   });
+
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      setData(() =>
+        data.filter((i: JourneyData) =>
+          i.title.toLowerCase().includes(filters.inputValue.toLowerCase())
+        )
+      );
+    }, 500);
+    return () => {
+      clearTimeout(timeoutId);
+    };
+  }, [filters.inputValue, data, setData]);
 
   return (
     <div className="flex items-center justify-between">
@@ -50,11 +70,10 @@ const JourneyTableHeader = ({
             placeholder="Search"
             className="max-w-sm w-[264px] pl-[36px] border-input-border focus-visible:ring-0 focus-visible:ring-offset-0"
             onChange={(e) => {
-              setData(() =>
-                data.filter((i: JourneyData) =>
-                  i.title.toLowerCase().includes(e.target.value.toLowerCase())
-                )
-              );
+              setFilters((prev: filterType) => ({
+                ...prev,
+                inputValue: e.target.value,
+              }));
             }}
           />
         </div>
@@ -91,14 +110,15 @@ const JourneyTableHeader = ({
             <DatePickerWithRange
               className="w-full"
               disabled={!dateFilters.createdAt}
-              date={filterDates.createdAt}
+              date={filters.dateFilter.createdAt}
               setDate={(e: DateRange | undefined) => {
-                setFilterDates(
-                  (prev: {
-                    updatedAt: undefined | DateRange;
-                    createdAt: undefined | DateRange;
-                  }) => ({ ...prev, createdAt: e })
-                );
+                setFilters((prev: filterType) => ({
+                  inputValue: prev.inputValue,
+                  dateFilter: {
+                    ...prev.dateFilter,
+                    createdAt: e,
+                  },
+                }));
               }}
             />
             <hr className="border-border" />
@@ -125,14 +145,15 @@ const JourneyTableHeader = ({
             <DatePickerWithRange
               className="w-full"
               disabled={!dateFilters.updatedAt}
-              date={filterDates.updatedAt}
+              date={filters.dateFilter.updatedAt}
               setDate={(e) => {
-                setFilterDates(
-                  (prev: {
-                    updatedAt: undefined | DateRange;
-                    createdAt: undefined | DateRange;
-                  }) => ({ ...prev, updatedAt: e })
-                );
+                setFilters((prev: filterType) => ({
+                  inputValue: prev.inputValue,
+                  dateFilter: {
+                    ...prev.dateFilter,
+                    createdAt: e,
+                  },
+                }));
               }}
             />
             <hr className=" border-border" />
@@ -144,10 +165,12 @@ const JourneyTableHeader = ({
                     setData(() => {
                       return data.filter((i: JourneyData) => {
                         if (
-                          filterDates.updatedAt?.from &&
-                          new Date(i.updatedAt) > filterDates.updatedAt?.from &&
-                          filterDates.updatedAt?.to &&
-                          new Date(i.updatedAt) < filterDates.updatedAt?.to
+                          filters.dateFilter.updatedAt?.from &&
+                          new Date(i.updatedAt) >
+                            filters.dateFilter.updatedAt?.from &&
+                          filters.dateFilter.updatedAt?.to &&
+                          new Date(i.updatedAt) <
+                            filters.dateFilter.updatedAt?.to
                         ) {
                           return true;
                         }
@@ -160,10 +183,12 @@ const JourneyTableHeader = ({
                     setData(() => {
                       return data.filter((i: JourneyData) => {
                         if (
-                          filterDates.createdAt?.from &&
-                          new Date(i.createdAt) > filterDates.createdAt?.from &&
-                          filterDates.createdAt?.to &&
-                          new Date(i.createdAt) < filterDates.createdAt?.to
+                          filters.dateFilter.createdAt?.from &&
+                          new Date(i.createdAt) >
+                            filters.dateFilter.createdAt?.from &&
+                          filters.dateFilter.createdAt?.to &&
+                          new Date(i.createdAt) <
+                            filters.dateFilter.createdAt?.to
                         ) {
                           return true;
                         }

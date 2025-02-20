@@ -1,0 +1,123 @@
+[
+    {
+        "id": 1,
+        "title": "Introduction to Healthy Eating",
+        "type": "video",
+        "source": "YouTube",
+        "url": "https://www.youtube.com/watch?v=Ofn28GGwqec",
+        "description": "An introductory video on the basics of healthy eating.",
+        "collection": [
+            3
+        ]
+    },
+    {
+        "id": 2,
+        "title": "Understanding Macronutrients",
+        "type": "video",
+        "source": "YouTube",
+        "url": "https://www.youtube.com/watch?v=bI4btk2f42s",
+        "description": "Explains proteins, fats, and carbohydrates and their role in the body.",
+        "collection": [
+            3
+        ]
+    },
+    {
+        "id": 3,
+        "title": "The Role of Hydration",
+        "type": "video",
+        "source": "YouTube",
+        "url": "https://youtu.be/HqwVaRHFu_4",
+        "description": "Why water intake is essential for health and wellness.",
+        "collection": [
+            3
+        ]
+    },
+    {
+        "id": 4,
+        "title": "Superfoods and Their Benefits",
+        "type": "video",
+        "source": "YouTube",
+        "url": "https://www.youtube.com/watch?v=bI4btk2f42s",
+        "description": "A breakdown of nutrient-dense foods and how to incorporate them into your diet.",
+        "collection": [
+            3
+        ]
+    },
+    {
+        "id": 5,
+        "title": "The Impact of Sugar on Health",
+        "type": "video",
+        "source": "YouTube",
+        "url": "https://youtu.be/31ptATmR_Ew",
+        "description": "Examines the effects of sugar on metabolism and long-term health.",
+        "collection": [
+            1
+        ]
+    },
+    {
+        "id": 6,
+        "title": "Mindful Eating: A Healthy Habit",
+        "type": "video",
+        "source": "YouTube",
+        "url": "https://www.youtube.com/watch?v=p1NsVrsWKes",
+        "description": "How to practice mindful eating for better digestion and weight management.",
+        "collection": [
+            1
+        ]
+    },
+    {
+        "id": 7,
+        "title": "Debunking Common Nutrition Myths",
+        "type": "video",
+        "source": "YouTube",
+        "url": "https://youtu.be/jOhnJuvBWZE",
+        "description": "Separates fact from fiction in common nutrition beliefs.",
+        "collection": [
+            1
+        ]
+    },
+    {
+        "id": 8,
+        "title": "Meal Planning for a Balanced Diet",
+        "type": "video",
+        "source": "YouTube",
+        "url": "https://youtu.be/eooVRijnhoU",
+        "description": "A practical guide to meal prepping for healthy eating.",
+        "collection": [
+            1
+        ]
+    },
+    {
+        "id": 9,
+        "title": "Healthy Eating on a Budget",
+        "type": "video",
+        "source": "YouTube",
+        "url": "https://youtu.be/sjJtHoLsPCQ",
+        "description": "Tips for eating nutritious meals without overspending.",
+        "collection": [
+            1
+        ]
+    },
+    {
+        "id": 10,
+        "title": "Understanding Food Labels",
+        "type": "video",
+        "source": "YouTube",
+        "url": "https://www.youtube.com/watch?v=9vPzdAZRryI",
+        "description": "How to read food labels to make healthier choices.",
+        "collection": [
+            2
+        ]
+    },
+    {
+        "id": 11,
+        "title": "Importance of Sleep for Health",
+        "type": "video",
+        "source": "YouTube",
+        "url": "https://www.youtube.com/watch?v=dLzVSbN_XDM",
+        "description": "Explores the link between sleep and overall well-being.",
+        "collection": [
+            2
+        ]
+    }
+]

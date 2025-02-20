@@ -64,8 +64,8 @@ const AddOrEditUnitDialog = ({
     resolver: zodResolver(formSchema),
     defaultValues: {
       title: "",
-      "heart-points": 0,
-      gems: 0,
+      "heart-points": undefined,
+      gems: undefined,
     },
   });
 

@@ -40,6 +40,7 @@ import DeleteDialog from "../../delete-dialog";
 import { useRouter } from "next/navigation";
 import { AddStepButtonAndDropDown, getIcon, Step } from "./usable-components";
 import Link from "next/link";
+import StepModal from "./step-modal";
 
 const JourneyUnitComponent = ({
   journeyData,
@@ -57,7 +58,16 @@ const JourneyUnitComponent = ({
   const [selectedRow, setSelectedRow] = useState<number | null>(null);
   const [openAddDialog, setOpenAddDialog] = useState(false);
   const router = useRouter();
-
+  const [inputValue, setInputValue] = useState<string>("");
+  const [openCmdDialog, setOpenCmdDialog] = useState<boolean>(false);
+  const [showStepsInModal, setShowStepsInMOdal] = useState<
+    | "videos"
+    | "articles"
+    | "pairs"
+    | "multi-select"
+    | "single-select"
+    | undefined
+  >();
   const onDragEnd = (result: DropResult) => {
     const { source, destination, type } = result;
     // If there's no valid drop destination, exit early
@@ -107,10 +117,11 @@ const JourneyUnitComponent = ({
     (i: JourneySection) => i.id === activeSection.id
   );
 
+  const activeJourneyIndex: number = data.findIndex(
+    (i: JourneyData) => i.id === journeyData.id
+  );
+
   useEffect(() => {
-    const activeJourneyIndex: number = data.findIndex(
-      (i: JourneyData) => i.id === journeyData.id
-    );
     const activeSectionIndex = data[activeJourneyIndex].sections.findIndex(
       (i: JourneySection) => i.id === activeSection.id
     );
@@ -136,7 +147,83 @@ const JourneyUnitComponent = ({
     initialUnit.id,
     sectionData.id,
     router,
+    activeJourneyIndex,
   ]);
+
+  useEffect(() => {
+    const steps: JourneyStep[] = [];
+    const journeyIndex = data.findIndex(
+      (item: JourneyData) => item.id === journeyData.id
+    );
+    const newSections = data[journeyIndex].sections;
+    const sectionIndex = newSections.findIndex(
+      (item: JourneySection) => item.id === sectionData.id
+    );
+    const unitIndex = newSections[sectionIndex].units.findIndex(
+      (item: JourneyUnit) => item.id === unitData.id
+    );
+    const tempUnitData =
+      data[journeyIndex].sections[sectionIndex].units[unitIndex];
+    tempUnitData.steps.map((step: JourneyStep) => {
+      const stringifyString = JSON.stringify(step).toLowerCase();
+      if (stringifyString.includes(inputValue.toLowerCase())) {
+        steps.push(step);
+      }
+    });
+    setUnitData((prev) => ({
+      ...prev,
+      steps: steps,
+    }));
+  }, [inputValue, data, journeyData.id, sectionData.id, unitData.id]);
+
+  const handleDeleteStep = (stepIndex: number) => {
+    if (setData) {
+      setData((prev: JourneyData[]) => {
+        const journeyIndex = prev.findIndex(
+          (item: JourneyData) => item.id === journeyData.id
+        );
+        const newSections = prev[journeyIndex].sections;
+        const sectionIndex = newSections.findIndex(
+          (item: JourneySection) => item.id === sectionData.id
+        );
+        const unitIndex = newSections[sectionIndex].units.findIndex(
+          (item: JourneyUnit) => item.id === unitData.id
+        );
+        const unitSteps = newSections[sectionIndex].units[unitIndex].steps;
+        unitSteps.splice(stepIndex, 1);
+        newSections[sectionIndex].units[unitIndex].steps = unitSteps;
+        prev[journeyIndex] = {
+          ...journeyData,
+          sections: [...newSections],
+        };
+        return [...prev];
+      });
+    }
+  };
+
+  const handleAddStep = (values: JourneyStep) => {
+    if (setData) {
+      setData((prev: JourneyData[]) => {
+        const journeyIndex = prev.findIndex(
+          (item: JourneyData) => item.id === journeyData.id
+        );
+        const newSections = prev[journeyIndex].sections;
+        const sectionIndex = newSections.findIndex(
+          (item: JourneySection) => item.id === sectionData.id
+        );
+        const unitIndex = newSections[sectionIndex].units.findIndex(
+          (item: JourneyUnit) => item.id === unitData.id
+        );
+        const unitSteps: JourneyStep[] =
+          newSections[sectionIndex].units[unitIndex].steps;
+        unitSteps.push(values);
+        newSections[sectionIndex].units[unitIndex].steps = unitSteps;
+        prev[journeyIndex].sections[sectionIndex].units[unitIndex].steps =
+          unitSteps;
+        return [...prev];
+      });
+    }
+  };
 
   return (
     <div className="flex flex-col gap-4 grow overflow-hidden">
@@ -146,6 +233,10 @@ const JourneyUnitComponent = ({
           <Input
             placeholder="Search"
             className="max-w-sm w-[264px] pl-[36px] border-input-border focus-visible:ring-0 focus-visible:ring-offset-0"
+            onChange={(e) => {
+              setInputValue(e.target.value);
+            }}
+            value={inputValue}
           />
         </div>
         <div className="flex flex-col gap-2 grow">
@@ -285,10 +376,11 @@ const JourneyUnitComponent = ({
                                     journey_stepIndex: number
                                   ) => (
                                     <Draggable
-                                      key={journey_step.id}
+                                      key={journey_stepIndex}
                                       draggableId={
                                         journey_step.id.toString() +
-                                        "_journey_step"
+                                        "_journey_step" +
+                                        journey_stepIndex.toString()
                                       }
                                       index={journey_stepIndex}
                                     >
@@ -332,69 +424,9 @@ const JourneyUnitComponent = ({
                                                       className="flex bg-transparent gap-2 justify-center  w-full"
                                                       onClick={(e) => {
                                                         e.stopPropagation();
-                                                        if (setData) {
-                                                          setData(
-                                                            (
-                                                              prev: JourneyData[]
-                                                            ) => {
-                                                              const journeyIndex =
-                                                                prev.findIndex(
-                                                                  (
-                                                                    item: JourneyData
-                                                                  ) =>
-                                                                    item.id ===
-                                                                    journeyData.id
-                                                                );
-                                                              const newSections =
-                                                                prev[
-                                                                  journeyIndex
-                                                                ].sections;
-                                                              const sectionIndex =
-                                                                newSections.findIndex(
-                                                                  (
-                                                                    item: JourneySection
-                                                                  ) =>
-                                                                    item.id ===
-                                                                    sectionData.id
-                                                                );
-                                                              const unitIndex =
-                                                                newSections[
-                                                                  sectionIndex
-                                                                ].units.findIndex(
-                                                                  (
-                                                                    item: JourneyUnit
-                                                                  ) =>
-                                                                    item.id ===
-                                                                    unitData.id
-                                                                );
-                                                              const unitSteps =
-                                                                newSections[
-                                                                  sectionIndex
-                                                                ].units[
-                                                                  unitIndex
-                                                                ].steps;
-                                                              unitSteps.splice(
-                                                                journey_stepIndex,
-                                                                1
-                                                              );
-                                                              newSections[
-                                                                sectionIndex
-                                                              ].units[
-                                                                unitIndex
-                                                              ].steps =
-                                                                unitSteps;
-                                                              prev[
-                                                                journeyIndex
-                                                              ] = {
-                                                                ...journeyData,
-                                                                sections: [
-                                                                  ...newSections,
-                                                                ],
-                                                              };
-                                                              return [...prev];
-                                                            }
-                                                          );
-                                                        }
+                                                        handleDeleteStep(
+                                                          journey_stepIndex
+                                                        );
                                                       }}
                                                     >
                                                       <Trash2 />
@@ -429,7 +461,10 @@ const JourneyUnitComponent = ({
                                 </div>
                               )}
                               {steps_provided.placeholder}
-                              <AddStepButtonAndDropDown />
+                              <AddStepButtonAndDropDown
+                                setShowStepsInMOdal={setShowStepsInMOdal}
+                                setOpen={setOpenCmdDialog}
+                              />
                             </CollapsibleContent>
                           )}
                         </Droppable>
@@ -478,15 +513,29 @@ const JourneyUnitComponent = ({
               ? `/journey/${journeyData.id}/${
                   journeyData.sections[activeSectionIndex + 1].id
                 }/${journeyData.sections[activeSectionIndex + 1].units[0].id}`
-              : ""
+              : `/journey/${journeyData.id}`
           }
-          className="bg-muted flex gap-2 items-center justify-center font-inter text-sm  w-[170px] h-10 [&_svg]:size-5 rounded-md font-medium hover:shadow-sm text-primary dark:text-white"
+          onClick={() => {
+            if (
+              activeUnitIndex == sectionData.units.length - 1 &&
+              activeSectionIndex == journeyData.sections.length - 1 &&
+              setData
+            ) {
+              setData((prev: JourneyData[]) => {
+                prev[activeJourneyIndex]._status = "published";
+                return [...prev];
+              });
+            }
+          }}
+          className="bg-muted flex gap-2 items-center  justify-center font-inter text-sm  w-[170px] h-10 [&_svg]:size-5 rounded-md font-medium hover:shadow-sm text-primary dark:text-white"
         >
           {activeSectionIndex < journeyData.sections.length - 1
             ? "Next Unit"
             : activeUnitIndex < sectionData.units.length - 1
             ? "Next Unit"
-            : "Update Unit"}
+            : journeyData._status != "published"
+            ? "Publish Journey"
+            : "Update Journey"}
           <ChevronRight />
         </Link>
       </div>
@@ -514,6 +563,12 @@ const JourneyUnitComponent = ({
             setSelectedRow(null);
           }
         }}
+      />
+      <StepModal
+        open={openCmdDialog}
+        setOpen={setOpenCmdDialog}
+        showStepsInModal={showStepsInModal}
+        handleAddStep={handleAddStep}
       />
     </div>
   );

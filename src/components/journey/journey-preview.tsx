@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Image from "next/image";
 import Streak from "@/streak.svg";
 import Star from "@/star.svg";
@@ -19,6 +19,7 @@ import { DataContext } from "../providers/data-provider";
 import MobileHeader from "../mobile-preview-sidebar/mobile-header";
 import { ArrowLeft, Inbox } from "lucide-react";
 import EndJourney from "@/end-journey.svg";
+import $ from "jquery";
 
 const JourneyPreviewSection = ({
   activeStep,
@@ -42,6 +43,10 @@ const JourneyPreviewSection = ({
       }
     | undefined
   >(activeJourney);
+
+  useEffect(() => {
+    $(`.no-scrollbar`).scrollTop(0);
+  }, [steps]);
 
   return (
     <div className="relative flex flex-col  w-full h-full ">
@@ -177,7 +182,7 @@ const JourneyPreviewSection = ({
           >
             <MobileHeader />
           </div>
-          <div className="flex flex-col  relative w-full h-full grow shrink-0 overflow-y-auto no-scrollbar pb-3">
+          <div className="flex flex-col  relative w-full h-full grow shrink-0 pb-3">
             <div
               className="sticky -top-0 px-4 pb-3 flex flex-col gap-3  w-full h-fit"
               style={{
@@ -203,7 +208,7 @@ const JourneyPreviewSection = ({
                   <div className="w-full grow text-end">2 days </div>
                 </div>
                 <div className=" bg-blend-luminosity bg-[#2828282a]  flex  relative h-[23px] font-mulish font-bold w-[79px] pr-3 rounded-full text-sm [&_svg]:size-[24px]">
-                  <Heart className="absolute left-0 -translate-x-[10%]" />
+                  <Heart className="absolute left-0 -translate-x-[40%]" />
                   <div className="w-full grow text-end">
                     {activeData?.journey.sections
                       .flatMap((section) => section.units)

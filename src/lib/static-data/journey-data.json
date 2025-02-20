@@ -2,6 +2,7 @@
     {
         "id": 1,
         "title": "Epilepsy Journey",
+        "_status": "published",
         "primary-color": "#8D2CA8",
         "background-color": "#F9E5FF",
         "createdAt": "2025-01-09T12:40:33.959Z",
@@ -21,6 +22,7 @@
                             {
                                 "id": 10,
                                 "type": "video",
+                                "collection": [],
                                 "title": "Epilepsy in the Workplace: Rights and Accommodations",
                                 "description": "You can’t compress the program without quantifying the open-source SSL certificate You can’t compress the program without quantifying the open-source SSL certificate You can’t compress the program without quantifying the open-source SSL certificate ",
                                 "source": "YouTube",
@@ -29,6 +31,7 @@
                             {
                                 "id": 13,
                                 "type": "multi-select",
+                                "collection": [],
                                 "title": "Which part of your body is affected by epilepsy?",
                                 "options": [
                                     {
@@ -61,6 +64,8 @@
                             {
                                 "id": 11,
                                 "type": "article",
+                                "source": "NHS UK",
+                                "collection": [],
                                 "title": "Recognizing and treating anaphylaxis ",
                                 "articles": [
                                     {
@@ -89,6 +94,7 @@
                             {
                                 "id": 12,
                                 "type": "pair",
+                                "collection": [],
                                 "title": "Connect symptoms to corresponding types of seizures",
                                 "pairs": [
                                     {
@@ -131,6 +137,7 @@
                             {
                                 "id": 13,
                                 "type": "multi-select",
+                                "collection": [],
                                 "title": "Which part of your body is affected by epilepsy?",
                                 "options": [
                                     {
@@ -163,6 +170,7 @@
                             {
                                 "id": 14,
                                 "type": "single-select",
+                                "collection": [],
                                 "title": "Seizures are bursts of electrical activity in the brain that temporarily affect how it works.",
                                 "options": [
                                     {
@@ -186,6 +194,7 @@
                         "steps": [
                             {
                                 "type": "video",
+                                "collection": [],
                                 "title": "step",
                                 "description": "",
                                 "id": 15,
@@ -201,6 +210,7 @@
     {
         "id": 2,
         "title": "Allergy Journey",
+        "_status": "draft",
         "primary-color": "#104CB7",
         "background-color": "#ECF1F9",
         "createdAt": "2025-02-15T12:40:33.959Z",
@@ -219,6 +229,7 @@
                         "steps": [
                             {
                                 "type": "video",
+                                "collection": [],
                                 "title": "step",
                                 "description": "",
                                 "id": 16,
@@ -236,6 +247,7 @@
                         "steps": [
                             {
                                 "type": "video",
+                                "collection": [],
                                 "title": "step",
                                 "description": "",
                                 "id": 17,
@@ -253,6 +265,78 @@
                         "steps": [
                             {
                                 "type": "video",
+                                "collection": [],
+                                "title": "step",
+                                "description": "",
+                                "id": 18,
+                                "source": "YouTube",
+                                "url": "https://www.youtube.com/watch?v=PzfLDi-sL3w"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "id": 3,
+        "title": "Asthma Journey",
+        "_status": "unpublished",
+        "primary-color": "#00407A",
+        "background-color": "#E2F5FE",
+        "createdAt": "2025-02-15T12:40:33.959Z",
+        "updatedAt": "2025-02-09T06:33:37.594Z",
+        "sections": [
+            {
+                "title": "Basics of Allergy",
+                "id": 1,
+                "units": [
+                    {
+                        "title": "What is Allergy?",
+                        "heart-points": 250,
+                        "id": 7,
+                        "gems": 150,
+                        "published": true,
+                        "steps": [
+                            {
+                                "type": "video",
+                                "collection": [],
+                                "title": "step",
+                                "description": "",
+                                "id": 16,
+                                "source": "YouTube",
+                                "url": "https://www.youtube.com/watch?v=PzfLDi-sL3w"
+                            }
+                        ]
+                    },
+                    {
+                        "title": "Causes of Allergy",
+                        "heart-points": 150,
+                        "id": 8,
+                        "gems": 75,
+                        "published": true,
+                        "steps": [
+                            {
+                                "type": "video",
+                                "collection": [],
+                                "title": "step",
+                                "description": "",
+                                "id": 17,
+                                "source": "YouTube",
+                                "url": "https://www.youtube.com/watch?v=PzfLDi-sL3w"
+                            }
+                        ]
+                    },
+                    {
+                        "title": "Seizure Types",
+                        "heart-points": 100,
+                        "id": 9,
+                        "gems": 50,
+                        "published": true,
+                        "steps": [
+                            {
+                                "type": "video",
+                                "collection": [],
                                 "title": "step",
                                 "description": "",
                                 "id": 18,

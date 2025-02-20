@@ -1,0 +1,230 @@
+[
+     {
+          "id": 1,
+          "title": "Understanding Macronutrients",
+          "type": "article",
+          "source": "NHS UK",
+          "collection": [
+               1
+          ],
+          "articles": [
+               {
+                    "title": "What Are Macronutrients?",
+                    "description": "A comprehensive guide to carbohydrates, proteins, and fats."
+               },
+               {
+                    "title": "How Macronutrients Affect Your Body",
+                    "description": "Learn how macronutrients impact metabolism and energy levels."
+               }
+          ]
+     },
+     {
+          "id": 2,
+          "title": "The Role of Micronutrients",
+          "type": "article",
+          "source": "NHS UK",
+          "collection": [
+               1
+          ],
+          "articles": [
+               {
+                    "title": "Why Vitamins and Minerals Matter",
+                    "description": "Explore the essential micronutrients for a healthy body."
+               },
+               {
+                    "title": "Common Micronutrient Deficiencies",
+                    "description": "Symptoms and prevention tips for nutrient deficiencies."
+               }
+          ]
+     },
+     {
+          "id": 3,
+          "title": "Hydration and Health",
+          "type": "article",
+          "source": "NHS UK",
+          "collection": [
+               1
+          ],
+          "articles": [
+               {
+                    "title": "How Much Water Should You Drink?",
+                    "description": "A scientific look at daily water intake requirements."
+               },
+               {
+                    "title": "Signs of Dehydration",
+                    "description": "Recognizing when your body needs more fluids."
+               }
+          ]
+     },
+     {
+          "id": 4,
+          "title": "The Science of Weight Loss",
+          "type": "article",
+          "source": "NHS UK",
+          "collection": [
+               1
+          ],
+          "articles": [
+               {
+                    "title": "How Caloric Deficit Works",
+                    "description": "Understanding energy balance for effective weight management."
+               },
+               {
+                    "title": "The Role of Metabolism",
+                    "description": "Factors that influence your metabolic rate."
+               }
+          ]
+     },
+     {
+          "id": 5,
+          "title": "Gut Health and Digestion",
+          "type": "article",
+          "source": "NHS UK",
+          "collection": [
+               2
+          ],
+          "articles": [
+               {
+                    "title": "The Importance of Gut Bacteria",
+                    "description": "How probiotics and prebiotics affect digestion."
+               },
+               {
+                    "title": "Common Digestive Issues",
+                    "description": "Managing bloating, IBS, and acid reflux."
+               }
+          ]
+     },
+     {
+          "id": 6,
+          "title": "Plant-Based Diets Explained",
+          "type": "article",
+          "source": "NHS UK",
+          "collection": [
+               2
+          ],
+          "articles": [
+               {
+                    "title": "Health Benefits of Plant-Based Diets",
+                    "description": "Why more people are shifting to plant-based nutrition."
+               },
+               {
+                    "title": "Common Myths About Veganism",
+                    "description": "Debunking misconceptions about plant-based eating."
+               }
+          ]
+     },
+     {
+          "id": 7,
+          "title": "The Truth About Sugar",
+          "type": "article",
+          "source": "NHS UK",
+          "collection": [
+               2
+          ],
+          "articles": [
+               {
+                    "title": "How Sugar Affects the Body",
+                    "description": "Understanding the impact of sugar on health."
+               },
+               {
+                    "title": "Natural vs. Processed Sugars",
+                    "description": "Which types of sugar are better for you?"
+               }
+          ]
+     },
+     {
+          "id": 8,
+          "title": "Understanding Food Labels",
+          "type": "article",
+          "source": "NHS UK",
+          "collection": [
+               3
+          ],
+          "articles": [
+               {
+                    "title": "How to Read a Nutrition Label",
+                    "description": "A step-by-step guide to decoding food labels."
+               },
+               {
+                    "title": "Hidden Ingredients to Watch Out For",
+                    "description": "Understanding additives and preservatives."
+               }
+          ]
+     },
+     {
+          "id": 9,
+          "title": "The Power of Superfoods",
+          "type": "article",
+          "source": "NHS UK",
+          "collection": [
+               3
+          ],
+          "articles": [
+               {
+                    "title": "What Makes a Food 'Super'?",
+                    "description": "Exploring nutrient-dense foods and their benefits."
+               },
+               {
+                    "title": "Top 10 Superfoods to Include in Your Diet",
+                    "description": "A list of the best superfoods for health."
+               }
+          ]
+     },
+     {
+          "id": 10,
+          "title": "Intermittent Fasting Explained",
+          "type": "article",
+          "source": "NHS UK",
+          "collection": [
+               3
+          ],
+          "articles": [
+               {
+                    "title": "What is Intermittent Fasting?",
+                    "description": "Different fasting methods and their benefits."
+               },
+               {
+                    "title": "Who Should Avoid Fasting?",
+                    "description": "Understanding when fasting may not be suitable."
+               }
+          ]
+     },
+     {
+          "id": 11,
+          "title": "The Impact of Processed Foods",
+          "type": "article",
+          "source": "NHS UK",
+          "collection": [
+               1
+          ],
+          "articles": [
+               {
+                    "title": "How Processed Foods Affect Health",
+                    "description": "Understanding the risks of highly processed diets."
+               },
+               {
+                    "title": "Alternatives to Processed Snacks",
+                    "description": "Healthier snack options to replace junk food."
+               }
+          ]
+     },
+     {
+          "id": 12,
+          "title": "Mindful Eating Techniques",
+          "type": "article",
+          "source": "NHS UK",
+          "collection": [
+               4
+          ],
+          "articles": [
+               {
+                    "title": "What is Mindful Eating?",
+                    "description": "How to develop a better relationship with food."
+               },
+               {
+                    "title": "Tips for Eating More Mindfully",
+                    "description": "Simple strategies to improve your eating habits."
+               }
+          ]
+     }
+]

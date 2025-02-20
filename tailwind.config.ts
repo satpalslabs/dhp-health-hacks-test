@@ -25,6 +25,9 @@ export default {
 					filter: {
 						background: "hsl(var(--filter-button))",
 						text: "hsl(var(--filter-button-text))",
+					},
+					status: {
+						darkGray: "hsl(var(--bg-dark-gray))", // Background color with opacity support
 					}
 				},
 				mobile: {
@@ -35,6 +38,7 @@ export default {
 				},
 				text: {
 					foreground: 'hsl(var(--text-foreground))',
+					darkGray: "hsl(var(--dark-gray))", // Background color with opacity support
 				},
 				card: {
 					DEFAULT: 'hsl(var(--card))',

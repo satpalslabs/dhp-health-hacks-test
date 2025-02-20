@@ -1,0 +1,314 @@
+[
+    {
+        "id": 1,
+        "title": "Benefits of Regular Exercise",
+        "type": "multi-select",
+        "collection": [
+            3
+        ],
+        "options": [
+            {
+                "text": "Improves cardiovascular health",
+                "isCorrect": true
+            },
+            {
+                "text": "Weakens the immune system",
+                "isCorrect": false
+            },
+            {
+                "text": "Enhances mood and mental health",
+                "isCorrect": true
+            },
+            {
+                "text": "Reduces muscle strength",
+                "isCorrect": false
+            }
+        ]
+    },
+    {
+        "id": 2,
+        "title": "Nutritional Sources of Protein",
+        "type": "multi-select",
+        "collection": [
+            3
+        ],
+        "options": [
+            {
+                "text": "Chicken",
+                "isCorrect": true
+            },
+            {
+                "text": "Lettuce",
+                "isCorrect": false
+            },
+            {
+                "text": "Lentils",
+                "isCorrect": true
+            },
+            {
+                "text": "Rice",
+                "isCorrect": false
+            }
+        ]
+    },
+    {
+        "id": 3,
+        "title": "Effects of Sleep Deprivation",
+        "type": "multi-select",
+        "collection": [
+            3
+        ],
+        "options": [
+            {
+                "text": "Increases focus and concentration",
+                "isCorrect": false
+            },
+            {
+                "text": "Weakens the immune system",
+                "isCorrect": true
+            },
+            {
+                "text": "Causes mood swings",
+                "isCorrect": true
+            },
+            {
+                "text": "Reduces stress levels",
+                "isCorrect": false
+            }
+        ]
+    },
+    {
+        "id": 4,
+        "title": "Essential Vitamins for the Body",
+        "type": "multi-select",
+        "collection": [
+            3
+        ],
+        "options": [
+            {
+                "text": "Vitamin C",
+                "isCorrect": true
+            },
+            {
+                "text": "Vitamin D",
+                "isCorrect": true
+            },
+            {
+                "text": "Vitamin Z",
+                "isCorrect": false
+            },
+            {
+                "text": "Vitamin B12",
+                "isCorrect": true
+            }
+        ]
+    },
+    {
+        "id": 5,
+        "title": "Ways to Reduce Stress",
+        "type": "multi-select",
+        "collection": [
+            3
+        ],
+        "options": [
+            {
+                "text": "Practicing mindfulness",
+                "isCorrect": true
+            },
+            {
+                "text": "Overworking without breaks",
+                "isCorrect": false
+            },
+            {
+                "text": "Engaging in physical activity",
+                "isCorrect": true
+            },
+            {
+                "text": "Ignoring problems",
+                "isCorrect": false
+            }
+        ]
+    },
+    {
+        "id": 6,
+        "title": "Signs of Dehydration",
+        "type": "multi-select",
+        "collection": [
+            2
+        ],
+        "options": [
+            {
+                "text": "Dry mouth",
+                "isCorrect": true
+            },
+            {
+                "text": "Increased energy levels",
+                "isCorrect": false
+            },
+            {
+                "text": "Dark yellow urine",
+                "isCorrect": true
+            },
+            {
+                "text": "Frequent headaches",
+                "isCorrect": true
+            }
+        ]
+    },
+    {
+        "id": 7,
+        "title": "Healthy Carbohydrate Sources",
+        "type": "multi-select",
+        "collection": [
+            2
+        ],
+        "options": [
+            {
+                "text": "White bread",
+                "isCorrect": false
+            },
+            {
+                "text": "Quinoa",
+                "isCorrect": true
+            },
+            {
+                "text": "Sweet potatoes",
+                "isCorrect": true
+            },
+            {
+                "text": "Soda",
+                "isCorrect": false
+            }
+        ]
+    },
+    {
+        "id": 8,
+        "title": "Foods High in Fiber",
+        "type": "multi-select",
+        "collection": [
+            2
+        ],
+        "options": [
+            {
+                "text": "Whole grains",
+                "isCorrect": true
+            },
+            {
+                "text": "Fried chicken",
+                "isCorrect": false
+            },
+            {
+                "text": "Beans and legumes",
+                "isCorrect": true
+            },
+            {
+                "text": "Leafy greens",
+                "isCorrect": true
+            }
+        ]
+    },
+    {
+        "id": 9,
+        "title": "Best Practices for Heart Health",
+        "type": "multi-select",
+        "collection": [
+            2
+        ],
+        "options": [
+            {
+                "text": "Eating a balanced diet",
+                "isCorrect": true
+            },
+            {
+                "text": "Smoking regularly",
+                "isCorrect": false
+            },
+            {
+                "text": "Regular physical activity",
+                "isCorrect": true
+            },
+            {
+                "text": "Ignoring stress management",
+                "isCorrect": false
+            }
+        ]
+    },
+    {
+        "id": 10,
+        "title": "Common Symptoms of Vitamin D Deficiency",
+        "type": "multi-select",
+        "collection": [
+            2
+        ],
+        "options": [
+            {
+                "text": "Frequent fatigue",
+                "isCorrect": true
+            },
+            {
+                "text": "Stronger bones",
+                "isCorrect": false
+            },
+            {
+                "text": "Weakened immune system",
+                "isCorrect": true
+            },
+            {
+                "text": "Muscle weakness",
+                "isCorrect": true
+            }
+        ]
+    },
+    {
+        "id": 11,
+        "title": "Foods That Boost Immunity",
+        "type": "multi-select",
+        "collection": [
+            1
+        ],
+        "options": [
+            {
+                "text": "Garlic",
+                "isCorrect": true
+            },
+            {
+                "text": "Candy",
+                "isCorrect": false
+            },
+            {
+                "text": "Citrus fruits",
+                "isCorrect": true
+            },
+            {
+                "text": "Processed meats",
+                "isCorrect": false
+            }
+        ]
+    },
+    {
+        "id": 12,
+        "title": "Causes of High Blood Pressure",
+        "type": "multi-select",
+        "collection": [
+            1
+        ],
+        "options": [
+            {
+                "text": "High salt intake",
+                "isCorrect": true
+            },
+            {
+                "text": "Lack of exercise",
+                "isCorrect": true
+            },
+            {
+                "text": "Excessive alcohol consumption",
+                "isCorrect": true
+            },
+            {
+                "text": "Eating more vegetables",
+                "isCorrect": false
+            }
+        ]
+    }
+]

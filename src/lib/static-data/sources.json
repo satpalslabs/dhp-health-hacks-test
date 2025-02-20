@@ -1,0 +1,12 @@
+[
+    {
+        "id": 1,
+        "name": "NHS UK",
+        "website_url": "https://www.nhs.uk"
+    },
+    {
+        "id": 2,
+        "name": "YouTube",
+        "website_url": ""
+    }
+]
