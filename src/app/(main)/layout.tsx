@@ -1,20 +1,23 @@
 import { AppSidebar } from "@/components/primary-sidebar/app-sidebar";
-import { AuthContextProvider } from "@/components/providers/auth-provider";
+import { AuthContextProvider } from "@/context/auth-provider";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
+import { AppSettingsContextProvider } from "@/context/app-settings-prvider";
 
 export default async function Layout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <AuthContextProvider>
-      <SidebarProvider>
-        <AppSidebar />
-        <SidebarInset className="overflow-x-hidden">
-          <main>{children}</main>
-        </SidebarInset>
-      </SidebarProvider>
+      <AppSettingsContextProvider>
+        <SidebarProvider>
+          <AppSidebar />
+          <SidebarInset className="overflow-x-hidden relative z-[20]">
+            <div>{children}</div>
+          </SidebarInset>
+        </SidebarProvider>
+      </AppSettingsContextProvider>
     </AuthContextProvider>
   );
 }

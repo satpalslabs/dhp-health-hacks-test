@@ -18,7 +18,7 @@ const SwitchTheme = ({
       onValueChange={setTheme}
     >
       <TabsList className="w-full p-1 rounded-xl gap-1 px-1">
-        <TabsTrigger value="light" className="w-1/2 rounded-lg">
+        <TabsTrigger value="light" className="w-1/2 rounded-lg ">
           <Sun className="w-6 h-6" />
         </TabsTrigger>
         <TabsTrigger value="dark" className="w-1/2 rounded-lg">

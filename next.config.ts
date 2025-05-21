@@ -3,7 +3,18 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   reactStrictMode: false,
   images: {
-    domains: ['img.youtube.com'],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "img.youtube.com",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "storage.googleapis.com",
+        pathname: "/**",
+      },
+    ],
   },
   /* config options here */
   webpack(config) {
@@ -31,15 +42,17 @@ const nextConfig: NextConfig = {
         },
       },
     },
+    serverActions: {
+      bodySizeLimit: '50mb' // Increased from 2mb to 50mb
+    },
   },
   async redirects() {
     return [{
       destination: "/articles",
       source: "/",
       permanent: true,
-
     }]
-  }
+  },
 };
 
 export default nextConfig;

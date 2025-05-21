@@ -1,7 +1,7 @@
 import PageHeader from "./page-header";
 import { SidebarProvider, SidebarTrigger } from "./ui/sidebar";
 
-export default async function MainLayout({
+export default function MainLayout({
   pageNavigation,
   children,
 }: {
@@ -17,7 +17,7 @@ export default async function MainLayout({
     <div>
       <PageHeader path={pageNavigation} />
       <SidebarProvider
-        className="max-h-[calc(100vh-76px)] min-h-[calc(100vh-76px)] overflow-hidden"
+        className="max-h-[calc(100vh-76px)] min-h-[calc(100vh-76px)] overflow-hidden "
         style={
           {
             "--sidebar-width": "406px",

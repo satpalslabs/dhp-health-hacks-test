@@ -2,14 +2,13 @@ import React, { useContext, useEffect, useState } from "react";
 import {
   SidebarGroup,
   SidebarGroupContent,
-  SidebarGroupLabel,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarMenuSub,
 } from "@/components/ui/sidebar";
 import { Group, subMenuItem } from "./sidebar-data";
-import { AuthContext, User } from "../providers/auth-provider";
+import { AuthContext } from "../../context/auth-provider";
 import {
   Collapsible,
   CollapsibleContent,
@@ -18,9 +17,10 @@ import {
 import { ChevronDown } from "lucide-react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
+import { User } from "@/types";
 
-const SidebarGroups = ({ group, ix }: { group: Group; ix: number }) => {
-  const currentUser = useContext(AuthContext) as User;
+const SidebarGroups = ({ group }: { group: Group }) => {
+  const { user: currentUser }: { user: User | null } = useContext(AuthContext);
 
   const accessAbleMenus = currentUser
     ? group.subMenuItems.filter((i: subMenuItem) =>
@@ -33,8 +33,7 @@ const SidebarGroups = ({ group, ix }: { group: Group; ix: number }) => {
     return;
   }
   return (
-    <SidebarGroup className={`${ix != 0 && "border-t"} border-border `}>
-      <SidebarGroupLabel>{group.name}</SidebarGroupLabel>
+    <SidebarGroup>
       <SidebarGroupContent>
         <SidebarMenu>
           {accessAbleMenus.map((item: subMenuItem, ix: number) => (
@@ -49,7 +48,7 @@ const SidebarGroups = ({ group, ix }: { group: Group; ix: number }) => {
 export default SidebarGroups;
 
 const CustomSideBarMenu = ({ item }: { item: subMenuItem }) => {
-  const currentUser = useContext(AuthContext) as User;
+  const { user: currentUser }: { user: User | null } = useContext(AuthContext);
   const pathname = usePathname();
 
   const accessAbleSubMenus = item.items.filter((i) =>
@@ -64,7 +63,7 @@ const CustomSideBarMenu = ({ item }: { item: subMenuItem }) => {
   const [isOpen, setIsOpen] = useState(false); // Track state for this item only
 
   useEffect(() => {
-    if (pathname.includes(item.title)) {
+    if (JSON.stringify(item).includes(pathname.split("/")[1])) {
       setIsOpen(true);
     }
   }, [item.title, pathname]);
@@ -74,10 +73,12 @@ const CustomSideBarMenu = ({ item }: { item: subMenuItem }) => {
         <Collapsible open={isOpen} onOpenChange={setIsOpen}>
           <CollapsibleTrigger className="w-full" asChild>
             <SidebarMenuButton
-              isActive={pathname.includes(item.title.toLowerCase())}
+              isActive={pathname.includes(
+                item.title.replace("-", " ").toLowerCase()
+              )}
               asChild
             >
-              <Link href={item.url}>
+              <Link href={item.url ?? ""}>
                 <div className="group-data-[collapsible=icon]:delay-100 group-data-[collapsible=icon]:min-w-[calc(var(--sidebar-width-icon)_-_theme(spacing.8))] max-w-full flex justify-center min-w-4 w-fit overflow-hidden h-fit transition-[min-width] duration-200">
                   <item.icon className="w-4 h-4 " />
                 </div>
@@ -100,10 +101,12 @@ const CustomSideBarMenu = ({ item }: { item: subMenuItem }) => {
         </Collapsible>
       ) : (
         <SidebarMenuButton
-          isActive={pathname.includes(item.title.toLowerCase())}
+          isActive={
+            item.url ? pathname.includes(item.url.toLowerCase()) : false
+          }
           asChild
         >
-          <Link href={item.url}>
+          <Link href={item.url ?? ""}>
             <div className="group-data-[collapsible=icon]:delay-100 group-data-[collapsible=icon]:min-w-[calc(var(--sidebar-width-icon)_-_theme(spacing.8))] max-w-full flex justify-center min-w-4 w-fit transition-[min-width] duration-200">
               <item.icon className="w-4 h-4 " />
             </div>

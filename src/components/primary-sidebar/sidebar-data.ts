@@ -15,7 +15,6 @@ import {
     FolderCog,
     HeartPulse,
     InfoIcon,
-    LayoutGrid,
     LucideIcon,
     MapPinned,
     MessageCircleMore,
@@ -27,18 +26,21 @@ import {
     Settings,
     Shield,
     UserRound,
+    WalletCards,
     Youtube
 } from "lucide-react";
+import NHS from "@/nhs.svg"
 import Building from "@/building.svg";
 import OnBoarding from "@/onboarding.svg";
 
 export interface Group {
     name: string;
+    icon: React.ElementType;
     subMenuItems: subMenuItem[];
 }
 export interface subMenuItem {
     title: string;
-    url: string;
+    url?: string;
     canAccess: string[];
     icon: LucideIcon;
     items: subMenuItem[];
@@ -46,86 +48,117 @@ export interface subMenuItem {
 const sideBarGroups: Group[] = [
     {
         "name": "CMS",
+        "icon": FileText,
         "subMenuItems": [
             {
-                "title": "Article",
+                "title": "Articles",
                 "url": "/articles",
-                "canAccess": ["owner", "content-admin", "super-admin", "admin"],
+                "canAccess": ["owner", "content-admin", "super-admin", "superuser", "admin"],
                 "icon": FileText,
                 "items": []
             },
             {
                 "title": "Videos",
-                "url": "#Videos",
-                "canAccess": ["owner", "content-admin", "super-admin", "admin"],
+                "url": "/videos",
+                "canAccess": ["owner", "content-admin", "super-admin", "superuser", "admin"],
                 "icon": Youtube,
                 "items": []
             },
             {
                 "title": "Animations",
                 "url": "#Animations",
-                "canAccess": ["owner", "content-admin", "super-admin", "admin"],
+                "canAccess": ["owner", "content-admin", "super-admin", "superuser", "admin"],
                 "icon": FileVideo,
                 "items": []
             },
             {
-                "title": "Questions",
-                "url": "#Questions",
-                "canAccess": ["owner", "content-admin", "super-admin", "admin"],
+                "title": "Quiz",
+                "url": "/quiz",
+                "canAccess": ["owner", "content-admin", "super-admin", "superuser", "admin"],
                 "icon": CircleHelp,
                 "items": []
             },
             {
                 "title": "Tips",
-                "url": "#Tips",
-                "canAccess": ["owner", "content-admin", "super-admin", "admin"],
+                "url": "/tips",
+                "canAccess": ["owner", "content-admin", "super-admin", "superuser", "admin"],
                 "icon": InfoIcon,
                 "items": []
             },
+
             {
-                "title": "Tips Categories",
-                "url": "#Tips Categories",
-                "canAccess": ["owner", "content-admin", "super-admin", "admin"],
-                "icon": LayoutGrid,
-                "items": []
+                "title": "NHS Content ",
+                "canAccess": ["owner", "content-admin", "super-admin", "superuser", "admin"],
+                "icon": NHS,
+                "items": [
+                    {
+                        "title": "Medicines A-Z",
+                        "url": "/medicines",
+                        "canAccess": ["owner", "content-admin", "super-admin", "superuser", "admin"],
+                        "icon": FolderClosed,
+                        "items": []
+                    },
+                    {
+                        "title": "Health A-Z",
+                        "url": "/conditions",
+                        "canAccess": ["owner", "content-admin", "super-admin", "superuser", "admin"],
+                        "icon": FolderClosed,
+                        "items": []
+                    }
+                ]
             },
             {
-                "title": "Sections",
-                "url": "#Sections",
-                "canAccess": ["owner", "content-admin", "super-admin", "admin"],
+                "title": "Content Categories",
+                "canAccess": ["owner", "content-admin", "super-admin", "superuser", "admin"],
                 "icon": FolderClosed,
-                "items": []
+                "items": [
+                    {
+                        "title": "Sections",
+                        "url": "/sections",
+                        "canAccess": ["owner", "content-admin", "super-admin", "superuser", "admin"],
+                        "icon": FolderClosed,
+                        "items": []
+                    },
+                    {
+                        "title": "Subsections",
+                        "url": "/sub-sections",
+                        "canAccess": ["owner", "content-admin", "super-admin", "superuser", "admin"],
+                        "icon": BookmarkMinus,
+                        "items": []
+                    },
+                    {
+                        "title": "Collections",
+                        "url": "/collections",
+                        "canAccess": ["owner", "content-admin", "super-admin", "superuser", "admin"],
+                        "icon": Box,
+                        "items": []
+                    },
+                    {
+                        "title": "Packs",
+                        "url": "/packs",
+                        "canAccess": ["owner", "content-admin", "super-admin", "superuser", "admin"],
+                        "icon": WalletCards,
+                        "items": []
+                    },
+                ]
             },
-            {
-                "title": "Subsections",
-                "url": "#Subsections",
-                "canAccess": ["owner", "content-admin", "super-admin", "admin"],
-                "icon": BookmarkMinus,
-                "items": []
-            },
-            {
-                "title": "Collections",
-                "url": "#Collections",
-                "canAccess": ["owner", "content-admin", "super-admin", "admin"],
-                "icon": Box,
-                "items": []
-            },
+
             {
                 "title": "Surveys",
                 "url": "#Surveys",
-                "canAccess": ["owner", "content-admin", "super-admin", "admin"],
+                "canAccess": ["owner", "content-admin", "super-admin", "superuser", "admin"],
                 "icon": FileSignature,
                 "items": [
                     {
                         "title": "Survey S1",
                         "url": "#Survey S1",
-                        "canAccess": ["owner", "content-admin", "super-admin", "admin"],
+                        "canAccess": ["owner", "content-admin", "super-admin", "superuser", "admin"],
                         "icon": Box,
                         "items": [
                             {
                                 "title": "Survey S1",
                                 "url": "#Survey S1",
-                                "canAccess": ["owner", "content-admin", "super-admin", "admin"],
+                                "canAccess": ["owner", "content-admin", "super-admin", "superuser", "admin"],
                                 "icon": Box,
                                 "items": []
                             }
@@ -136,28 +169,28 @@ const sideBarGroups: Group[] = [
             {
                 "title": "My ICS",
                 "url": "#My ICS",
-                "canAccess": ["owner", "content-admin", "super-admin", "admin"],
+                "canAccess": ["owner", "content-admin", "super-admin", "superuser", "admin"],
                 "icon": Building,
                 "items": []
             },
             {
                 "title": "Onboarding Flow",
-                "url": "#Onboarding Flow",
-                "canAccess": ["owner", "content-admin", "super-admin", "admin"],
+                "url": "/onboarding-flow",
+                "canAccess": ["owner", "content-admin", "super-admin", "superuser", "admin"],
                 "icon": OnBoarding,
                 "items": []
             },
             {
                 "title": "Journey",
                 "url": "/journey",
-                "canAccess": ["owner", "content-admin", "super-admin", "admin"],
+                "canAccess": ["owner", "content-admin", "super-admin", "superuser", "admin"],
                 "icon": MapPinned,
                 "items": []
             },
             {
                 "title": "Health Tracker ",
                 "url": "#Health Tracker ",
-                "canAccess": ["owner", "content-admin", "super-admin", "admin"],
+                "canAccess": ["owner", "content-admin", "super-admin", "superuser", "admin"],
                 "icon": HeartPulse,
                 "items": []
             }
@@ -165,6 +198,7 @@ const sideBarGroups: Group[] = [
     },
     {
         "name": "Analytics",
+        "icon": BarChart4,
         "subMenuItems": [
             {
                 "title": "Analytics",
@@ -193,6 +227,7 @@ const sideBarGroups: Group[] = [
     },
     {
         "name": "Logs",
+        "icon": ClipboardCheck,
         "subMenuItems": [
             {
                 "title": "NHS Activity Logs",
@@ -228,17 +263,18 @@ const sideBarGroups: Group[] = [
     },
     {
         "name": "App Config",
+        "icon": Package,
         "subMenuItems": [
             {
                 "title": "Version Update ",
                 "url": "#Version Update ",
-                "canAccess": ["owner", "super-user", "super-admin", "admin"],
+                "canAccess": ["owner", "superuser", "super-admin", "admin"],
                 "icon": Package,
                 "items": [
                     {
                         "title": "Version Update ",
                         "url": "#Version Update",
-                        "canAccess": ["owner", "super-user", "super-admin", "admin"],
+                        "canAccess": ["owner", "superuser", "super-admin", "admin"],
                         "icon": Box,
                         "items": []
                     }
@@ -247,13 +283,13 @@ const sideBarGroups: Group[] = [
             {
                 "title": "Maintenance Mode",
                 "url": "#Maintenance Mode",
-                "canAccess": ["owner", "super-user", "super-admin", "admin"],
+                "canAccess": ["owner", "superuser", "super-admin", "admin"],
                 "icon": FolderCog,
                 "items": [
                     {
                         "title": "Maintenance Mode",
                         "url": "#Maintenance Mode",
-                        "canAccess": ["owner", "super-user", "super-admin", "admin"],
+                        "canAccess": ["owner", "superuser", "super-admin", "admin"],
                         "icon": Box,
                         "items": []
                     }
@@ -262,13 +298,13 @@ const sideBarGroups: Group[] = [
             {
                 "title": "Settings ",
                 "url": "#Settings ",
-                "canAccess": ["owner", "super-user", "super-admin", "admin"],
+                "canAccess": ["owner", "superuser", "super-admin", "admin"],
                 "icon": Settings,
                 "items": [
                     {
                         "title": "Settings ",
                         "url": "#Settings",
-                        "canAccess": ["owner", "super-user", "super-admin", "admin"],
+                        "canAccess": ["owner", "superuser", "super-admin", "admin"],
                         "icon": Box,
                         "items": []
                     }
@@ -277,13 +313,13 @@ const sideBarGroups: Group[] = [
             {
                 "title": "Changelog",
                 "url": "#Changelog",
-                "canAccess": ["owner", "super-user", "super-admin", "admin"],
+                "canAccess": ["owner", "superuser", "super-admin", "admin"],
                 "icon": FileCog,
                 "items": [
                     {
                         "title": "Changelog",
                         "url": "#Changelog",
-                        "canAccess": ["owner", "super-user", "super-admin", "admin"],
+                        "canAccess": ["owner", "superuser", "super-admin", "admin"],
                         "icon": Box,
                         "items": []
                     }
@@ -292,13 +328,13 @@ const sideBarGroups: Group[] = [
             {
                 "title": "Schema",
                 "url": "#Schema",
-                "canAccess": ["owner", "super-user", "super-admin", "admin"],
+                "canAccess": ["owner", "superuser", "super-admin", "admin"],
                 "icon": Network,
                 "items": [
                     {
                         "title": "Schema",
                         "url": "#Schema",
-                        "canAccess": ["owner", "super-user", "super-admin", "admin"],
+                        "canAccess": ["owner", "superuser", "super-admin", "admin"],
                         "icon": Box,
                         "items": []
                     }
@@ -307,13 +343,13 @@ const sideBarGroups: Group[] = [
             {
                 "title": "Push Notifications ",
                 "url": "#Push Notifications ",
-                "canAccess": ["owner", "super-user", "super-admin", "admin"],
+                "canAccess": ["owner", "superuser", "super-admin", "admin"],
                 "icon": BellRing,
                 "items": [
                     {
                         "title": "Push Notifications ",
                         "url": "#CRON Logs",
-                        "canAccess": ["owner", "super-user", "super-admin", "admin"],
+                        "canAccess": ["owner", "superuser", "super-admin", "admin"],
                         "icon": Box,
                         "items": []
                     }
@@ -322,13 +358,13 @@ const sideBarGroups: Group[] = [
             {
                 "title": "About App ",
                 "url": "#About App ",
-                "canAccess": ["owner", "super-user", "super-admin", "admin"],
+                "canAccess": ["owner", "superuser", "super-admin", "admin"],
                 "icon": CircleAlert,
                 "items": [
                     {
                         "title": "About App ",
                         "url": "#About App",
-                        "canAccess": ["owner", "super-user", "super-admin", "admin"],
+                        "canAccess": ["owner", "superuser", "super-admin", "admin"],
                         "icon": Box,
                         "items": []
                     }
@@ -337,13 +373,13 @@ const sideBarGroups: Group[] = [
             {
                 "title": "Support ",
                 "url": "#Support ",
-                "canAccess": ["owner", "super-user", "super-admin", "admin"],
+                "canAccess": ["owner", "superuser", "super-admin", "admin"],
                 "icon": MessageSquareMore,
                 "items": [
                     {
                         "title": "Support ",
                         "url": "#CRON Logs",
-                        "canAccess": ["owner", "super-user", "super-admin", "admin"],
+                        "canAccess": ["owner", "superuser", "super-admin", "admin"],
                         "icon": Box,
                         "items": []
                     }
@@ -354,17 +390,18 @@ const sideBarGroups: Group[] = [
     },
     {
         "name": "Users",
+        "icon": UserRound,
         "subMenuItems": [
             {
                 "title": "Users",
                 "url": "#Users",
-                "canAccess": ["owner", "super-user", "super-admin", "admin"],
+                "canAccess": ["owner", "superuser", "super-admin", "admin"],
                 "icon": UserRound,
                 "items": [
                     {
                         "title": "Users",
                         "url": "#Users Logs",
-                        "canAccess": ["owner", "super-user", "super-admin", "admin"],
+                        "canAccess": ["owner", "superuser", "super-admin", "admin"],
                         "icon": Box,
                         "items": []
                     }
@@ -373,13 +410,13 @@ const sideBarGroups: Group[] = [
             {
                 "title": "Super users",
                 "url": "#Super users",
-                "canAccess": ["owner", "super-user", "super-admin", "admin"],
+                "canAccess": ["owner", "superuser", "super-admin", "admin"],
                 "icon": UserRound,
                 "items": [
                     {
                         "title": "Super users",
                         "url": "#Super users",
-                        "canAccess": ["owner", "super-user", "super-admin", "admin"],
+                        "canAccess": ["owner", "superuser", "super-admin", "admin"],
                         "icon": Box,
                         "items": []
                     }
@@ -449,6 +486,7 @@ const sideBarGroups: Group[] = [
     },
     {
         "name": "User Data",
+        "icon": Pill,
         "subMenuItems": [
             {
                 "title": "Medication Reordering",
@@ -499,6 +537,7 @@ const sideBarGroups: Group[] = [
     },
     {
         "name": "Legal",
+        "icon": Shield,
         "subMenuItems": [
             {
                 "title": "Privacy Policy",

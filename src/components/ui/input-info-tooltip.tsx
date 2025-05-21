@@ -20,7 +20,7 @@ const InputTooltip = ({
           {children}
         </TooltipTrigger>
         <TooltipContent>
-          <p className="text-xs">{tooltip}</p>
+          <p className="text-xs font-inter">{tooltip}</p>
         </TooltipContent>
       </Tooltip>
     </TooltipProvider>

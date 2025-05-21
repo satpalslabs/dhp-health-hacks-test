@@ -14,6 +14,10 @@ export default {
 				mulish: "var(--font-mulish)",
 				inter: "var(--font-inter)"
 			},
+			backgroundImage: {
+				'gradient-mobile-button': 'var(--mobile-gradient-button)',
+
+			},
 			colors: {
 				background: 'hsl(var(--background))',
 				foreground: 'hsl(var(--foreground))',
@@ -28,12 +32,27 @@ export default {
 					},
 					status: {
 						darkGray: "hsl(var(--bg-dark-gray))", // Background color with opacity support
+						inReviewButton: "rgba(var(--in-review-button))"
 					}
+
 				},
 				mobile: {
 					dark: {
-						background: "hsl(var(--mobile-dark-view))"
+						background: "hsl(var(--mobile-dark-view))",
+						article: "hsl(var(--mobile-article-dark-background))",
+						card: "rgba(var(--mobile-card-dark-view))"
 					},
+					cardShadow: {
+						shadow: "var(--mobile-card-shadow)"
+					},
+					text: {
+						heading: "hsl(var(--mobile-text))",
+						firstSection: "hsl(var(--mobile-first-section))",
+						primary: "hsl(var(--mobile-primary-text))",
+						"main-text-color": "rgba(--main-text-color))"
+					},
+					gray: "rgba(var(--mobile-gray))",
+					primary: "hsl(var(--mobile-primary))",
 					layout: "hsl(var(--mobile-layout))"
 				},
 				text: {
@@ -58,11 +77,17 @@ export default {
 				},
 				muted: {
 					DEFAULT: 'hsl(var(--muted))',
-					foreground: 'hsl(var(--muted-foreground))'
+					foreground: 'hsl(var(--muted-foreground))',
+					light: '#E2E8F0'
 				},
 				accent: {
 					DEFAULT: 'hsl(var(--accent))',
 					foreground: 'hsl(var(--accent-foreground))'
+				},
+				onboarding: {
+					card: {
+						button: "hsl(var(--onboarding-card-buttons))"
+					}
 				},
 				destructive: {
 					DEFAULT: 'hsl(var(--destructive))',
@@ -89,8 +114,7 @@ export default {
 				},
 				tabs: {
 					activeTab: 'hsl(var(--active-tab-background))'
-
-				}
+				},
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
