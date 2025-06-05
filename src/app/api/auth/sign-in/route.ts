@@ -3,6 +3,7 @@ import { getConfigObject } from "@/lib/utils/auth/get-config-object";
 import { set2FACredentials } from "@/lib/utils/auth/get-cookies";
 import { SignInResponse, User } from "@/types";
 import { NextRequest, NextResponse } from "next/server";
+import secretKeyStore from '@/lib/utils/auth/2FA/secretkey-store';
 
 export async function POST(request: NextRequest) {
     const { email, password, environment } = await request.json();
@@ -50,6 +51,9 @@ export async function POST(request: NextRequest) {
             headers: { "Content-Type": "application/json" }
         }
     );
+    if (Is2FAEnabled.enabled) {
+        secretKeyStore.set(email, Is2FAEnabled.secretKey);
+    }
     await set2FACredentials(response, { ...tokensResponse, environment, step: Is2FAEnabled.enabled ? 3 : 1 });
 
     return response;

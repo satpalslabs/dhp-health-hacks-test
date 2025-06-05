@@ -19,7 +19,6 @@ import { saveUserTokens } from "@/lib/utils/auth/save-tokens";
 import { toast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
 import { CheckCircleIcon } from "lucide-react";
-import { verifySecretKey } from "@/lib/utils/auth/2FA/secretkey-services";
 
 const twoFactorAuthSchema = z.object({
   otp: z.string().min(6),
@@ -36,7 +35,13 @@ const VerificationTwoFactor = () => {
   async function handleSubmit() {
     setLoading(true);
     try {
-      const verified = await verifySecretKey(form.getValues().otp);
+      const verified = await fetch("/api/auth/sign-in/verify-otp/", {
+        method: "POST",
+        body: JSON.stringify({ otp: form.getValues().otp }),
+      }).then(async (res) => {
+        const json: { verified: boolean } = await res.json();
+        return json.verified;
+      });
       if (verified) {
         await saveUserTokens();
         router.push("/articles");

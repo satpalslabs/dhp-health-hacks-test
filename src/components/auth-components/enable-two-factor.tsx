@@ -28,7 +28,7 @@ import { useRouter } from "next/navigation";
 import { saveUserTokens } from "@/lib/utils/auth/save-tokens";
 import { LoadingSpinner } from "../ui/loading-spinner";
 import { confirmCookieForVerification } from "@/lib/utils/auth/2FA/store-cookies-2fa";
-import { verifySecretKey } from "@/lib/utils/auth/2FA/secretkey-services";
+// import { verifySecretKey } from "@/lib/utils/auth/2FA/secretkey-services";
 
 const twoFactorAuthSchema = z.object({
   otp: z.string().min(6),
@@ -65,7 +65,7 @@ const EnableTwoFactor = () => {
   async function handleSubmit() {
     setLoading(true);
     try {
-      const verified = await verifySecretKey(form.getValues().otp, secretKey);
+      const verified = false;
       if (verified) {
         await enableDisable2FA(secretKey, true);
         await saveUserTokens();
