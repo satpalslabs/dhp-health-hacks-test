@@ -15,9 +15,11 @@ export async function verifySecretKey(token: string, _secretKey?: string) {
     const data = cookie ? JSON.parse(cookie) : {};
     const email = "email" in data ? data.email as string : "";
 
-    const storedSecretKet = secretKeyStore.get(email);
-    const secretBytes = base32.decode.asBytes(_secretKey ?? storedSecretKet ?? "");
+    const storedSecretKey = secretKeyStore.get(email);
+    console.log(storedSecretKey, secretKeyStore);
+    const secretBytes = base32.decode.asBytes(_secretKey ?? storedSecretKey ?? "");
     const secret = Buffer.from(Uint8Array.from(secretBytes)).toString("hex");
+    console.log(secret);
     return speakeasy.totp.verify({
         secret,
         encoding: "hex",
