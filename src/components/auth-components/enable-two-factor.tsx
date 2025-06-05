@@ -22,13 +22,13 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { generateSecretKey } from "@/lib/utils/auth/2FA/generate-secret-key";
-import { verifySecretKey } from "@/lib/utils/auth/2FA/verify-token";
 import { toast } from "@/hooks/use-toast";
 import { enableDisable2FA } from "@/lib/utils/auth/2FA/enable-disable-2fa";
 import { useRouter } from "next/navigation";
 import { saveUserTokens } from "@/lib/utils/auth/save-tokens";
 import { LoadingSpinner } from "../ui/loading-spinner";
 import { confirmCookieForVerification } from "@/lib/utils/auth/2FA/store-cookies-2fa";
+import { verifySecretKey } from "@/lib/utils/auth/2FA/secretkey-services";
 
 const twoFactorAuthSchema = z.object({
   otp: z.string().min(6),

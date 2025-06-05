@@ -1,4 +1,6 @@
-declare global {
-    var secretKey: { key: string };
-}
+// global.d.ts
 export { };
+
+declare global {
+    var secretKeyStore: Map<string, string>;
+}

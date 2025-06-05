@@ -15,11 +15,11 @@ import {
 import { InputOTP, InputOTPSlot } from "@/components/ui/input-otp";
 import { useState } from "react";
 import Link from "next/link";
-import { verifySecretKey } from "@/lib/utils/auth/2FA/verify-token";
 import { saveUserTokens } from "@/lib/utils/auth/save-tokens";
 import { toast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
 import { CheckCircleIcon } from "lucide-react";
+import { verifySecretKey } from "@/lib/utils/auth/2FA/secretkey-services";
 
 const twoFactorAuthSchema = z.object({
   otp: z.string().min(6),

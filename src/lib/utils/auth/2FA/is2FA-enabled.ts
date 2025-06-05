@@ -3,7 +3,7 @@
 import { cookies } from "next/headers";
 import { getActiveENV } from "../../environment/cookie-services";
 import { User } from "@/types";
-import secretKey from "./secret-key";
+import { setSecretKey } from "./secretkey-services";
 // Checks if 2FA is enabled for a given user
 export async function is2FAEnabled(user: User) {
     // Get the cookies from the request
@@ -34,8 +34,8 @@ export async function is2FAEnabled(user: User) {
     // Extract 2FA status and secret key for the user
     const data = parsedData[existingUser];
 
-    secretKey.key = data.secretKey || ""
-    console.log(data.secretKey, "assigning secretKEy", secretKey);
+    setSecretKey(data.email, data.secretKey)
+
     // Return the 2FA status and secret key
     return { enabled: !!data.enabled2FA, secretKey: data.secretKey || "" };
 }

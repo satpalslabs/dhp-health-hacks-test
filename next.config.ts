@@ -8,8 +8,18 @@ const nextConfig: NextConfig = {
     NEXT_PUBLIC_APP_VERSION: version,
   },
   images: {
-    domains: ["img.youtube.com", "storage.googleapis.com"],
-
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "img.youtube.com",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "storage.googleapis.com",
+        pathname: "/**",
+      },
+    ],
   },
   /* config options here */
   webpack(config, { dev, isServer }) {
