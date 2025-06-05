@@ -1,5 +1,7 @@
 
 if (!globalThis.secretKey) {
+    console.log("initialize secret key ");
+
     globalThis.secretKey = {
         key: ""
     }
