@@ -1,3 +1,4 @@
+"use server"
 
 if (!globalThis.secretKey) {
     console.log("initialize secret key ");
