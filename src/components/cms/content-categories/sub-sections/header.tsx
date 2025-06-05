@@ -8,9 +8,7 @@ import {
 } from "@/components/ui/collapsible";
 import { format } from "date-fns";
 import {
-  Ban,
   ChevronDown,
-  Globe,
   PencilLine,
   Plus,
   Search,
@@ -63,7 +61,7 @@ const TableHeader = ({
 
   useEffect(() => {
     table.getColumn("subsection_name")?.setFilterValue(deferredInputValue);
-  }, [deferredInputValue]);
+  }, [deferredInputValue, table]);
 
   const [selectedHC, setSelectedHC] = useState<HealthCondition | null>(null);
 
@@ -357,7 +355,7 @@ export const SelectionControlBar = ({
 }) => (
   <div className="flex items-center gap-3  text-button-filter-text font-inter font-medium text-sm mb-4 leading-6">
     <div>
-      {selectedRows.length} of {data.length} Articles
+      {selectedRows.length} of {data.length} Sub-sections
     </div>
     <Separator />
     {selectedRows.length > 0 && (
@@ -370,32 +368,6 @@ export const SelectionControlBar = ({
               }}
             >
               <ActionButton icon={PencilLine} label="Edit" />
-            </div>
-            <Separator />
-          </>
-        )}
-        {selectedRows.some((article) => article._status === "published") && (
-          <>
-            <div
-              onClick={() => {
-                setAction("Unpublish");
-                setDeleteDialogOpen(true);
-              }}
-            >
-              <ActionButton icon={Ban} label="Unpublish" />
-            </div>
-            <Separator />
-          </>
-        )}
-        {selectedRows.some((article) => article._status !== "published") && (
-          <>
-            <div
-              onClick={() => {
-                setAction("Publish");
-                setDeleteDialogOpen(true);
-              }}
-            >
-              <ActionButton icon={Globe} label="Publish" />
             </div>
             <Separator />
           </>

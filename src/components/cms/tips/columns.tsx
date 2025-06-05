@@ -7,22 +7,18 @@ import dynamic from "next/dynamic";
 import Image from "next/image";
 import TooltipCell from "@/components/table/tooltip-cell";
 import youtube_parser from "@/lib/you-tube-thumbnail";
-import { TableRowType } from "./tips-table";
+import { Tip } from "@/types";
 const ReactJsonView = dynamic(() => import("@microlink/react-json-view"), {
   ssr: false,
 });
 
-const multiColumnFilterFn: FilterFn<TableRowType> = (
-  row,
-  columnId,
-  filterValue
-) => {
+const multiColumnFilterFn: FilterFn<Tip> = (row, columnId, filterValue) => {
   // Concatenate the values from multiple columns into a single string
   const searchableRowContent = JSON.stringify(row);
   // Perform a case-insensitive comparison
   return searchableRowContent.toLowerCase().includes(filterValue.toLowerCase());
 };
-const categorySelectionFilters: FilterFn<TableRowType> = (
+const categorySelectionFilters: FilterFn<Tip> = (
   row,
   columnId,
   filterValue
@@ -31,11 +27,7 @@ const categorySelectionFilters: FilterFn<TableRowType> = (
   return categories.includes(filterValue.id);
 };
 
-const dateRangeFilter: FilterFn<TableRowType> = (
-  row,
-  columnId,
-  filterValue
-) => {
+const dateRangeFilter: FilterFn<Tip> = (row, columnId, filterValue) => {
   const dateValue = new Date(row.getValue(columnId));
   const [startDate, endDate] = filterValue;
 
@@ -46,7 +38,7 @@ const SortableHeader = ({
   column,
   title,
 }: {
-  column: Column<TableRowType>;
+  column: Column<Tip>;
   title: string;
 }) => (
   <TableCells
@@ -58,7 +50,7 @@ const SortableHeader = ({
   </TableCells>
 );
 
-const columns: ColumnDef<TableRowType>[] = [
+const columns: ColumnDef<Tip>[] = [
   {
     id: "select",
     accessorKey: "select",
@@ -140,7 +132,7 @@ const columns: ColumnDef<TableRowType>[] = [
   {
     accessorKey: "tips_categories",
     enableResizing: true,
-    size: 200,
+    size: 250,
     header: ({ column }) => <SortableHeader column={column} title="Category" />,
     cell: ({ row }) => <TipCategoryCell row={row} />,
     filterFn: categorySelectionFilters,
@@ -200,14 +192,14 @@ const columns: ColumnDef<TableRowType>[] = [
 
 export default columns;
 
-const TipCategoryCell: React.FC<{ row: Row<TableRowType> }> = ({ row }) => {
+const TipCategoryCell: React.FC<{ row: Row<Tip> }> = ({ row }) => {
   const { resolvedTheme } = useTheme();
-  return row.original.categoriesData.length > 0 ? (
+  return row.original.tips_categories.length > 0 ? (
     <TooltipCell
       content={
         <pre className="max-w-[450px] text-wrap dark:text-white">
           <ReactJsonView
-            src={row.original.categoriesData}
+            src={row.original.tips_categories}
             name="tip_categories"
             displayDataTypes={false}
             iconStyle="square"
@@ -224,12 +216,12 @@ const TipCategoryCell: React.FC<{ row: Row<TableRowType> }> = ({ row }) => {
           <div
             className={`rounded-md font-inter font-medium text-sm px-2 py-1 hover:text-red h-fit w-fit shrink-0`}
             style={{
-              background: row.original.categoriesData[0].background_color
-                ? row.original.categoriesData[0].background_color + "66"
+              background: row.original.tips_categories[0].background_color
+                ? row.original.tips_categories[0].background_color + "66"
                 : "transparent",
             }}
           >
-            {row.original.categoriesData[0].name}
+            {row.original.tips_categories[0].name}
           </div>
         </div>
       </TableCells>
@@ -239,14 +231,14 @@ const TipCategoryCell: React.FC<{ row: Row<TableRowType> }> = ({ row }) => {
   );
 };
 
-const VideoDetailCell: React.FC<{ row: Row<TableRowType> }> = ({ row }) => {
+const VideoDetailCell: React.FC<{ row: Row<Tip> }> = ({ row }) => {
   const { resolvedTheme } = useTheme();
-  return row.original.videosData.length > 0 ? (
+  return row.original.videos.length > 0 ? (
     <TooltipCell
       content={
         <pre className="max-w-[450px] text-wrap dark:text-white">
           <ReactJsonView
-            src={row.original.videosData}
+            src={row.original.videos}
             name="videos"
             displayDataTypes={false}
             iconStyle="square"
@@ -262,14 +254,13 @@ const VideoDetailCell: React.FC<{ row: Row<TableRowType> }> = ({ row }) => {
         type="text"
         className="text-left normal-case font-inter flex gap-[10px] items-center font-medium text-sm hover:text-red h-fit w-full shrink-0"
       >
-        {row.original.videosData[0].thumbnail_icon ||
-        row.original.videosData[0].url ? (
+        {row.original.videos[0].thumbnail_icon || row.original.videos[0].url ? (
           <Image
             src={
-              row.original.videosData[0].thumbnail_icon?.url
-                ? row.original.videosData[0].thumbnail_icon.url
-                : row.original.videosData[0].url
-                ? youtube_parser(row.original.videosData[0].url)
+              row.original.videos[0].thumbnail_icon?.url
+                ? row.original.videos[0].thumbnail_icon.url
+                : row.original.videos[0].url
+                ? youtube_parser(row.original.videos[0].url)
                 : ""
             }
             width={400}
@@ -280,7 +271,7 @@ const VideoDetailCell: React.FC<{ row: Row<TableRowType> }> = ({ row }) => {
         ) : (
           <></>
         )}
-        <p className="line-clamp-1">{row.original.videosData[0].title}</p>
+        <p className="line-clamp-1">{row.original.videos[0].title}</p>
       </TableCells>
     </TooltipCell>
   ) : (

@@ -105,16 +105,17 @@ const StepModal = ({
   }
 
   useEffect(() => {
+    async function fetchFilteredData() {
+      const list: JourneyStep[] = await getFilteredSteps(
+        filterValues,
+        showStepsInModal
+      );
+      setFilteredListData(list);
+    }
+    
     fetchFilteredData();
-  }, [filterValues]);
+  }, [filterValues, showStepsInModal]);
 
-  async function fetchFilteredData() {
-    const list: JourneyStep[] = await getFilteredSteps(
-      filterValues,
-      showStepsInModal
-    );
-    setFilteredListData(list);
-  }
   return (
     <CommandDialog open={open} onOpenChange={setOpen}>
       <CommandInput

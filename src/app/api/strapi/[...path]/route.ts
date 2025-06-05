@@ -5,7 +5,15 @@ import { getConfigObject } from "@/lib/utils/auth/get-config-object";
 export async function POST(req: NextRequest) {
     const path = req.nextUrl.pathname.replace(/^\/api\/strapi\//, '');
     const query = req.nextUrl.search;
-    const activeEnv = req.cookies.get("active-env")?.value
+    const activeEnv = req.cookies.get("active-env")?.value;
+    // Staging environment is not supported for POST requests
+    // This is a safeguard to prevent accidental POST requests in staging
+    if (activeEnv == "staging") {
+        return NextResponse.json(
+            { error: "Staging environment is not supported for POST requests" },
+            { status: 400 }
+        );
+    }
     const configObject = getConfigObject(activeEnv ?? "experimental")
     const targetUrl = new URL(`/api/${path}${query}`, configObject.STRAPI_BASE_URL).toString();
     const body = JSON.stringify(await req.json());
@@ -29,7 +37,15 @@ export async function POST(req: NextRequest) {
 export async function PUT(req: NextRequest) {
     const path = req.nextUrl.pathname.replace(/^\/api\/strapi\//, '');
     const query = req.nextUrl.search;
-    const activeEnv = req.cookies.get("active-env")?.value
+    const activeEnv = req.cookies.get("active-env")?.value;
+    // Staging environment is not supported for POST requests
+    // This is a safeguard to prevent accidental POST requests in staging
+    if (activeEnv == "staging") {
+        return NextResponse.json(
+            { error: "Staging environment is not supported for PUT requests" },
+            { status: 400 }
+        );
+    }
     const configObject = getConfigObject(activeEnv ?? "experimental")
     const targetUrl = new URL(`/api/${path}${query}`, configObject.STRAPI_BASE_URL).toString();
     const body = JSON.stringify(await req.json());
@@ -54,7 +70,7 @@ export async function PUT(req: NextRequest) {
 export async function GET(req: NextRequest) {
     const path = req.nextUrl.pathname.replace(/^\/api\/strapi\//, '');
     const query = req.nextUrl.search;
-    const activeEnv = req.cookies.get("active-env")?.value
+    const activeEnv = req.cookies.get("active-env")?.value;
     const configObject = getConfigObject(activeEnv ?? "experimental")
     const targetUrl = new URL(`/api/${path}${query}`, configObject.STRAPI_BASE_URL).toString();
     const response = await fetch(targetUrl, {
@@ -81,7 +97,15 @@ export async function GET(req: NextRequest) {
 
 export async function DELETE(req: NextRequest) {
     const path = req.nextUrl.pathname.replace(/^\/api\/strapi\//, '');
-    const activeEnv = req.cookies.get("active-env")?.value
+    const activeEnv = req.cookies.get("active-env")?.value;
+    // Staging environment is not supported for DELETE requests
+    // This is a safeguard to prevent accidental DELETE requests in staging
+    if (activeEnv == "staging") {
+        return NextResponse.json(
+            { error: "Staging environment is not supported for DELETE requests" },
+            { status: 400 }
+        );
+    }
     const configObject = getConfigObject(activeEnv ?? "experimental")
     const targetUrl = new URL(`/api/${path}`, configObject.STRAPI_BASE_URL).toString();
 

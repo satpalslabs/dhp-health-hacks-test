@@ -52,11 +52,10 @@ const ReorderContent = ({
 
   useEffect(() => {
     const contentArticles = allArticles.filter(
-      (i) =>
-        i.id && (data?.articles?.includes(i.id) || data?.videos?.includes(i.id))
+      (i) => typeof i.id === "number" && Array.isArray(data?.videos)
     );
     setArticles(contentArticles);
-  }, [data]);
+  }, [data, allArticles]);
   return (
     <Draggable
       key={data?.id}

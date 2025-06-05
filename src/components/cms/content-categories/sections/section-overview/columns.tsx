@@ -235,40 +235,39 @@ export const ContentPath: React.FC<{
             buttonVariants({
               variant: "outline",
               className:
-                "w-fit overflow-hidden h-6 text-xs text-left px-[6px] hover:bg-transparent cursor-text rounded-[6px] flex gap-4 border-[#E2E8F0] dark:border-muted font-inter",
+                "w-fit overflow-hidden h-6 bg-transparent text-xs text-left px-[6px] flex !gap-0  hover:bg-transparent cursor-text rounded-[6px] border-[#E2E8F0] dark:border-muted font-inter",
             })
           )}
         >
           {section && (
-            <Link href={`/sections/${section?.id}`} className=" relative  ">
-              <div className="flex gap-[6px] items-center leading-4 [&_svg]:size-[14px]">
+            <Link
+              href={`/sections/${section?.id}`}
+              className="transition-all flex gap-0 [&_svg]:h-6 [&_svg]:w-5"
+            >
+              <div className="flex gap-[6px] items-center leading-4 [&_svg]:!size-[14px]">
                 <FolderClosed />
                 {section?.section_name}
               </div>
-              <span className="[&_svg]:size-6">
-                <RoundedBorder className="text-[#E2E8F0] dark:text-muted absolute right-0 translate-x-full -top-[4px] h-full" />
-              </span>
+              <RoundedBorder className="text-[#E2E8F0] dark:text-muted  h-full transition-all" />
             </Link>
           )}
           {sub_section && (
             <Link
               href={`/sub-sections/${sub_section.id}`}
-              className=" relative "
+              className="transition-all flex gap-0 [&_svg]:h-6 [&_svg]:w-5"
             >
-              <div className="flex gap-[6px] items-center leading-4 [&_svg]:size-[14px] ">
+              <div className="flex gap-[6px] items-center leading-4 [&_svg]:!size-[14px] transition-all">
                 <BookmarkMinus />
                 {sub_section?.subsection_name}
               </div>
               {collection_data && (
-                <span className="[&_svg]:size-6">
-                  <RoundedBorder className="text-[#E2E8F0] dark:text-muted absolute right-0 translate-x-full -top-[4px] h-full" />
-                </span>
+                <RoundedBorder className="text-[#E2E8F0] dark:text-muted  h-full transition-all" />
               )}
             </Link>
           )}
           <Link
             href={`/collections/${collection_data?.id}`}
-            className=" flex gap-[6px] items-center leading-4 [&_svg]:size-[14px]"
+            className=" flex gap-[6px] items-center leading-4 [&_svg]:size-[14px] transition-all"
           >
             <Box />
             {collection_data?.collection_name}

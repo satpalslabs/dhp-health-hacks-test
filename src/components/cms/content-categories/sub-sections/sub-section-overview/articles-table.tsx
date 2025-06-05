@@ -150,7 +150,7 @@ const ArticleTable = ({
     return () => {
       isMounted = false;
     };
-  }, [subsection, rowSelection, table.getFilteredRowModel().rows]);
+  }, [subsection, rowSelection, articles, setArticles, table]);
 
   const handleBulkAction = async () => {
     setIsProcessing(true);

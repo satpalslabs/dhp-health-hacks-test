@@ -100,7 +100,7 @@ const PackOverview = ({ pack }: { pack: Pack }) => {
     setQuizData(quizzes_data);
     currentPack.quizzes_data = quizzes_data;
     setPackData({ ...currentPack });
-  }, [pack]);
+  }, [pack, quizzes, tips]);
 
   useEffect(() => {
     if (packData) {
@@ -127,7 +127,7 @@ const PackOverview = ({ pack }: { pack: Pack }) => {
       // Cleanup function to clear the timeout
       return () => clearTimeout(timeoutId);
     }
-  }, [inputValue, packData]);
+  }, [inputValue, packData, pack]);
   return (
     <div className="flex flex-col gap-4">
       <div className="relative">

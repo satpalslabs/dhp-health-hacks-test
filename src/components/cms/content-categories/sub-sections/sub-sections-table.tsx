@@ -121,7 +121,7 @@ const SubSectionsTable = ({
               enableResizing: false,
             },
           ],
-    [loading, columns]
+    [loading]
   );
 
   const table = useReactTable({
@@ -161,41 +161,51 @@ const SubSectionsTable = ({
   useEffect(() => {
     let isMounted = true;
     if (isMounted) {
-      getSubSections().then((res) => {
-        updateSubSections(res);
-        setSubSections(res as unknown as DetailedSubSection[]);
-        setLoading(false);
-      });
+      fetchSubSections();
     }
-
     return () => {
       isMounted = false;
     };
   }, []);
 
-  useEffect(() => {
-    const selectedRowKeys = Object.keys(rowSelection).map(Number);
-    const selectedRowsData = subSections.filter(
-      (i) => i.id && selectedRowKeys.includes(i.id)
-    );
-    setSelectedRows(selectedRowsData as unknown as DetailedSubSection[]);
-  }, [rowSelection, subSections]);
-
-  useEffect(() => {
-    if (!subSections || subSections.length === 0) return; // Prevent updates when data is empty
-    const currentRows = table
-      .getFilteredRowModel()
-      .rows.map((i) => Number(i.id));
-
-    const sub_sections = subSections.filter(
-      (i) => i.id && currentRows.includes(i.id)
-    );
-    if (selectedRows.length > 0) {
-      setSubSections(selectedRows);
-    } else {
-      setSubSections(sub_sections as unknown as DetailedSubSection[]);
+  async function fetchSubSections() {
+    if (subSections.length > 0) {
+      setLoading(false);
+      return; // Prevent fetching if data is already present
     }
-  }, [table, table.getFilteredRowModel().rows, subSections, selectedRows]);
+    setLoading(true);
+    getSubSections().then((res) => {
+      updateSubSections(res);
+      setSubSections(res as unknown as DetailedSubSection[]);
+      setLoading(false);
+    });
+  }
+  const filteredRows = table.getFilteredRowModel().rows;
+
+  useEffect(() => {
+    if (!subSections.length) return;
+    if (!loading) {
+      let filteredData = subSections as unknown as DetailedSubSection[];
+      // Select rows based on current selection state
+      const selectedRowKeys = Object.keys(rowSelection).map(Number);
+      filteredData = filteredData.filter(
+        (i) => i.id && selectedRowKeys.includes(i.id)
+      );
+      setSelectedRows((prev) =>
+        JSON.stringify(prev) === JSON.stringify(filteredData)
+          ? prev
+          : filteredData
+      );
+
+      // Update articles based on filtered table rows
+      if (filteredData.length > 0) {
+        setSubSections(filteredData);
+      } else {
+        const currentRows = filteredRows.map((i) => i.original);
+        setSubSections(currentRows);
+      }
+    }
+  }, [subSections, rowSelection, loading, setSubSections, table, filteredRows]);
 
   const handleBulkAction = async () => {
     setIsProcessing(true);

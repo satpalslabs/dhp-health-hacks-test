@@ -14,21 +14,20 @@ const NHSMedicinesAtoZ = () => {
 
   useEffect(() => {
     if (NHSMedicines.length === 0) {
+      async function loadData() {
+        if (appSettings) {
+          const nhsData = await getNHSData(
+            appSettings.meta.collections.nhs_medication_az_api_schema_id
+          );
+          setLoading(false);
+          setNHSMedicines(nhsData);
+        }
+      }
       loadData();
     } else {
       setLoading(false);
     }
-  }, []);
-
-  const loadData = async () => {
-    if (appSettings) {
-      const nhsData = await getNHSData(
-        appSettings.meta.collections.nhs_medication_az_api_schema_id
-      );
-      setLoading(false);
-      setNHSMedicines(nhsData);
-    }
-  };
+  }, [NHSMedicines, appSettings, setNHSMedicines]);
 
   return <NHSMainPage conditions={NHSMedicines} loading={loading} />;
 };

@@ -1,5 +1,11 @@
 import { Column, ColumnDef, FilterFn } from "@tanstack/react-table";
-import { BookmarkMinus, ChevronsUpDown, FolderClosed } from "lucide-react";
+import {
+  BookmarkMinus,
+  ChevronsUpDown,
+  FileText,
+  FolderClosed,
+  Youtube,
+} from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import TooltipCell from "@/components/table/tooltip-cell";
 import { cn } from "@/lib/utils";
@@ -9,6 +15,7 @@ import { HealthConditionCell } from "../sub-sections/columns";
 import { Collection, HealthCondition, Section, SubSection } from "@/types";
 import RoundedBorder from "@/rounded-border.svg";
 import TableCells from "@/components/table/table-cells";
+import { Stat } from "../sections/columns";
 
 const multiColumnFilterFn: FilterFn<Collection> = (
   row,
@@ -165,6 +172,26 @@ const columns: ColumnDef<Collection>[] = [
     filterFn: HCSelectionFilters,
   },
   {
+    accessorKey: "content",
+    enableResizing: true,
+    size: 200,
+    header: ({ column }) => <SortableHeader column={column} title="Content" />,
+    cell: ({ row }) => {
+      const { articles, videos } = row.original;
+      const showEmpty = articles.length === 0 && videos.length === 0;
+
+      return (
+        <div className="flex gap-[10px] items-center">
+          {articles.length > 0 && (
+            <Stat icon={FileText} count={articles.length} />
+          )}
+          {videos.length > 0 && <Stat icon={Youtube} count={videos.length} />}
+          {showEmpty && <p className="grow w-full text-center">-</p>}
+        </div>
+      );
+    },
+  },
+  {
     accessorKey: "bg_color",
     enableResizing: true,
     header: ({ column }) => (
@@ -190,36 +217,7 @@ const columns: ColumnDef<Collection>[] = [
     ),
     filterFn: multiColumnFilterFn,
   },
-  {
-    accessorKey: "_status",
-    enableResizing: true,
-    header: ({ column }) => <SortableHeader column={column} title="Status" />,
-    cell: ({ row }: { row: { getValue: <T = unknown>(key: string) => T } }) => {
-      const status: string = row.getValue("_status");
-      return (
-        <TableCells type="text" className="normal-case">
-          <div
-            className={` rounded-md capitalize text-xs flex items-center justify-center px-2 h-6 hover:text-red  w-fit ${
-              status == "Draft"
-                ? "bg-button-status-darkGray text-text-darkGray"
-                : status == "Approved" || status == "Published" || !status
-                ? "bg-green-100 text-[green]"
-                : status == "Submitted for Review"
-                ? "text-button-status-inReviewButton bg-button-status-inReviewButton/10"
-                : "bg-red-100 text-[red] "
-            }`}
-          >
-            {!status || status == "" || status == "Published"
-              ? "Approved"
-              : status == "Submitted for Review"
-              ? "In Review"
-              : status}
-          </div>
-        </TableCells>
-      );
-    },
-    filterFn: multiColumnFilterFn,
-  },
+
   {
     accessorKey: "createdAt",
     enableResizing: false,

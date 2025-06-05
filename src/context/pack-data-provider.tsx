@@ -1,6 +1,5 @@
 "use client";
 
-import data from "@/lib/static-data/content-data/packs.json";
 import { Pack } from "@/types";
 import { createContext, useState } from "react";
 
@@ -17,7 +16,7 @@ export const PacksContext = createContext<PacksContextType>({
 });
 
 const PacksDataProvider = ({ children }: { children: React.ReactNode }) => {
-  const [packs, setPacks] = useState<Pack[]>(data as Pack[]);
+  const [packs, setPacks] = useState<Pack[]>([]);
 
   function updatePacks(_Packs: Pack[]) {
     setPacks(_Packs);

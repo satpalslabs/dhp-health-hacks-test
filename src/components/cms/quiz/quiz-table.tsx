@@ -12,7 +12,14 @@ import {
   useReactTable,
   VisibilityState,
 } from "@tanstack/react-table";
-import React, { useContext, useEffect, useMemo, useState } from "react";
+import React, {
+  Dispatch,
+  SetStateAction,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import { DataTable } from "../../table/table";
 import QuizTableHeader, { SelectionControlBar } from "./header";
 import { Quiz } from "@/types";
@@ -31,9 +38,9 @@ const QuizTable = ({
   loading,
   setLoading,
 }: {
-  setQuizzes: React.Dispatch<React.SetStateAction<Quiz[]>>;
+  setQuizzes: Dispatch<SetStateAction<Quiz[]>>;
   loading: boolean;
-  setLoading: (e: boolean) => void;
+  setLoading: Dispatch<SetStateAction<boolean>>;
 }) => {
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const { quizzes, updateQuizzes } = useContext(QuizContext);
@@ -58,7 +65,7 @@ const QuizTable = ({
     } else {
       setLoading(false);
     }
-  }, []);
+  }, [quizzes, updateQuizzes, setLoading]);
 
   const tableData = useMemo(
     () => (loading ? Array(5).fill({}) : quizzes),
@@ -116,7 +123,7 @@ const QuizTable = ({
               enableResizing: false,
             },
           ],
-    [loading, columns]
+    [loading]
   );
 
   const table = useReactTable({
@@ -153,29 +160,31 @@ const QuizTable = ({
     },
   });
 
+  // Extract filtered rows to a variable for useEffect dependency
+  const filteredRows = table.getFilteredRowModel().rows;
+
   useEffect(() => {
+    if (!quizzes.length) return;
+    let filteredData = quizzes;
+    // Select rows based on current selection state
     const selectedRowKeys = Object.keys(rowSelection).map(Number);
-    const selectedRowsData = quizzes.filter(
-      (i: Quiz) => i.id && selectedRowKeys.includes(i.id)
+    filteredData = filteredData.filter(
+      (i) => i.id && selectedRowKeys.includes(i.id)
     );
-    setSelectedRows(selectedRowsData);
-  }, [rowSelection, quizzes]);
-
-  useEffect(() => {
-    if (!quizzes || quizzes.length === 0) return; // Prevent updates when data is empty
-    const currentRows = table
-      .getFilteredRowModel()
-      .rows.map((i) => Number(i.id));
-
-    const _quizzes: Quiz[] = quizzes.filter(
-      (i: Quiz) => i.id && currentRows.includes(i.id)
+    setSelectedRows((prev) =>
+      JSON.stringify(prev) === JSON.stringify(filteredData)
+        ? prev
+        : filteredData
     );
-    if (selectedRows.length > 0) {
-      setQuizzes(selectedRows);
+
+    // Update quizzes based on filtered table rows
+    if (filteredData.length > 0) {
+      setQuizzes(filteredData);
     } else {
-      setQuizzes(_quizzes);
+      const currentRows = filteredRows.map((i) => i.original);
+      setQuizzes(currentRows);
     }
-  }, [table, table.getFilteredRowModel().rows, quizzes, selectedRows]);
+  }, [quizzes, table, rowSelection, setQuizzes, filteredRows]);
 
   const handleBulkAction = async () => {
     setIsProcessing(true);
@@ -209,7 +218,7 @@ const QuizTable = ({
       console.error("Error deleting quiz:", error);
       toast({
         title: "Error",
-        description: `An error occurred while deleting the quiz. ${error}`,
+        description: `${error}`,
         variant: "destructive",
       });
     }

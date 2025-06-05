@@ -67,13 +67,13 @@ const SpinnerButton = React.forwardRef<HTMLButtonElement, ButtonProps>(
         {...props}
         disabled={loading || props.disabled}
       >
-        <p
+        <span
           style={{
             visibility: loading ? "hidden" : "visible",
           }}
         >
           {props.children}
-        </p>
+        </span>
         <div className="h-5 w-5 absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2">
           <LoadingSpinner
             className="w-full h-full "

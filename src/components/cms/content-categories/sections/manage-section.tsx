@@ -4,18 +4,15 @@ import { useForm, UseFormReturn } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { APIBodySection, Section } from "@/types";
 import { useContext, useEffect, useState } from "react";
-import { Button, SpinnerButton } from "@/components/ui/button";
+import {  SpinnerButton } from "@/components/ui/button";
 import FormFieldWrapper from "@/components/ui/form-field-wrapper";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { SectionContext } from "@/context/section-data-provider";
 import { toast } from "@/hooks/use-toast";
 import SideDrawer from "../../articles/add-edit-articles/form-drawers";
-import {
-  FileDropZone,
-  ViewTypSelection,
-} from "../../articles/add-edit-articles/form-components";
-import { SelectOptions } from "../../articles/add-edit-articles/form-components/render-webpage-component";
+import { FileDropZone, ViewTypSelection } from "@/components/form-components";
+import { SelectOptions } from "@/components/form-components/render-webpage-component";
 import nProgress from "nprogress";
 import { HealthConditionSelectField } from "../collections/manage-collection";
 import { PostSection, UpdateSection } from "@/lib/services/section-service";
@@ -105,7 +102,7 @@ const AddOrEditSection = ({
       }
     }
     setDefaultData();
-  }, [editSection, open]);
+  }, [editSection, open, form, sections]);
 
   return (
     <SideDrawer
@@ -185,7 +182,7 @@ const SectionForm = ({
     } catch (error) {
       console.error("Error", error);
       nProgress.done();
-      setLoading(true);
+      setLoading(false);
       toast({
         title: `Error`,
         description:
@@ -332,7 +329,7 @@ const SectionForm = ({
             >
               Save
             </SpinnerButton>
-            {!editSection && (
+            {/* {!editSection && (
               <Button
                 type="button"
                 className="px-6 w-fit bg-muted text-primary hover:shadow-none dark:text-white"
@@ -340,7 +337,7 @@ const SectionForm = ({
               >
                 Save as Draft
               </Button>
-            )}
+            )} */}
           </div>
         </div>
       </Form>

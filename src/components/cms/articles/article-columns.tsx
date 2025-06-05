@@ -12,6 +12,7 @@ import { useTheme } from "next-themes";
 import TooltipCell from "@/components/table/tooltip-cell";
 import { Article } from "@/types";
 import { ContentPath } from "../content-categories/sections/section-overview/columns";
+import StatusButton from "@/components/ui/status-button";
 
 const multiColumnFilterFn: FilterFn<Article> = (row, columnId, filterValue) => {
   // Concatenate the values from multiple columns into a single string
@@ -104,12 +105,25 @@ const columns: ColumnDef<Article>[] = [
   {
     accessorKey: "title",
     enableResizing: true,
-    size: 300,
+    size: 450,
     header: ({ column }) => <SortableHeader column={column} title="Title" />,
     cell: ({ row }) => (
-      <TableCells type="text" className="normal-case">
-        {row.getValue("title")}
-      </TableCells>
+      <TooltipCell
+        content={
+          <pre className="max-w-[450px] text-wrap font-inter text-sm overflow-y-auto">
+            {row.getValue("title")}
+          </pre>
+        }
+      >
+        <TableCells
+          type="text"
+          className={`w-full ${
+            row.getValue("title") ? "text-left" : "text-center"
+          } normal-case`}
+        >
+          {row.getValue("title") || "-"}
+        </TableCells>
+      </TooltipCell>
     ),
     filterFn: multiColumnFilterFn,
   },
@@ -237,11 +251,8 @@ const columns: ColumnDef<Article>[] = [
     maxSize: 100,
     header: ({ column }) => <SortableHeader column={column} title="URL" />,
     cell: ({ row }) => (
-      <TableCells
-        type="text"
-        className="max-w-[300px] h-6 py-0 overflow-hidden border rounded-md px-2 border-border "
-      >
-        <span className="flex items-center [&_svg]:size-4 hover:underline">
+      <TableCells type="text" className="max-w-[300px]  py-0 overflow-hidden ">
+        <span className="flex items-center [&_svg]:size-4 hover:underline  border rounded-md px-2 border-border h-6 max-w-fit">
           <Link2 className="-rotate-45 shrink-0" />
           <a
             href={row.getValue("url")}
@@ -263,23 +274,7 @@ const columns: ColumnDef<Article>[] = [
       const status: string = row.getValue("status");
       return (
         <TableCells type="text" className="normal-case h-6">
-          <div
-            className={` rounded-md capitalize text-xs flex items-center justify-center px-2 h-6 hover:text-red  w-fit ${
-              status == "Draft"
-                ? "bg-button-status-darkGray text-text-darkGray"
-                : status == "Approved" || status == "Published" || !status
-                ? "bg-green-100 text-[green]"
-                : status == "Submitted for Review"
-                ? "text-button-status-inReviewButton bg-button-status-inReviewButton/10"
-                : "bg-red-100 text-[red] "
-            }`}
-          >
-            {!status || status == "" || status == "Published"
-              ? "Approved"
-              : status == "Submitted for Review"
-              ? "In Review"
-              : status}
-          </div>
+          <StatusButton status={status} />
         </TableCells>
       );
     },

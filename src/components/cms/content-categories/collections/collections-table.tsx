@@ -38,7 +38,7 @@ const CollectionTable = ({
 }: {
   setCollections: React.Dispatch<React.SetStateAction<Collection[]>>;
   loading: boolean;
-  setLoading: (e: boolean) => void;
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   const router = useRouter();
   const { collections, updateCollections } = useContext(CollectionContext);
@@ -60,11 +60,20 @@ const CollectionTable = ({
     "Delete" | "Publish" | "Unpublish"
   >("Delete");
 
-  useEffect(() => {
+  async function fetchCollections() {
+    if (collections.length > 0) {
+      setLoading(false);
+      return; // Prevent fetching if data is already present
+    }
+    setLoading(true);
     getCollections().then((res) => {
       updateCollections(res);
       setLoading(false);
     });
+  }
+
+  useEffect(() => {
+    fetchCollections();
   }, []);
 
   const tableData = React.useMemo(
@@ -124,7 +133,7 @@ const CollectionTable = ({
               enableResizing: false,
             },
           ],
-    [loading, columns]
+    [loading]
   );
 
   const table = useReactTable({
@@ -161,36 +170,39 @@ const CollectionTable = ({
     },
   });
 
+  // Extract filtered rows to a variable for useEffect dependency
+  const filteredRows = table.getFilteredRowModel().rows;
+
+  // Update collections when the table data changes
   useEffect(() => {
+    if (!collections.length) return;
+    let filteredData = collections;
+    // Select rows based on current selection state
     const selectedRowKeys = Object.keys(rowSelection).map(Number);
-    const selectedRowsData = collections.filter(
+    filteredData = filteredData.filter(
       (i) => i.id && selectedRowKeys.includes(i.id)
     );
-    setSelectedRows(selectedRowsData);
-  }, [rowSelection]);
-
-  useEffect(() => {
-    if (!collections || collections.length === 0) return; // Prevent updates when data is empty
-    const currentRows = table
-      .getFilteredRowModel()
-      .rows.map((i) => Number(i.id));
-
-    const _collections = collections.filter(
-      (i) => i.id && currentRows.includes(i.id)
+    setSelectedRows((prev) =>
+      JSON.stringify(prev) === JSON.stringify(filteredData)
+        ? prev
+        : filteredData
     );
-    if (selectedRows.length > 0) {
-      setCollections(selectedRows);
+
+    // Update articles based on filtered table rows
+    if (filteredData.length > 0) {
+      setCollections(filteredData);
     } else {
-      setCollections(_collections);
+      const currentRows = filteredRows.map((i) => i.original);
+      setCollections(currentRows);
     }
-  }, [table, table.getFilteredRowModel().rows, selectedRows]);
+  }, [collections, rowSelection, setCollections, table, filteredRows]);
 
   const handleBulkAction = async () => {
     setIsProcessing(true);
     try {
       const selectedIds = new Set(selectedRows.map((i) => i.id));
       let updatedRows: Collection[] = [];
-      
+
       if (action === "Delete") {
         const _collections = collections.filter((collection) =>
           selectedIds.has(collection.id)
@@ -239,7 +251,7 @@ const CollectionTable = ({
       console.error("Error deleting collections:", error);
       toast({
         title: "Error",
-        description: `An error occurred while deleting the collections. ${error}`,
+        description: `${error}`,
         variant: "destructive",
       });
     }

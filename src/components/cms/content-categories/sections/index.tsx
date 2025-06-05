@@ -6,12 +6,11 @@ import MobilePreview from "@/components/mobile-preview-sidebar/mobile";
 import Table from "@/components/cms/content-categories/sections/sections-table";
 import { DetailedSection } from "@/types";
 import { useState } from "react";
-import DetailedMobilePreview from "../../articles/mobile-preview";
+import DetailedMobilePreview from "@/components/mobile-preview";
 
 export default function SectionsMainPage() {
   const [sections, setSections] = useState<DetailedSection[]>([]);
   const [loading, setLoading] = useState(true);
-
   return (
     <>
       <SidebarInset className="p-6 min-h-auto w-full overflow-hidden">

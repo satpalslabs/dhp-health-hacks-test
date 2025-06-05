@@ -32,7 +32,7 @@ const Page = ({ params }: { params: Promise<{ collectionID: string }> }) => {
     }
 
     fetchCollection();
-  }, [params]);
+  }, [params, collections]);
 
   if (loading) {
     return (

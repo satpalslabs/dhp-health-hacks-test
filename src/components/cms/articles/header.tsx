@@ -1,5 +1,11 @@
 import { Table } from "@tanstack/table-core";
-import { useDeferredValue, useEffect, useState } from "react";
+import {
+  ReactNode,
+  useContext,
+  useDeferredValue,
+  useEffect,
+  useState,
+} from "react";
 import { DateRange } from "react-day-picker";
 import { format } from "date-fns";
 
@@ -9,7 +15,6 @@ import {
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 import {
-  Ban,
   Check,
   ChevronDown,
   ChevronsUpDown,
@@ -19,6 +24,7 @@ import {
   Search,
   Settings2,
   Trash2,
+  Upload,
   X,
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
@@ -46,10 +52,11 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
+import { AuthContext } from "@/context/auth-provider";
 
 type StatusType = {
   value: Article["status"] | "all";
-  label: "All" | "Draft" | "In Review" | "Rejected" | "Approved";
+  label: "All" | "Draft" | "In Review" | "Rejected" | "Approved" | "Published";
 };
 
 const ArticleTableHeader = ({
@@ -85,6 +92,9 @@ const ArticleTableHeader = ({
   const waitingForApprovalCount = table
     .getPrePaginationRowModel()
     .rows.filter((i) => i.original.status === "Submitted for Review");
+  const rejectedArticleCount = table
+    .getPrePaginationRowModel()
+    .rows.filter((i) => i.original.status === "Rejected");
   const pathname = usePathname();
 
   const [inputValue, setInputValue] = useState("");
@@ -92,8 +102,32 @@ const ArticleTableHeader = ({
 
   useEffect(() => {
     table.getColumn("title")?.setFilterValue(deferredInputValue);
-  }, [deferredInputValue]);
+  }, [deferredInputValue, table]);
 
+  function handleFilterButtonClick(
+    status: Article["status"],
+    label: StatusType["label"]
+  ) {
+    setSelectedStatus((prev) => {
+      if (prev.value != status) {
+        table.getColumn("status")?.setFilterValue(status);
+        setTimeout(() => {
+          table.toggleAllRowsSelected();
+        }, 10);
+        return {
+          label: label,
+          value: status,
+        };
+      } else {
+        table.toggleAllRowsSelected();
+        table.getColumn("status")?.setFilterValue(undefined);
+        return {
+          label: "All",
+          value: "all",
+        };
+      }
+    });
+  }
   return (
     <Collapsible className="group">
       <div className="flex items-center justify-between">
@@ -104,7 +138,7 @@ const ArticleTableHeader = ({
               placeholder="Search"
               value={inputValue}
               onChange={(event) => setInputValue(event.target.value)}
-              className="max-w-sm w-[264px] pl-[36px] border-input-border focus-visible:ring-0 focus-visible:ring-offset-0"
+              className="max-w-sm w-[264px] max-[1580px]:w-[200px] pl-[36px] border-input-border focus-visible:ring-0 focus-visible:ring-offset-0"
             />
           </div>
           <DropdownMenu>
@@ -240,11 +274,26 @@ const ArticleTableHeader = ({
             </Button>
           </CollapsibleTrigger>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2">
+          {rejectedArticleCount.length > 0 && (
+            <Button
+              variant="secondary"
+              className={` font-medium font-inter border ring-foreground text-button-status-rejectedButton ${
+                selectedStatus.value == "Rejected" &&
+                table.getIsAllRowsSelected() &&
+                table.getColumn("status")?.getFilterValue() == "Rejected"
+                  ? "border-primary"
+                  : "border-input-border"
+              }`}
+              onClick={() => handleFilterButtonClick("Rejected", "Rejected")}
+            >
+              {rejectedArticleCount.length} Rejected
+            </Button>
+          )}
           {waitingForApprovalCount.length > 0 && (
             <Button
               variant="secondary"
-              className={` font-medium font-inter border group-data-[state=open]:ring-1 ring-foreground ${
+              className={` font-medium font-inter border ring-foreground text-button-status-inReviewButton  ${
                 selectedStatus.value == "Submitted for Review" &&
                 table.getIsAllRowsSelected() &&
                 table.getColumn("status")?.getFilterValue() ==
@@ -252,29 +301,9 @@ const ArticleTableHeader = ({
                   ? "border-primary"
                   : "border-input-border"
               }`}
-              onClick={async () => {
-                setSelectedStatus((prev) => {
-                  if (prev.value != "Submitted for Review") {
-                    table
-                      .getColumn("status")
-                      ?.setFilterValue("Submitted for Review");
-                    setTimeout(() => {
-                      table.toggleAllRowsSelected();
-                    }, 10);
-                    return {
-                      label: "In Review",
-                      value: "Submitted for Review",
-                    };
-                  } else {
-                    table.toggleAllRowsSelected();
-                    table.getColumn("status")?.setFilterValue(undefined);
-                    return {
-                      label: "All",
-                      value: "all",
-                    };
-                  }
-                });
-              }}
+              onClick={() =>
+                handleFilterButtonClick("Submitted for Review", "In Review")
+              }
             >
               {waitingForApprovalCount.length} Awaiting for Approval
             </Button>
@@ -359,7 +388,7 @@ const ArticleTableHeader = ({
                 onClick={resetFilters}
                 size="sm"
               >
-                {label}: {format(dateRange.from, "LLL dd, y")} -{" "}
+                {label}: {format(dateRange.from, "LLL dd, y")} -
                 {format(dateRange.to, "LLL dd, y")}
                 <X className="transition-transform" />
               </Button>
@@ -371,6 +400,7 @@ const ArticleTableHeader = ({
               variant="ghost"
               className="text-button-filter-text mb-2 bg-button-filter-background font-inter dark:bg-accent dark:text-button-filter-background font-medium flex gap-1 items-center px-3 h-8 text-sm rounded-[12px]"
               onClick={() => {
+                table.toggleAllRowsSelected(false);
                 setSelectedStatus({ label: "All", value: "all" });
                 table.getColumn("status")?.setFilterValue(undefined);
               }}
@@ -415,15 +445,57 @@ export const SelectionControlBar = ({
   data: Article[];
   selectedRows: Article[];
   setDeleteDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  setAction: React.Dispatch<
-    React.SetStateAction<"Delete" | "Rejected" | "Approved">
-  >;
+  setAction: React.Dispatch<React.SetStateAction<"Delete" | Article["status"]>>;
 }) => {
   const pathname = usePathname();
+  const { user } = useContext(AuthContext);
+
+  const dropdownItems: {
+    name: string;
+    value: Article["status"];
+    role: string[];
+    visible: boolean;
+    icon: ReactNode;
+  }[] = [
+    {
+      name: "Submit for Review",
+      value: "Submitted for Review",
+      role: ["superuser"],
+      visible: selectedRows.every((i) => i.status == "Draft"),
+      icon: <Upload />,
+    },
+    {
+      name: "Approve",
+      value: "Approved",
+      role: ["superuser"],
+      visible: selectedRows.every((i) => i.status == "Submitted for Review"),
+      icon: <Check />,
+    },
+    {
+      name: "Publish",
+      value: "Published",
+      role: ["superuser"],
+      visible: selectedRows.every((i) => i.status == "Approved"),
+      icon: <Globe />,
+    },
+    {
+      name: "Reject",
+      value: "Rejected",
+      role: ["superuser"],
+      visible: selectedRows.every(
+        (i) =>
+          i.status == "Approved" ||
+          i.status == "Published" ||
+          i.status == "Submitted for Review"
+      ),
+      icon: <X />,
+    },
+  ];
   return (
     <div className="flex items-center gap-3 text-button-filter-text font-inter font-medium text-sm mb-4 leading-6">
       <div>
-        {selectedRows.length} of {data.length} Articles
+        {selectedRows.length} of {data.length}
+        {pathname.includes("articles") ? " Articles" : " Videos"}
       </div>
       <Separator />
       {selectedRows.length > 0 && (
@@ -437,44 +509,36 @@ export const SelectionControlBar = ({
                     : `/videos/edit/${selectedRows[0].id}`
                 }
               >
-                <ActionButton icon={PencilLine} label="Edit" />
+                <ActionButton icon={<PencilLine />} label="Edit" />
               </Link>
               <Separator />
             </>
           )}
-          {selectedRows.some((article) => article.status === "Approved") && (
-            <>
-              <div
-                onClick={() => {
-                  setAction("Approved");
-                  setDeleteDialogOpen(true);
-                }}
-              >
-                <ActionButton icon={Ban} label="Unpublish" />
-              </div>
-              <Separator />
-            </>
-          )}
-          {selectedRows.some((article) => article.status !== "Approved") && (
-            <>
-              <div
-                onClick={() => {
-                  setAction("Rejected");
-                  setDeleteDialogOpen(true);
-                }}
-              >
-                <ActionButton icon={Globe} label="Publish" />
-              </div>
-              <Separator />
-            </>
-          )}
+          {user?.role &&
+            dropdownItems
+              .filter((item) => item.visible && item.role.includes(user.role))
+              .map((item, index) => (
+                <span className="flex items-center gap-3" key={index}>
+                  <div
+                    key={index}
+                    onClick={() => {
+                      setAction(item.value);
+                      setDeleteDialogOpen(true);
+                    }}
+                  >
+                    <ActionButton icon={item.icon} label={item.name} />
+                  </div>
+                  <Separator />
+                </span>
+              ))}
+
           <div
             onClick={() => {
               setAction("Delete");
               setDeleteDialogOpen(true);
             }}
           >
-            <ActionButton icon={Trash2} label="Delete" />
+            <ActionButton icon={<Trash2 />} label="Delete" />
           </div>
         </>
       )}
@@ -509,6 +573,10 @@ const SelectStatus = ({
     {
       label: "Rejected",
       value: "Rejected",
+    },
+    {
+      label: "Published",
+      value: "Published",
     },
   ];
   return (
@@ -575,12 +643,12 @@ const ActionButton = ({
   icon: Icon,
   label,
 }: {
-  icon: React.ElementType;
+  icon: ReactNode;
   label: string;
 }) => (
   <>
     <button className="flex items-center gap-2 [&_svg]:size-4">
-      <Icon />
+      {Icon}
       <span>{label}</span>
     </button>
   </>

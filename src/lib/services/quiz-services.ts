@@ -96,7 +96,7 @@ async function DeleteQuiz(id: number) {
     const json = await response.json();
 
     if (!response.ok) {
-      throw new Error("Failed to Delete Quiz.");
+      throw new Error(json.error ?? "Failed to Delete Quiz.");
     }
 
     return json;

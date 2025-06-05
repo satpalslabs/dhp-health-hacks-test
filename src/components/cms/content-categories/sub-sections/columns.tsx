@@ -1,5 +1,11 @@
 import { Column, ColumnDef, FilterFn, Row } from "@tanstack/react-table";
-import { ChevronsUpDown, FolderClosed } from "lucide-react";
+import {
+  Box,
+  ChevronsUpDown,
+  FileText,
+  FolderClosed,
+  Youtube,
+} from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useTheme } from "next-themes";
 import dynamic from "next/dynamic";
@@ -9,6 +15,7 @@ import { buttonVariants } from "@/components/ui/button";
 import Link from "next/link";
 import { HealthCondition, DetailedSubSection } from "@/types";
 import TableCells from "@/components/table/table-cells";
+import { Stat } from "../sections/columns";
 const ReactJsonView = dynamic(() => import("@microlink/react-json-view"), {
   ssr: false,
 });
@@ -143,7 +150,7 @@ const columns: ColumnDef<DetailedSubSection>[] = [
   {
     accessorKey: "section",
     enableResizing: true,
-    size: 300,
+    size: 200,
     header: ({ column }) => <SortableHeader column={column} title="Section" />,
     cell: ({ row }) => <SectionCell row={row} />,
   },
@@ -160,6 +167,34 @@ const columns: ColumnDef<DetailedSubSection>[] = [
       />
     ),
     filterFn: HCSelectionFilters,
+  },
+  {
+    accessorKey: "content",
+    enableResizing: true,
+    size: 200,
+    header: ({ column }) => <SortableHeader column={column} title="Content" />,
+    cell: ({ row }) => {
+      const { collections = [] } = row.original;
+      const articles = collections.flatMap((c) => c.articles || []);
+      const videos = collections.flatMap((c) => c.videos || []);
+      const showEmpty =
+        articles.length === 0 &&
+        videos.length === 0 &&
+        collections.length === 0;
+
+      return (
+        <div className="flex gap-[10px] items-center">
+          {collections.length > 0 && (
+            <Stat icon={Box} count={collections.length} />
+          )}
+          {articles.length > 0 && (
+            <Stat icon={FileText} count={articles.length} />
+          )}
+          {videos.length > 0 && <Stat icon={Youtube} count={videos.length} />}
+          {showEmpty && <p className="grow w-full text-center">-</p>}
+        </div>
+      );
+    },
   },
   {
     accessorKey: "bg_color",

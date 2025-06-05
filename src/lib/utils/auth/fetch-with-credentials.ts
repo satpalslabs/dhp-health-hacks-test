@@ -59,5 +59,13 @@ export async function refresh(refreshToken: string): Promise<SignInResponse> {
             Authorization: `Bearer ${refreshToken} `,
         },
     });
-    return res.json();
+    try {
+        if (!res.ok) {
+            throw { error: "Refresh Token Api failed", status: res.status };
+        }
+        return await res.json();
+    } catch (err) {
+        throw { error: `Refresh Token Api failed: ${err}`, status: res.status };
+
+    }
 }

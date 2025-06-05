@@ -26,7 +26,7 @@ const ActionConfirmationDialog = ({
   variant?: "destructive" | "secondary";
   dialog_description: string;
   icon: React.ReactNode;
-  action?: "Delete" | "Publish" | "Unpublish";
+  action?: string;
   showLoader?: boolean;
 }) => {
   return (

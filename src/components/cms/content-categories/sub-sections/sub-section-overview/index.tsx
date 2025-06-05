@@ -6,7 +6,7 @@ import MobilePreview from "@/components/mobile-preview-sidebar/mobile";
 import { Article, ContentType, DetailedSubSection } from "@/types";
 import { useMemo, useState } from "react";
 import Table from "./articles-table";
-import DetailedMobilePreview from "@/components/cms/articles/mobile-preview";
+import DetailedMobilePreview from "@/components/mobile-preview";
 
 export default function SubSectionDetailPage({
   subSection,

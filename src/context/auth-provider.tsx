@@ -41,7 +41,7 @@ export function AuthContextProvider({
       }
     };
     fetchUser();
-  }, [refetch]);
+  }, [refetch, router]);
 
   return (
     <AuthContext.Provider

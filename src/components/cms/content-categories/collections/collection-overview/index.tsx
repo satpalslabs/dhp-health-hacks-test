@@ -6,7 +6,7 @@ import MobilePreview from "@/components/mobile-preview-sidebar/mobile";
 import { Article, Collection, Section, SubSection } from "@/types";
 import { useState } from "react";
 import Table from "./articles-table";
-import DetailedMobilePreview from "@/components/cms/articles/mobile-preview";
+import DetailedMobilePreview from "@/components/mobile-preview";
 
 export interface ArticleTableRow extends Article {
   section_data: Section | null;

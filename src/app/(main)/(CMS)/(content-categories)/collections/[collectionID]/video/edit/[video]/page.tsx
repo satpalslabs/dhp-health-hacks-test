@@ -34,7 +34,7 @@ const Page = ({
       if (!collection) return redirect("/collections");
 
       setCollectionData(collection);
-      
+
       const _articleData = await getSingleVideo(Number(video));
       if (!_articleData) return redirect(`/collections/${collectionID}`);
 
@@ -42,7 +42,7 @@ const Page = ({
       setArticleData(_articleData);
     }
     fetchData();
-  }, [params]);
+  }, [params, collections]);
 
   if (loading) {
     return (

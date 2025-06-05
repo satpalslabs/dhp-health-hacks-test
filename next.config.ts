@@ -1,7 +1,12 @@
 import type { NextConfig } from "next";
+const { version } = require('./package.json');
 
 const nextConfig: NextConfig = {
   reactStrictMode: false,
+  productionBrowserSourceMaps: true, // enable source maps in prod
+  env: {
+    NEXT_PUBLIC_APP_VERSION: version,
+  },
   images: {
     remotePatterns: [
       {
@@ -17,7 +22,10 @@ const nextConfig: NextConfig = {
     ],
   },
   /* config options here */
-  webpack(config) {
+  webpack(config, { dev, isServer }) {
+    if (dev && !isServer) {
+      config.devtool = 'source-map'; // emit source maps in development
+    }
     config.module.rules.push({
       test: /\.svg$/i,
       issuer: /\.[jt]sx?$/,

@@ -12,19 +12,20 @@ const NHSHealthConditions = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    loadData();
-  }, []);
-  const loadData = async () => {
-    if (NHSConditions.length === 0 && appSettings) {
-      const nhsData = await getNHSData(
-        appSettings.meta.collections.nhs_health_az_api_schema_id
-      );
-      setLoading(false);
-      setNHSConditions(nhsData);
-    } else {
-      setLoading(false);
+    async function loadData() {
+      if (NHSConditions.length === 0 && appSettings) {
+        const nhsData = await getNHSData(
+          appSettings.meta.collections.nhs_health_az_api_schema_id
+        );
+        setLoading(false);
+        setNHSConditions(nhsData);
+      } else {
+        setLoading(false);
+      }
     }
-  };
+
+    loadData();
+  }, [NHSConditions.length, appSettings, setNHSConditions]);
 
   return <NHSMainPage conditions={NHSConditions} loading={loading} />;
 };

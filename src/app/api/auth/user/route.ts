@@ -1,3 +1,4 @@
+import { deleteCookieForVerification } from '@/lib/utils/auth/2FA/store-cookies-2fa';
 import { refresh } from '@/lib/utils/auth/fetch-with-credentials';
 import { getRefreshToken, getUserCredentials } from '@/lib/utils/auth/get-cookies';
 import { saveUserTokens } from '@/lib/utils/auth/save-tokens';
@@ -13,6 +14,7 @@ export async function GET(req: NextRequest) {
         }
 
         const newTokens = await refresh(refreshToken);
+        await deleteCookieForVerification()
         await saveUserTokens({ ...newTokens, environment: user.environment });
         return NextResponse.json({ user });
     } catch (error) {

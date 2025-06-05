@@ -1,4 +1,4 @@
-import { NextRequest } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { ResponseWithEnv } from "./save-tokens";
 
 export function getUserCredentials(req: NextRequest): ResponseWithEnv | null {
@@ -35,4 +35,12 @@ export function getActiveEnvironment(req: NextRequest): string {
     let environment = req.cookies.get('active-env')?.value;
     environment = environment as string;
     return environment
+}
+
+
+export async function set2FACredentials(response: NextResponse, auth_data: ResponseWithEnv) {
+    const user: ResponseWithEnv | null = auth_data;
+    response.cookies.set("auth-data", user ? JSON.stringify(user) : "");
+    response.cookies.set("active-env", user.environment);
+    return user;
 }

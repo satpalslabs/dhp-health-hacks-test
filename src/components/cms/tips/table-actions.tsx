@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { Ellipsis, PencilLine, Trash2 } from "lucide-react";
-import { TableRowType } from "./tips-table";
+import { Tip } from "@/types";
 const TableActions = ({
   row,
   setSelectedRows,
@@ -15,13 +15,29 @@ const TableActions = ({
   setRowSelection,
   setOpenEditor,
 }: {
-  row: Row<TableRowType>;
-  setSelectedRows: React.Dispatch<React.SetStateAction<TableRowType[]>>;
+  row: Row<Tip>;
+  setSelectedRows: React.Dispatch<React.SetStateAction<Tip[]>>;
   setDeleteDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setRowSelection: React.Dispatch<React.SetStateAction<RowSelectionState>>;
   setOpenEditor: React.Dispatch<React.SetStateAction<boolean>>;
 }) => (
-  <>
+  <div
+    className="flex gap-2 h-full items-center px-2"
+    onClick={(e) => {
+      e.stopPropagation(); // Stop bubbling
+    }}
+  >
+    <Button
+      variant="secondary"
+      className="h-8 w-8 float-right !bg-transparent focus-visible:ring-0 "
+      onClick={(event) => {
+        event.stopPropagation(); // Stop bubbling
+        setSelectedRows([row.original]);
+        setOpenEditor(true);
+      }}
+    >
+      <PencilLine />
+    </Button>
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button
@@ -33,23 +49,11 @@ const TableActions = ({
       </DropdownMenuTrigger>
       <DropdownMenuContent
         className="w-60 p-1"
-        onClick={(e: { stopPropagation: () => void }) => {
+        onClick={(e) => {
           e.stopPropagation();
         }}
       >
         <DropdownMenuGroup className="flex flex-col w-full ">
-          <Button
-            variant="ghost"
-            className="flex bg-transparent gap-2 justify-center  w-full"
-            onClick={(event) => {
-              event.stopPropagation(); // Stop bubbling
-              setSelectedRows([row.original]);
-              setOpenEditor(true);
-            }}
-          >
-            <PencilLine />
-            <div className="text-sm grow text-left font-normal">Edit</div>
-          </Button>
           <Button
             variant="ghost"
             className="flex bg-transparent gap-2 justify-center  w-full"
@@ -68,7 +72,7 @@ const TableActions = ({
         </DropdownMenuGroup>
       </DropdownMenuContent>
     </DropdownMenu>
-  </>
+  </div>
 );
 
 export default TableActions;

@@ -9,7 +9,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import type { Tip as TipType, Quiz, Pack } from "@/types";
 import { Form } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
-import { SelectField } from "../form-components";
+import { SelectField } from "@/components/form-components";
 import QuizComponent from "@/components/ui/quiz";
 import { AddButton } from "@/components/ui/add-button";
 import { QuizContext } from "@/context/quiz-data-provider";
@@ -44,7 +44,7 @@ const SelectExistingQuizForm = ({
 
   useEffect(() => {
     form.reset();
-  }, [open]);
+  }, [open, form]);
 
   useEffect(() => {
     setOptions(quizzes);

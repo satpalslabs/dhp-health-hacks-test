@@ -12,12 +12,19 @@ import {
   useReactTable,
   VisibilityState,
 } from "@tanstack/react-table";
-import React, { useContext, useEffect, useState } from "react";
+import React, {
+  Dispatch,
+  SetStateAction,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import TableHeader, { SelectionControlBar } from "./header";
 import { DetailedSection, Section } from "@/types";
 import TableActions from "./table-actions";
 import { Ban, Globe, TriangleAlert } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "@/hooks/use-toast";
 import columns from "./columns";
 import { SectionContext } from "@/context/section-data-provider";
 import AddOrEditSection from "./manage-section";
@@ -33,36 +40,31 @@ const SectionsTable = ({
   loading,
   setLoading,
 }: {
-  setSections: React.Dispatch<React.SetStateAction<DetailedSection[]>>;
+  setSections: Dispatch<SetStateAction<DetailedSection[]>>;
   loading: boolean;
-  setLoading: (loading: boolean) => void;
+  setLoading: Dispatch<SetStateAction<boolean>>;
 }) => {
-  const { toast } = useToast();
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const { sections, updateSections } = useContext(SectionContext);
   const [showErrorDialog, setShowErrorDialog] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    []
-  );
-
-  const [pagination, setPagination] = React.useState({
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
+  const [rowSelection, setRowSelection] = useState({});
+  const [selectedRows, setSelectedRows] = useState<DetailedSection[]>([]);
+  const [sorting, setSorting] = useState<SortingState>([]);
+  const [open, setOpen] = useState<boolean>(false);
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const [pagination, setPagination] = useState({
     pageIndex: 0, //initial page index
     pageSize: 10, //default page size
   });
 
-  const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({});
-  const [rowSelection, setRowSelection] = React.useState({});
-  const [selectedRows, setSelectedRows] = React.useState<DetailedSection[]>([]);
-  const [sorting, setSorting] = React.useState<SortingState>([]);
-  const [open, setOpen] = useState<boolean>(false);
-  const [action, setAction] = React.useState<
-    "Delete" | "Publish" | "Unpublish"
-  >("Delete");
+  const [action, setAction] = useState<"Delete" | "Publish" | "Unpublish">(
+    "Delete"
+  );
   const router = useRouter();
 
-  const tableColumns = React.useMemo(
+  const tableColumns = useMemo(
     () =>
       loading
         ? [
@@ -113,9 +115,9 @@ const SectionsTable = ({
               enableResizing: false,
             },
           ],
-    [loading, columns]
+    [loading]
   );
-  const tableData = React.useMemo(
+  const tableData = useMemo(
     () => (loading ? Array(5).fill({}) : sections),
     [loading, sections]
   );
@@ -157,41 +159,50 @@ const SectionsTable = ({
   useEffect(() => {
     let isMounted = true;
     if (isMounted) {
-      getSections().then((res) => {
-        updateSections(res);
-        setSections(res as unknown as DetailedSection[]);
-        setLoading(false);
-      });
+      fetchSections();
     }
-
     return () => {
       isMounted = false;
     };
   }, []);
 
+  async function fetchSections() {
+    if (sections.length > 0) {
+      setLoading(false);
+      return; // Prevent fetching if data is already present
+    }
+    setLoading(true);
+    getSections().then((res) => {
+      updateSections(res);
+      setSections(res as unknown as DetailedSection[]);
+      setLoading(false);
+    });
+  }
+  // Update selected rows when row selection changes
+  const filteredRows = table.getFilteredRowModel().rows;
+
   useEffect(() => {
+    if (!sections.length) return;
+    let filteredData = sections as unknown as DetailedSection[];
+    // Select rows based on current selection state
     const selectedRowKeys = Object.keys(rowSelection).map(Number);
-    const selectedRowsData = sections.filter(
+    filteredData = filteredData.filter(
       (i) => i.id && selectedRowKeys.includes(i.id)
     );
-    setSelectedRows(selectedRowsData as unknown as DetailedSection[]);
-  }, [rowSelection, sections]);
-
-  useEffect(() => {
-    if (!sections || sections.length === 0) return; // Prevent updates when data is empty
-    const currentRows = table
-      .getFilteredRowModel()
-      .rows.map((i) => Number(i.id));
-
-    const _sections = sections.filter(
-      (i) => i.id && currentRows.includes(i.id)
+    setSelectedRows((prev) =>
+      JSON.stringify(prev) === JSON.stringify(filteredData)
+        ? prev
+        : filteredData
     );
-    if (selectedRows.length > 0) {
-      setSections(selectedRows);
+
+    // Update articles based on filtered table rows
+    if (filteredData.length > 0) {
+      setSections(filteredData);
     } else {
-      setSections(_sections as unknown as DetailedSection[]);
+      const currentRows = filteredRows.map((i) => i.original);
+      setSections(currentRows);
     }
-  }, [table, table.getFilteredRowModel().rows, sections, selectedRows]);
+  }, [sections, rowSelection, setSections, table, filteredRows]);
 
   const handleBulkAction = async () => {
     setIsProcessing(true);
@@ -238,6 +249,7 @@ const SectionsTable = ({
           )
         ) {
           setDeleteDialogOpen(false);
+          setIsProcessing(false);
           setShowErrorDialog(true);
           return null;
         } else {

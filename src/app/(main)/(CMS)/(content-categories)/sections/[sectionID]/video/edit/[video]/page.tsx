@@ -42,7 +42,7 @@ const Page = ({
       setArticleData(_articleData);
     }
     fetchData();
-  }, [params]);
+  }, [params, sections]);
 
   if (loading) {
     return (

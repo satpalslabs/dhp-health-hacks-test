@@ -1,9 +1,10 @@
+import { is2FAEnabled } from "@/lib/utils/auth/2FA/is2FA-enabled";
 import { getConfigObject } from "@/lib/utils/auth/get-config-object";
-import { saveUserTokens } from "@/lib/utils/auth/save-tokens";
-import { SignInResponse } from "@/types";
-import { NextResponse } from "next/server";
+import { set2FACredentials } from "@/lib/utils/auth/get-cookies";
+import { SignInResponse, User } from "@/types";
+import { NextRequest, NextResponse } from "next/server";
 
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
     const { email, password, environment } = await request.json();
     const options: RequestInit = {
         method: "POST",
@@ -35,13 +36,21 @@ export async function POST(request: Request) {
     if ("error" in tokensResponse) {
         return Response.json({ ...tokensResponse, success: false });
     }
-    const response = NextResponse.json(tokensResponse, {
-        status: 200,
-        headers: { "Content-Type": "application/json" },
-    });
 
-    // Save the tokens in the cookie response
-    await saveUserTokens({ ...tokensResponse, environment })
+    const Is2FAEnabled = await is2FAEnabled(tokensResponse as unknown as User)
+
+    const response = NextResponse.json(
+        {
+            ...tokensResponse,
+            is2fa_enabled: Is2FAEnabled.enabled,
+            secretKey: Is2FAEnabled.secretKey
+        },
+        {
+            status: 200,
+            headers: { "Content-Type": "application/json" }
+        }
+    );
+    await set2FACredentials(response, { ...tokensResponse, environment, step: Is2FAEnabled.enabled ? 3 : 1 });
 
     return response;
 }

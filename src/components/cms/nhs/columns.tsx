@@ -125,8 +125,8 @@ const columns: ColumnDef<NHSCondition>[] = [
               status == "draft"
                 ? "bg-button-status-darkGray text-text-darkGray"
                 : status == "published"
-                ? "bg-green-100 text-[green]"
-                : "bg-red-100 text-[red] "
+                ? "text-button-status-publishedButton bg-button-status-publishedButton/10"
+                : "text-button-status-rejectedButton bg-button-status-rejectedButton/10 "
             }`}
           >
             {status}

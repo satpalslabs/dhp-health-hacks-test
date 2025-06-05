@@ -1,5 +1,11 @@
 import { Column, ColumnDef, FilterFn, Row } from "@tanstack/react-table";
-import { ChevronsUpDown } from "lucide-react";
+import {
+  BookmarkMinus,
+  Box,
+  ChevronsUpDown,
+  FileText,
+  Youtube,
+} from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useTheme } from "next-themes";
 import dynamic from "next/dynamic";
@@ -184,6 +190,43 @@ const columns: ColumnDef<DetailedSection>[] = [
     filterFn: HCSelectionFilters,
   },
   {
+    accessorKey: "content",
+    enableResizing: true,
+    size: 200,
+    header: ({ column }) => <SortableHeader column={column} title="Content" />,
+    cell: ({ row }) => {
+      const { collections: origCollections = [], sub_sections = [] } =
+        row.original;
+      const allCollections = [
+        ...origCollections,
+        ...sub_sections.flatMap((s) => s.collections || []),
+      ];
+      const articles = allCollections.flatMap((c) => c.articles || []);
+      const videos = allCollections.flatMap((c) => c.videos || []);
+      const showEmpty =
+        articles.length === 0 &&
+        videos.length === 0 &&
+        sub_sections.length === 0 &&
+        allCollections.length === 0;
+
+      return (
+        <div className="flex gap-[10px] items-center">
+          {sub_sections.length > 0 && (
+            <Stat icon={BookmarkMinus} count={sub_sections.length} />
+          )}
+          {allCollections.length > 0 && (
+            <Stat icon={Box} count={allCollections.length} />
+          )}
+          {articles.length > 0 && (
+            <Stat icon={FileText} count={articles.length} />
+          )}
+          {videos.length > 0 && <Stat icon={Youtube} count={videos.length} />}
+          {showEmpty && <p className="grow w-full text-center">-</p>}
+        </div>
+      );
+    },
+  },
+  {
     accessorKey: "createdAt",
     enableResizing: false,
     size: 200,
@@ -260,7 +303,7 @@ const HealthConditionCell: React.FC<{ row: Row<DetailedSection> }> = ({
           <div
             className={cn(
               buttonVariants({ variant: "outline" }),
-              ` px-2 py-1 hover:text-red h-fit w-fit shrink-0`
+              ` px-2 py-1 hover:text-none h-fit w-fit shrink-0`
             )}
           >
             {row.original.associated_conditions[0].name}
@@ -272,3 +315,21 @@ const HealthConditionCell: React.FC<{ row: Row<DetailedSection> }> = ({
     <p className="text-center">-</p>
   );
 };
+
+export const Stat = ({
+  icon: Icon,
+  count,
+}: {
+  icon: React.ElementType;
+  count: number;
+}) => (
+  <div
+    className={cn(
+      buttonVariants({ variant: "outline" }),
+      "px-2 py-1 hover:text-none h-fit w-fit shrink-0"
+    )}
+  >
+    <Icon />
+    {count}
+  </div>
+);

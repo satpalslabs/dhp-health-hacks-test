@@ -10,19 +10,18 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import Tip from "@/components/ui/tip";
 import { AddButton } from "@/components/ui/add-button";
-import { HConditionContext } from "@/context/health-conditions-provider";
 import { PacksContext } from "@/context/pack-data-provider";
 import { TipsContext } from "@/context/tips-data-provider";
 import { ArticleContext } from "@/context/article-data-provider";
 import SideDrawer from "../articles/add-edit-articles/form-drawers";
-import { SelectField } from "../articles/add-edit-articles/form-components";
-import AddHealthHacksConditionModel from "../articles/add-edit-articles/form-components/add-health-hacks-condition";
+import { SelectField } from "@/components/form-components";
 import AddOrEditPack from "../content-categories/packs/manage-pack";
+import { HealthConditionSelectField } from "../content-categories/collections/manage-collection";
 
 const formSchema = z.object({
-  associated_conditions: z.array(z.number()).optional(),
+  associated_conditions: z.array(z.number()).min(1),
   tips_categories: z.array(z.number()),
-  videos: z.array(z.number()).optional(),
+  videos: z.array(z.number()),
   title: z.string().nonempty({ message: "Title is Required" }),
   description: z.string().optional(),
 });
@@ -38,12 +37,11 @@ const AddOrEditTip = ({
   handleSubmit?: (tip: TipType) => void;
   editTip?: number | null;
 }) => {
-  const { packs } = useContext(PacksContext);
   const [editTipData, setEditTipData] = useState<TipType>();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: editTipData
-      ? { ...editTipData, description: editTipData.description ?? undefined }
+      ? {}
       : {
           associated_conditions: [],
           title: "",
@@ -64,16 +62,24 @@ const AddOrEditTip = ({
           shouldValidate: true,
         });
         form.setValue("title", _editTip.title, { shouldValidate: true });
-        form.setValue("tips_categories", _editTip.tips_categories, {
-          shouldValidate: true,
-        });
-        form.setValue("videos", _editTip.videos, { shouldValidate: true });
+        form.setValue(
+          "tips_categories",
+          _editTip.tips_categories.map((i) => i.id),
+          {
+            shouldValidate: true,
+          }
+        );
+        form.setValue(
+          "videos",
+          _editTip.videos.map((i) => i.id).filter((id) => id !== null),
+          { shouldValidate: true }
+        );
       }
     } else {
       form.reset();
       setEditTipData(undefined);
     }
-  }, [editTip, open]);
+  }, [editTip, open, form, tips]);
 
   return (
     <SideDrawer
@@ -86,10 +92,9 @@ const AddOrEditTip = ({
             tip={{
               id: null,
               title: form.watch("title"),
-              tipCategory: packs.find(
-                (i) => i.id == form.watch("tips_categories")[0]
-              ),
-              tips_categories: form.watch("tips_categories"),
+              // tips_categories: form.watch("tips_categories")?,
+              tips_categories: [],
+              videos: [],
               description: form.watch("description"),
               associated_conditions: form.watch("associated_conditions"),
             }}
@@ -109,6 +114,15 @@ const AddOrEditTip = ({
 
 export default AddOrEditTip;
 
+interface TipFormBody
+  extends Omit<
+    TipType,
+    "associated_conditions" | "tips_categories" | "videos"
+  > {
+  tips_categories: number[];
+  associated_conditions: number[];
+  videos: number[];
+}
 const TipsForm = ({
   form,
   handleSubmit,
@@ -122,18 +136,15 @@ const TipsForm = ({
 }) => {
   // const tipsContext = useContext(ArticleContext);
   const [openDialog_TipCategory, setOpenDialog_TipCategory] = useState(false);
-  const { HConditions } = useContext(HConditionContext);
   const { articles } = useContext(ArticleContext);
   const { packs, updatePacks } = useContext(PacksContext);
-  const { tips, updateTips } = useContext(TipsContext);
+  const { tips } = useContext(TipsContext);
   const handleTip = () => {
     const maxId = Math.max(...(tips.map((i) => i.id ?? 0) ?? [])) + 1;
-    const _currentDate = new Date().toISOString();
-    const tipData: TipType = {
+    // const _currentDate = new Date().toISOString();
+    const tipData: TipFormBody = {
       id: editTip ? editTip.id : maxId,
-      createdAt: _currentDate,
       ...(editTip ? editTip : {}),
-      updatedAt: _currentDate,
       ...form.getValues(),
     };
     if (!editTip) {
@@ -151,18 +162,18 @@ const TipsForm = ({
         });
         updatePacks([..._updatedTipCategories]);
       });
-      updateTips([...tips, tipData]);
+      // updateTips([...tips, tipData]);
     } else {
-      const _updatedTips = tips;
-      const prevTipIndex = _updatedTips.findIndex(
-        (item) => item.id == editTip.id
-      );
-      _updatedTips.splice(prevTipIndex, 1, tipData);
-      updateTips([..._updatedTips]);
+      // const _updatedTips = tips;
+      // const prevTipIndex = _updatedTips.findIndex(
+      //   (item) => item.id == editTip.id
+      // );
+      // _updatedTips.splice(prevTipIndex, 1, tipData);
+      // updateTips([..._updatedTips]);
     }
 
     if (handleSubmit) {
-      handleSubmit(tipData);
+      // handleSubmit(tipData);
     }
     form.reset();
   };
@@ -173,27 +184,8 @@ const TipsForm = ({
           <div className="grow flex flex-col gap-4 overflow-y-auto px-[2px] pb-5">
             <div className="flex gap-[6px]">
               <div className="grow">
-                <SelectField
-                  control={form.control}
-                  name="associated_conditions"
-                  label="Health Condition"
-                  tooltip="Select Health Condition"
-                  placeholder="Select Health Condition"
-                  selectType="multi-select"
-                  dataKey="title"
-                  options={HConditions}
-                />
+                <HealthConditionSelectField form={form} />
               </div>
-              <AddHealthHacksConditionModel
-                afterSubmission={(newHealthCondition) => {
-                  form.setValue("associated_conditions", [
-                    ...(form.getValues("associated_conditions") ?? []),
-                    newHealthCondition.id as number,
-                  ]);
-                }}
-              >
-                <AddButton className="mt-7" />
-              </AddHealthHacksConditionModel>
             </div>
             <div className="flex gap-[6px]">
               <div className="grow">
@@ -207,14 +199,7 @@ const TipsForm = ({
                   dataKey="name"
                   options={
                     (form.watch("associated_conditions") ?? []).length > 0
-                      ? packs?.filter((i) =>
-                          (form.watch("associated_conditions") ?? []).some(
-                            (conditionId: number) =>
-                              HConditions.find(
-                                (condition) => condition.id === conditionId
-                              )?.tips_categories.includes(i.id as number)
-                          )
-                        ) ?? []
+                      ? packs ?? []
                       : packs ?? []
                   }
                 />

@@ -61,7 +61,7 @@ const TableHeader = ({
 
   useEffect(() => {
     table.getColumn("section_name")?.setFilterValue(deferredInputValue);
-  }, [deferredInputValue]);
+  }, [deferredInputValue, table]);
 
   const [selectedHC, setSelectedHC] = useState<HealthCondition | null>(null);
   return (

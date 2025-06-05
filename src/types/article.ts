@@ -49,9 +49,9 @@ interface AssociatedConditions extends commonFields {
 
 interface Article extends commonFields {
     old_id: number | null;
-    status: 'Draft' | 'Rejected' | 'Submitted for Review' | "Approved" | null;
+    status: 'Draft' | 'Rejected' | 'Submitted for Review' | "Approved" | "Published" | "Unpublished" | null;
     title?: string;
-    description?: string | null;
+    description?: string;
     url?: string | null;
     article_pc_id?: string | null;
     quiz: Quiz[];
@@ -86,7 +86,7 @@ type FormBodyContent = WebpageComponent & {
 
 interface FormBodyArticle extends commonFields {
     old_id: number | null;
-    status: 'Draft' | 'Rejected' | 'Submitted for Review' | "Approved" | null;
+    status: 'Draft' | 'Rejected' | 'Submitted for Review' | "Approved" | "Published" | "Unpublished" | null;
     title: string;
     url?: string | null;
     article_pc_id?: string | null;
@@ -98,6 +98,7 @@ interface FormBodyArticle extends commonFields {
     content_type: "content-webpage" | "content-page" | "content-video" | "article-cards";
     description?: string | null;
     collection: number | null;
+    key_points?: string;
     cards?: {
         title: string;
         description?: string;

@@ -3,7 +3,7 @@
 import { SidebarInset } from "@/components/ui/sidebar";
 import { PreviewSidebar } from "@/components/mobile-preview-sidebar/preview-sidebar";
 import MobilePreview from "@/components/mobile-preview-sidebar/mobile";
-import ArticleMobilePreview from "@/components/cms/articles/mobile-preview";
+import ArticleMobilePreview from "@/components/mobile-preview";
 import Table from "@/components/cms/articles/article-table";
 import { Article } from "@/types";
 import { useDeferredValue, useState } from "react";

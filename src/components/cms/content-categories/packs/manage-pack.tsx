@@ -15,7 +15,7 @@ import {
   FileDropZone,
   GridFields,
   SelectField,
-} from "@/components/cms/articles/add-edit-articles/form-components";
+} from "@/components/form-components";
 import { Pack } from "@/types";
 import { useContext, useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -43,8 +43,8 @@ import {
 import ColorPicker from "@/components/ui/color-picker";
 import { HConditionContext } from "@/context/health-conditions-provider";
 import { PacksContext } from "@/context/pack-data-provider";
-import AddHealthHacksConditionModel from "../../articles/add-edit-articles/form-components/add-health-hacks-condition";
 import SideDrawer from "../../articles/add-edit-articles/form-drawers";
+import AddHealthHacksConditionModel from "@/components/form-components/add-health-hacks-condition";
 const months = [
   "January",
   "February",
@@ -200,7 +200,7 @@ const AddOrEditPack = ({
         setEditPackData(null);
       }
     }
-  }, [editPackID, open]);
+  }, [editPackID, open, form, packs]);
 
   return (
     <SideDrawer

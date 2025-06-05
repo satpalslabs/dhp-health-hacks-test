@@ -1,13 +1,13 @@
 "use client";
 
-import data from "@/lib/static-data/content-data/tips.json";
 import { Tip } from "@/types";
-import { createContext, useState } from "react";
+import { createContext, Dispatch, useState } from "react";
 
 // Define the context type
 export interface TipsContextType {
   tips: Tip[];
-  updateTips: (e: Tip[]) => void;
+  updateTips: Dispatch<React.SetStateAction<Tip[]>>;
+  // Add any other methods or properties you need in the context
 }
 
 // Create context with an initial value of null
@@ -17,17 +17,13 @@ export const TipsContext = createContext<TipsContextType>({
 });
 
 const TipsDataProvider = ({ children }: { children: React.ReactNode }) => {
-  const [tips, setTips] = useState<Tip[]>(data as Tip[]);
-
-  function updateTips(_tips: Tip[]) {
-    setTips(_tips);
-  }
+  const [tips, setTips] = useState<Tip[]>([]);
 
   return (
     <TipsContext.Provider
       value={{
         tips,
-        updateTips,
+        updateTips: setTips,
       }}
     >
       {children}

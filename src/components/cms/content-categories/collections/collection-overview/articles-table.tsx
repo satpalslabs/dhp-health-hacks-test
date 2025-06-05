@@ -13,7 +13,7 @@ import {
 } from "@tanstack/react-table";
 import React, { useEffect, useState } from "react";
 import { Article, Collection } from "@/types";
-import { Ban, Globe, TriangleAlert } from "lucide-react";
+import { Ban, Globe, Inbox, TriangleAlert } from "lucide-react";
 import TableHeader, { SelectionControlBar } from "./header";
 import { DataTable } from "@/components/table/table";
 import { ArticleTableRow } from ".";
@@ -23,6 +23,9 @@ import { DeleteArticle } from "@/lib/services/article-services";
 import { toast } from "@/hooks/use-toast";
 import { DeleteVideo } from "@/lib/services/video-services.";
 import columns from "./columns";
+import { AddButton } from "@/components/ui/add-button";
+import nProgress from "nprogress";
+import { useRouter } from "next/navigation";
 
 const ArticleTable = ({
   articles,
@@ -33,6 +36,7 @@ const ArticleTable = ({
   setArticles: React.Dispatch<React.SetStateAction<Article[]>>;
   collection: Collection;
 }) => {
+  const router = useRouter();
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
@@ -109,18 +113,10 @@ const ArticleTable = ({
   });
 
   useEffect(() => {
-    const selectedRowKeys = Object.keys(rowSelection).map(Number);
-    const selectedRowsData = articles.filter(
-      (i: Article) => i.id && selectedRowKeys.includes(i.id)
-    );
-    setSelectedRows(selectedRowsData as ArticleTableRow[]);
-  }, [rowSelection, articles]);
-
-  useEffect(() => {
     let isMounted = true;
     const filteredData = [...collection.articles, ...collection.videos];
 
-    // Select rows based on current selection state
+    // Update selectedRows based on rowSelection and articles
     const selectedRowKeys = Object.keys(rowSelection).map(Number);
     const selectedRowsData = filteredData.filter(
       (i: Article) => i.id && selectedRowKeys.includes(i.id)
@@ -139,19 +135,21 @@ const ArticleTable = ({
       const currentRows = table
         .getFilteredRowModel()
         .rows.map((i) => Number(i.id));
-      const articles: Article[] = filteredData.filter(
+      const updatedArticles: Article[] = filteredData.filter(
         (i: Article) => i.id && currentRows.includes(i.id)
       );
 
       setArticles((prev) =>
-        JSON.stringify(prev) === JSON.stringify(articles) ? prev : articles
+        JSON.stringify(prev) === JSON.stringify(updatedArticles)
+          ? prev
+          : updatedArticles
       );
     }
 
     return () => {
       isMounted = false;
     };
-  }, [collection, rowSelection, table.getFilteredRowModel().rows]);
+  }, [collection, rowSelection, table, setArticles]);
 
   const handleBulkAction = async () => {
     setIsProcessing(true);
@@ -217,7 +215,11 @@ const ArticleTable = ({
   };
   return (
     <>
-      <TableHeader table={table} setSelectedRows={setSelectedRows} />
+      <TableHeader
+        table={table}
+        setSelectedRows={setSelectedRows}
+        data={articles as ArticleTableRow[]}
+      />
       {selectedRows.length > 0 && (
         <SelectionControlBar
           data={articles as ArticleTableRow[]}
@@ -226,25 +228,50 @@ const ArticleTable = ({
           setAction={setAction}
         />
       )}
-      <DataTable
-        columns={columns as ColumnDef<Article>[]}
-        table={table}
-        pagination={pagination}
-        action={setPagination}
-        rowClick={(d) => {
-          if ("id" in d) {
-            if (!Object.keys(rowSelection).includes(String(d.id))) {
-              setRowSelection((prev) => ({ ...prev, [String(d.id)]: true }));
-            } else {
-              setRowSelection((prev) => {
-                const updatedSelection = { ...prev };
-                delete updatedSelection[String(d.id)];
-                return updatedSelection;
-              });
+      {articles.length > 0 ? (
+        <DataTable
+          columns={columns as ColumnDef<Article>[]}
+          table={table}
+          pagination={pagination}
+          action={setPagination}
+          rowClick={(d) => {
+            if ("id" in d) {
+              if (!Object.keys(rowSelection).includes(String(d.id))) {
+                setRowSelection((prev) => ({ ...prev, [String(d.id)]: true }));
+              } else {
+                setRowSelection((prev) => {
+                  const updatedSelection = { ...prev };
+                  delete updatedSelection[String(d.id)];
+                  return updatedSelection;
+                });
+              }
             }
-          }
-        }}
-      />
+          }}
+        />
+      ) : (
+        <div className="flex flex-col  h-full rounded-lg justify-center">
+          <div className="flex flex-col gap-5 py-6 px-4">
+            <div className="flex flex-col gap-2  text-center items-center text-gray-500">
+              <Inbox className="w-[83px] h-[74px] stroke--gray-600 stroke-[0.8px]" />
+              <div className="font-inter text-sm">
+                {"You haven't added any Content."}
+                <br />
+                {"Tap ‘Add’ to create a new article."}
+              </div>
+            </div>
+
+            <AddButton
+              className="w-[190px] mx-auto"
+              text="Add"
+              onClick={() => {
+                setSelectedRows([]);
+                nProgress.start(); // Start the top loader
+                router.push(`/collections/${collection.id}/article/add`);
+              }}
+            />
+          </div>
+        </div>
+      )}
       <ActionConfirmationDialog
         open={deleteDialogOpen}
         setOpen={setDeleteDialogOpen}

@@ -32,7 +32,9 @@ export default {
 					},
 					status: {
 						darkGray: "hsl(var(--bg-dark-gray))", // Background color with opacity support
-						inReviewButton: "rgba(var(--in-review-button))"
+						inReviewButton: "rgba(var(--in-review-button))",
+						rejectedButton: "rgba(var(--rejected-button))",
+						publishedButton: "rgba(var(--published-button))"
 					}
 
 				},

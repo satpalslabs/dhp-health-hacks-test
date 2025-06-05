@@ -51,7 +51,7 @@ const DetailedTable = ({
             ),
           }))
         : columns,
-    [loading, columns]
+    [loading]
   );
 
   const table = useReactTable({

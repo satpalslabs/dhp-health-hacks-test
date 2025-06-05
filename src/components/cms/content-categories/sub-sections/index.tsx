@@ -6,7 +6,7 @@ import MobilePreview from "@/components/mobile-preview-sidebar/mobile";
 import Table from "@/components/cms/content-categories/sub-sections/sub-sections-table";
 import { DetailedSubSection } from "@/types";
 import { useState } from "react";
-import DetailedMobilePreview from "../../articles/mobile-preview";
+import DetailedMobilePreview from "@/components/mobile-preview";
 
 export default function SubSectionsMainPage() {
   const [_subSections, setSubSections] = useState<DetailedSubSection[]>([]);

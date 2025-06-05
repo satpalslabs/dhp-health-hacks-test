@@ -66,6 +66,11 @@ const RichTextEditor = ({
     },
     extensions: [
       StarterKit.configure({
+        heading: {
+          HTMLAttributes: {
+            class: "text-xl text-gray-700",
+          },
+        },
         orderedList: {
           HTMLAttributes: {
             class: "list-decimal pl-4",

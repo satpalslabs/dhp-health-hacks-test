@@ -7,8 +7,9 @@ export const cardVariants = cva(
   {
     variants: {
       align: {
-        vertical: "h-[216px] w-[185px] flex-col gap-4",
-        horizontal: "h-[112px]",
+        vertical: "min-h-[216px] h-full w-[185px] flex-col gap-4",
+        horizontal: "h-[122px]",
+        grid: "h-[122px]",
       },
     },
     defaultVariants: {

@@ -73,7 +73,7 @@ const TableHeader = ({ table }: { table: Table<NHSCondition> }) => {
 
   useEffect(() => {
     table.getColumn("name")?.setFilterValue(deferredInputValue);
-  }, [deferredInputValue]);
+  }, [deferredInputValue, table]);
 
   return (
     <Collapsible className="group">

@@ -28,7 +28,7 @@ const Page = ({ params }: { params: Promise<{ subSectionID: string }> }) => {
     }
 
     fetchSubSection();
-  }, [params]);
+  }, [params,subSections]);
 
   if (loading) {
     return (

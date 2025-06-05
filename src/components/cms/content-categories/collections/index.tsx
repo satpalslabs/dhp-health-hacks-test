@@ -6,7 +6,7 @@ import MobilePreview from "@/components/mobile-preview-sidebar/mobile";
 import { Collection } from "@/types";
 import { useDeferredValue, useState } from "react";
 import Table from "./collections-table";
-import DetailedMobilePreview from "../../articles/mobile-preview";
+import DetailedMobilePreview from "@/components/mobile-preview";
 
 export default function CollectionsMainPage() {
   const [_collections, setCollections] = useState<Collection[]>([]);

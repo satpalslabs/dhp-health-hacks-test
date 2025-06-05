@@ -66,7 +66,8 @@ const CustomSideBarMenu = ({ item }: { item: subMenuItem }) => {
     if (JSON.stringify(item).includes(pathname.split("/")[1])) {
       setIsOpen(true);
     }
-  }, [item.title, pathname]);
+  }, [item, pathname]);
+
   return (
     <SidebarMenuItem>
       {hasChildren ? (
@@ -78,7 +79,7 @@ const CustomSideBarMenu = ({ item }: { item: subMenuItem }) => {
               )}
               asChild
             >
-              <Link href={item.url ?? ""}>
+              <div className="cursor-pointer">
                 <div className="group-data-[collapsible=icon]:delay-100 group-data-[collapsible=icon]:min-w-[calc(var(--sidebar-width-icon)_-_theme(spacing.8))] max-w-full flex justify-center min-w-4 w-fit overflow-hidden h-fit transition-[min-width] duration-200">
                   <item.icon className="w-4 h-4 " />
                 </div>
@@ -88,7 +89,7 @@ const CustomSideBarMenu = ({ item }: { item: subMenuItem }) => {
                     isOpen ? "rotate-180" : ""
                   }`}
                 />
-              </Link>
+              </div>
             </SidebarMenuButton>
           </CollapsibleTrigger>
           <CollapsibleContent className="group-data-[collapsible=icon]:hidden">

@@ -50,8 +50,8 @@ const PackTable = ({
               </div>
 
               <AddButton
-                className="w-full"
-                text="Add Journey"
+                className="w-fit mx-auto"
+                text="Add Pack"
                 onClick={() => {
                   setOpenDialog(true);
                 }}

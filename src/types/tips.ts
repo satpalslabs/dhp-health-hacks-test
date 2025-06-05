@@ -1,4 +1,4 @@
-import { Icon } from "./article";
+import { Article, Icon } from "./article";
 import { commonFields } from ".";
 
 type months = "January" | "February" | "March" | "April" | "May" | "June" | "July" | "August" | "September" | "October" | "November" | "December";
@@ -24,9 +24,23 @@ export interface Pack extends commonFields {
 export interface Tip extends commonFields {
     title: string;
     description?: string | null;
-    tips_categories: number[]
-    videos?: number[];
-    articles?: number[];
+    tips_categories: tipCategory[]
+    videos: Article[];
     featured?: boolean;
+    associated_conditions: number[]
+};
+
+export interface tipCategory extends commonFields {
+    id: number;
+    name: string;
+    description: string;
+    tips: number[];
+    icon: Icon | null;
+    featured?: boolean,
+    title_and_body_color?: string;
+    category_and_button_color?: string;
+    background_color?: string;
+    months?: months[];
+    bg_image?: Icon | null;
     associated_conditions?: number[]
 };

@@ -85,9 +85,45 @@ async function UpdateCollection(data: ApiBodyCollection): Promise<Collection> {
   }
 }
 
+async function UnpublishCollection(id: number) {
+  try {
+    const response = await fetch(
+      `/api/strapi/collections/${id}`,
+      {
+        method: "PUT",
+        body: JSON.stringify({
+          data: {
+            publishedAt: null,
+          },
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    if (!response.ok) {
+      const errorData = await response
+        .json()
+        .catch(() => ({ error: "Unknown error" }));
+      throw new Error(
+        errorData.error || `Error ${response.status}: ${response.statusText}`
+      );
+    }
+
+    const json = await response.json();
+
+    return json;
+  } catch (err) {
+    console.error("Failed to Delete Article:", err);
+    throw err;
+  }
+}
 
 async function DeleteCollection(id: number) {
   try {
+    await UnpublishCollection(id);
+    // After unpublishing, proceed to delete the collection
     const response = await fetch(`/api/proxy/admin/cms/collections/${id}`, {
       method: "DELETE",
     });
@@ -95,9 +131,8 @@ async function DeleteCollection(id: number) {
     const json = await response.json();
 
     if (!response.ok) {
-      throw new Error("Failed to Delete collection.");
+      throw new Error(json.error ?? "Failed to Delete Collection.");
     }
-
     return json;
   } catch (err) {
     console.error("Delete collection failed:", err);

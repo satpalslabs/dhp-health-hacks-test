@@ -208,7 +208,7 @@ const DetailedPreviewOfPacks = ({
     const tipIds = [...new Set(activePacks.flatMap((item) => item.tips))];
     const _tipsData = tips.filter((tip) => tip.id && tipIds.includes(tip.id));
     setTipsData(_tipsData);
-  }, [activePacks]);
+  }, [activePacks, tips]);
 
   if (activeData.length == 0) return;
   return (

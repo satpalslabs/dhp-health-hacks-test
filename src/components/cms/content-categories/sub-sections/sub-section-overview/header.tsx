@@ -84,7 +84,7 @@ const TableHeader = ({
 
   useEffect(() => {
     table.getColumn("title")?.setFilterValue(deferredInputValue);
-  }, [deferredInputValue]);
+  }, [deferredInputValue, table]);
 
   const collections = tableData
     .map((i) => i.collection)
@@ -471,7 +471,7 @@ const SelectCollection = ({
       updateCollections(res);
       setIsLoading(false);
     });
-  }, []);
+  }, [updateCollections]);
 
   return (
     <div className="flex flex-col gap-2 font-inter ">

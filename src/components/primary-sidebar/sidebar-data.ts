@@ -24,6 +24,7 @@ import {
     Pill,
     PillBottle,
     Settings,
+    Settings2,
     Shield,
     UserRound,
     WalletCards,
@@ -193,7 +194,14 @@ const sideBarGroups: Group[] = [
                 "canAccess": ["owner", "content-admin", "super-admin", "superuser", "admin"],
                 "icon": HeartPulse,
                 "items": []
-            }
+            },
+            {
+                "title": "Settings",
+                "url": "/settings",
+                "canAccess": ["owner", "content-admin", "super-admin", "superuser", "admin"],
+                "icon": Settings2,
+                "items": []
+            },
         ]
     },
     {

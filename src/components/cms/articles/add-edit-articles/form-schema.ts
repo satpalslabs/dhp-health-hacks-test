@@ -237,12 +237,12 @@ export const webPageAccordionGroupSchema = z.object({
 export const WebpageSchema = z.object({
     content_type: z.literal("content-webpage"),
     title: z.string().nonempty({ message: "Title is required" }),
-    description: z.string().nullable(),
+    description: z.string(),
     old_id: z.number().nullable(),
     section: z.number().nullable().optional(),
     sub_section: z.number().nullable().optional(),
     collection: z.number().nullable(),
-    thumbnail_icon: iconSchema.nullable(),
+    thumbnail_icon: iconSchema.nullable().optional(),
     source: z.number({
         message: "Source is required",
     }).nullable(),
@@ -276,8 +276,7 @@ export const WebpageSchema = z.object({
     quiz: z.number().array(),
     url: z
         .string({ message: "URL is required" })
-        .url({ message: "Invalid URL" })
-        .optional(),
+        .url({ message: "Invalid URL" }),
     cover_image: iconSchema.nullable(),
 
 
@@ -288,32 +287,32 @@ export const formSchema = z.discriminatedUnion("content_type", [
     z.object({
         content_type: z.literal("content-video"),
         title: z.string().nonempty({ message: "Title is required" }),
-        description: z.string().optional(),
+        description: z.string(),
         old_id: z.number().nullable().readonly(),
         section: z.number().nullable().optional(),
         sub_section: z.number().nullable().optional(),
         collection: z.number().nullable(),
-        thumbnail_icon: iconSchema.nullable(),
-        video_duration: z.string().nullable(),
+        thumbnail_icon: iconSchema.nullable().optional(),
+        video_duration: z.string({ message: "This Field is required" }).nullable(),
         tips: z.any().array().optional(),
-        article_pc_id: z.string().nullable().optional(),
-        content: z.any().array().optional(),
         key_points: z.string().nullable().optional(),
         quiz: z.number().array(),
         url: z
             .string({ message: "URL is required" })
-            .url({ message: "Invalid URL" }).optional(),
-        cover_image: iconSchema.nullable(),
+            .url({ message: "Invalid URL" }),
+        source: z.number().nullable(),
+        article_pc_id: z.string().nullable().optional(),
+
     }),
     z.object({
         content_type: z.literal("content-page"),
         title: z.string().nonempty({ message: "Title is required" }),
-        description: z.string().optional(),
+        description: z.string(),
         old_id: z.number().nullable(),
         section: z.number().nullable().optional(),
         sub_section: z.number().nullable().optional(),
         collection: z.number().nullable(),
-        source: z.number().optional(),
+        source: z.number().nullable(),
         tips: z.any().array(),
         quiz: z.number().array(),
         url: z
@@ -330,6 +329,7 @@ export const formSchema = z.discriminatedUnion("content_type", [
         section: z.number().nullable().optional(),
         sub_section: z.number().nullable().optional(),
         collection: z.number().nullable(),
+        source: z.number().nullable(),
         cards: z.object({
             title: z.string().nonempty({ message: "Card Title is required" }),
             description: z.string().nonempty().optional()
@@ -343,7 +343,13 @@ export const formSchema = z.discriminatedUnion("content_type", [
             message: "Collection is required",
             path: ["collection"], // Show error on section
         });
-
+    }
+    if (!data.source) {
+        ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: "Source is required",
+            path: ["Source"], // Show error on section
+        });
     }
 });
 

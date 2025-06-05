@@ -8,11 +8,9 @@ import {
 } from "@/components/ui/collapsible";
 import { format } from "date-fns";
 import {
-  Ban,
   Check,
   ChevronDown,
   ChevronsUpDown,
-  Globe,
   PencilLine,
   Plus,
   Search,
@@ -79,7 +77,7 @@ const TableHeader = ({
 
   useEffect(() => {
     table.getColumn("collection_name")?.setFilterValue(deferredInputValue);
-  }, [deferredInputValue]);
+  }, [deferredInputValue, table]);
 
   const [selectedHC, setSelectedHC] = useState<HealthCondition | null>(null);
 
@@ -373,7 +371,7 @@ export const SelectionControlBar = ({
 }) => (
   <div className="flex items-center gap-3  text-button-filter-text font-inter font-medium text-sm mb-4 leading-6">
     <div>
-      {selectedRows.length} of {data.length} Articles
+      {selectedRows.length} of {data.length} Collections
     </div>
     <Separator />
     {selectedRows.length > 0 && (
@@ -386,32 +384,6 @@ export const SelectionControlBar = ({
               }}
             >
               <ActionButton icon={PencilLine} label="Edit" />
-            </div>
-            <Separator />
-          </>
-        )}
-        {selectedRows.some((article) => article._status === "published") && (
-          <>
-            <div
-              onClick={() => {
-                setAction("Unpublish");
-                setDeleteDialogOpen(true);
-              }}
-            >
-              <ActionButton icon={Ban} label="Unpublish" />
-            </div>
-            <Separator />
-          </>
-        )}
-        {selectedRows.some((article) => article._status !== "published") && (
-          <>
-            <div
-              onClick={() => {
-                setAction("Publish");
-                setDeleteDialogOpen(true);
-              }}
-            >
-              <ActionButton icon={Globe} label="Publish" />
             </div>
             <Separator />
           </>
@@ -439,12 +411,26 @@ export const SelectHealthCondition = ({
   const { HConditions, updateHConditions } = useContext(HConditionContext);
   const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    getHConditions().then((res) => {
+  async function fetchHConditions() {
+    setIsLoading(true);
+    try {
+      const res = await getHConditions();
       updateHConditions(res);
       setIsLoading(false);
-    });
-  }, []);
+    } catch (error) {
+      console.error("Error fetching health conditions:", error);
+      setIsLoading(false);
+    }
+  }
+
+  useEffect(() => {
+    if (HConditions.length === 0) {
+      // Only fetch if no conditions are loaded
+      fetchHConditions();
+    } else {
+      setIsLoading(false);
+    }
+  }, [HConditions]);
 
   return (
     <div className="flex flex-col gap-2 font-inter mb-2">

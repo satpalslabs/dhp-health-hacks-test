@@ -85,44 +85,47 @@ const OnboardingFlow = () => {
       }, 500);
       setNodes((nds) => applyNodeChanges(changes, nds));
     },
-    [nodes, edges]
+    [nodes, edges, setNodes]
   );
 
-  const onAddStep = useCallback((data: any) => {
-    setNodes((prevNodes: any) => {
-      const lastNode = prevNodes[prevNodes.length - 1];
-      const newId = (prevNodes.length + 1).toString() ?? "1";
-      const newNode = {
-        id: newId,
-        position: {
-          x: lastNode ? lastNode.position.x + 400 : 0,
-          y: lastNode ? lastNode.position.y : 0,
-        },
-        type: "location",
-        data: data,
-      };
-      return [...prevNodes, newNode];
-    });
+  const onAddStep = useCallback(
+    (data: any) => {
+      setNodes((prevNodes: any) => {
+        const lastNode = prevNodes[prevNodes.length - 1];
+        const newId = (prevNodes.length + 1).toString() ?? "1";
+        const newNode = {
+          id: newId,
+          position: {
+            x: lastNode ? lastNode.position.x + 400 : 0,
+            y: lastNode ? lastNode.position.y : 0,
+          },
+          type: "location",
+          data: data,
+        };
+        return [...prevNodes, newNode];
+      });
 
-    setNodes((prevNodes: any[]) => {
-      if (prevNodes.length < 2) return prevNodes; // Ensure at least two nodes exist
+      setNodes((prevNodes: any[]) => {
+        if (prevNodes.length < 2) return prevNodes; // Ensure at least two nodes exist
 
-      const lastNodeId = prevNodes[prevNodes.length - 2].id;
-      const newNodeId = prevNodes[prevNodes.length - 1].id;
+        const lastNodeId = prevNodes[prevNodes.length - 2].id;
+        const newNodeId = prevNodes[prevNodes.length - 1].id;
 
-      if (!lastNodeId || !newNodeId) return prevNodes; // Extra safety check
+        if (!lastNodeId || !newNodeId) return prevNodes; // Extra safety check
 
-      const newEdge: Edge = {
-        id: `e${lastNodeId}-${newNodeId}`,
-        source: lastNodeId,
-        type: "smoothstep",
-        target: newNodeId,
-      };
-      setEdges((prevEdges: any) => [...prevEdges, newEdge]);
+        const newEdge: Edge = {
+          id: `e${lastNodeId}-${newNodeId}`,
+          source: lastNodeId,
+          type: "smoothstep",
+          target: newNodeId,
+        };
+        setEdges((prevEdges: any) => [...prevEdges, newEdge]);
 
-      return [...prevNodes]; // Ensure nodes remain unchanged
-    });
-  }, []);
+        return [...prevNodes]; // Ensure nodes remain unchanged
+      });
+    },
+    [setEdges, setNodes]
+  );
 
   const onEdgesChange = useCallback(
     (changes: any) => {
@@ -132,7 +135,7 @@ const OnboardingFlow = () => {
       }, 500);
       setEdges((eds) => applyEdgeChanges(changes, eds));
     },
-    [nodes, edges]
+    [nodes, edges, setEdges]
   );
 
   const undo = useCallback(() => {
@@ -142,7 +145,7 @@ const OnboardingFlow = () => {
     setNodes(lastState.nodes);
     setEdges(lastState.edges);
     setUndoStack((prev) => prev.slice(0, -1));
-  }, [undoStack, nodes, edges]);
+  }, [undoStack, nodes, edges, setEdges, setNodes]);
 
   const redo = useCallback(() => {
     if (redoStack.length === 0) return;
@@ -151,7 +154,7 @@ const OnboardingFlow = () => {
     setNodes(nextState.nodes);
     setEdges(nextState.edges);
     setRedoStack((prev) => prev.slice(0, -1));
-  }, [redoStack, nodes, edges]);
+  }, [redoStack, nodes, edges, setNodes, setEdges]);
 
   const nodeTypes = useMemo(
     () => ({

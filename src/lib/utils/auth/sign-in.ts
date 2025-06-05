@@ -1,3 +1,4 @@
+import { User } from "@/types";
 
 export async function signIN(data: { email: string; password: string; environment: string }) {
     try {
@@ -17,7 +18,7 @@ export async function signIN(data: { email: string; password: string; environmen
         if ("error" in response) {
             throw new Error(response.message);
         }
-        return { success: true, redirectTo: "/articles" };
+        return { success: true, redirectTo: "/sign-in/verify-two-factor", user: { ...response, step: 1 } as User };
     } catch (error) {
         throw error
     }

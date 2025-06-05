@@ -9,7 +9,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import type { Tip as TipType, Pack } from "@/types";
 import { Form } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
-import { SelectField } from "../form-components";
+import { SelectField } from "@/components/form-components";
 import Tip from "@/components/ui/tip";
 import { AddButton } from "@/components/ui/add-button";
 import { TipsContext } from "@/context/tips-data-provider";
@@ -47,9 +47,10 @@ const SelectExistingTipForm = ({
       search: [],
     },
   });
+
   useEffect(() => {
     form.reset();
-  }, [open]);
+  }, [open, form]);
 
   const searchTips = form
     .watch("search")
@@ -61,7 +62,7 @@ const SelectExistingTipForm = ({
             tipCategory: packs.find((pack) => {
               return typeof tip.tips_categories == "number"
                 ? pack.id === tip?.tips_categories
-                : pack.id === tip?.tips_categories?.[0];
+                : pack.id === tip?.tips_categories?.[0]?.id;
             }),
           }
         : undefined;

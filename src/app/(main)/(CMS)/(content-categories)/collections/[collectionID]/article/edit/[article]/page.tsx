@@ -41,7 +41,7 @@ const Page = ({
       setArticleData(articleData);
     }
     fetchData();
-  }, [params]);
+  }, [params, collections]);
 
   if (loading) {
     return (

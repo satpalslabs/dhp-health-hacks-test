@@ -11,7 +11,7 @@ import { Path, PathValue, useForm, UseFormReturn } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ApiBodyCollection, Collection } from "@/types";
 import { useContext, useEffect, useState } from "react";
-import { Button, SpinnerButton } from "@/components/ui/button";
+import {  SpinnerButton } from "@/components/ui/button";
 import FormFieldWrapper from "@/components/ui/form-field-wrapper";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -27,12 +27,12 @@ import {
   FileDropZone,
   SelectField,
   ViewTypSelection,
-} from "@/components/cms/articles/add-edit-articles/form-components";
-import AddHealthHacksConditionModel from "@/components/cms/articles/add-edit-articles/form-components/add-health-hacks-condition";
+} from "@/components/form-components";
+import AddHealthHacksConditionModel from "@/components/form-components/add-health-hacks-condition";
 import {
   SectionSelectField,
   SubSectionSelectField,
-} from "../../articles/add-edit-articles/form-components/grid-fields";
+} from "@/components/form-components/grid-fields";
 import { getHConditions } from "@/lib/services/health-conditions.";
 import { iconSchema } from "../../articles/add-edit-articles/form-schema";
 import { toast } from "@/hooks/use-toast";
@@ -161,7 +161,8 @@ const AddOrEditCollection = ({
         shouldValidate: true,
       });
     }
-  }, [editCollection, open]);
+  }, [editCollection, open, collections, form]);
+  
   return (
     <SideDrawer
       open={open}
@@ -219,7 +220,7 @@ const CollectionForm = ({
       form.reset();
       setActiveType("Section");
     }
-  }, [editCollection]);
+  }, [editCollection, form]);
 
   async function handleCollection(status: "published" | "draft") {
     setLoading(true);
@@ -266,7 +267,7 @@ const CollectionForm = ({
       }
     } catch (error) {
       console.error("Error", error);
-      setLoading(true);
+      setLoading(false);
       toast({
         title: `Error`,
         description:
@@ -446,7 +447,7 @@ const CollectionForm = ({
             >
               Save
             </SpinnerButton>
-            {!editCollection && (
+            {/* {!editCollection && (
               <Button
                 type="button"
                 className="px-6 w-fit bg-muted text-primary hover:shadow-none dark:text-white"
@@ -454,7 +455,7 @@ const CollectionForm = ({
               >
                 Save as Draft
               </Button>
-            )}
+            )} */}
           </div>
         </div>
       </Form>
@@ -471,11 +472,15 @@ export const HealthConditionSelectField = <T extends z.ZodType>({
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    getHConditions().then((res) => {
-      updateHConditions(res);
+    if (HConditions.length == 0) {
+      getHConditions().then((res) => {
+        updateHConditions(res);
+        setLoading(false);
+      });
+    } else {
       setLoading(false);
-    });
-  }, []);
+    }
+  }, [updateHConditions, HConditions.length]);
 
   return (
     <div className="flex gap-[6px]">

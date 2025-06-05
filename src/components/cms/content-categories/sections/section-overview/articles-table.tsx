@@ -128,7 +128,7 @@ const SectionsTable = ({
     } else {
       setArticles(_articles);
     }
-  }, [table, table.getFilteredRowModel().rows, data, selectedRows]);
+  }, [table, data, selectedRows,setArticles]);
 
   const handleBulkAction = async () => {
     setIsProcessing(true);

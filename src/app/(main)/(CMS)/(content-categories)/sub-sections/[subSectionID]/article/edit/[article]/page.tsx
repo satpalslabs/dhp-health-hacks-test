@@ -37,7 +37,7 @@ const Page = ({
     }
 
     fetchSubSection();
-  }, [params]);
+  }, [params, subSections]);
 
   if (loading) {
     return (

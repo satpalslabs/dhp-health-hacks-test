@@ -42,9 +42,9 @@ import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import QuizComponent from "@/components/ui/quiz";
 import { AddButton } from "@/components/ui/add-button";
 import { QuizContext } from "@/context/quiz-data-provider";
-import { commonProps } from "../articles/add-edit-articles/form-components";
+import { commonProps } from "@/components/form-components";
 import SideDrawer from "../articles/add-edit-articles/form-drawers";
-import { DraggableWrapperQuiz } from "../articles/add-edit-articles/form-components/draggable-wrapper";
+import { DraggableWrapperQuiz } from "@/components/form-components/draggable-wrapper";
 import { toast } from "@/hooks/use-toast";
 import { PostQuiz, UpdateQuiz } from "@/lib/services/quiz-services";
 import nProgress from "nprogress";
@@ -157,7 +157,7 @@ const AddOrEditQuizForm = ({
       form.reset();
       setEditQuizData(undefined);
     }
-  }, [editQuiz, open]);
+  }, [editQuiz, open, form, quizzes]);
 
   return (
     <SideDrawer

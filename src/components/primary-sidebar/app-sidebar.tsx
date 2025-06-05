@@ -39,7 +39,7 @@ export function AppSidebar() {
   return (
     <Sidebar
       collapsible="icon"
-      className="!gap-0 text-text-foreground max-h-screen overflow-hidden"
+      className="!gap-0 text-text-foreground max-h-[calc(100vh-30px)] overflow-hidden"
     >
       <SidebarHeader className="flex py-3 flex-row items-center justify-between">
         <Image

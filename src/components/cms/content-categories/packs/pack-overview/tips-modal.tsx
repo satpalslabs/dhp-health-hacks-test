@@ -54,7 +54,7 @@ const StepModal = ({
         ? [...filteredTips.filter((i) => i.id && !selectedTips.includes(i.id))]
         : quizzes.filter((i) => i.id && !selectedTips.includes(i.id))
     );
-  }, [selectedHealthCondition, selectedTips, open]);
+  }, [selectedHealthCondition, selectedTips, open, quizzes, tips, type]);
 
   return (
     <CommandDialog open={open} onOpenChange={setOpen}>
@@ -127,7 +127,7 @@ const SelectValues = ({
     if (select_HC) {
       setDisplayName(select_HC.name);
     }
-  }, []);
+  }, [HConditions, selectedHealthCondition]);
 
   if (selectedHealthCondition) {
     return (

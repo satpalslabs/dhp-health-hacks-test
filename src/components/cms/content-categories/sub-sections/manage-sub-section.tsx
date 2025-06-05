@@ -11,7 +11,7 @@ import { useForm, UseFormReturn } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { APIBodySubSection, SubSection } from "@/types";
 import { useContext, useEffect, useState } from "react";
-import { Button, SpinnerButton } from "@/components/ui/button";
+import { SpinnerButton } from "@/components/ui/button";
 import FormFieldWrapper from "@/components/ui/form-field-wrapper";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -20,10 +20,7 @@ import ColorPicker from "@/components/ui/color-picker";
 import InfoCircled from "@/info-circled.svg";
 import { SubSectionContext } from "@/context/sub-section-data-provider";
 import { toast } from "@/hooks/use-toast";
-import {
-  FileDropZone,
-  ViewTypSelection,
-} from "../../articles/add-edit-articles/form-components";
+import { FileDropZone, ViewTypSelection } from "@/components/form-components";
 import SideDrawer from "../../articles/add-edit-articles/form-drawers";
 import { iconSchema } from "../../articles/add-edit-articles/form-schema";
 import nProgress from "nprogress";
@@ -32,7 +29,7 @@ import {
   UpdateSubSection,
 } from "@/lib/services/sub-section-service";
 import { HealthConditionSelectField } from "../collections/manage-collection";
-import { SectionSelectField } from "../../articles/add-edit-articles/form-components/grid-fields";
+import { SectionSelectField } from "@/components/form-components/grid-fields";
 
 const formSchema = z.object({
   subsection_name: z.string().nonempty({ message: "Section Name is Required" }),
@@ -120,7 +117,7 @@ const AddOrEditSubSection = ({
         shouldValidate: true,
       });
     }
-  }, [editSub_Section, open]);
+  }, [editSub_Section, open, form, subSections]);
   return (
     <SideDrawer
       open={open}
@@ -316,7 +313,7 @@ const SubSectionForm = ({
             >
               Save
             </SpinnerButton>
-            {!editSub_Section && (
+            {/* {!editSub_Section && (
               <Button
                 type="button"
                 className="px-6 w-fit bg-muted text-primary hover:shadow-none dark:text-white"
@@ -324,7 +321,7 @@ const SubSectionForm = ({
               >
                 Save as Draft
               </Button>
-            )}
+            )} */}
           </div>
         </div>
       </Form>

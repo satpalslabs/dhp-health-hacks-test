@@ -57,6 +57,8 @@
     --onboarding-card: 0px 2.54px 10.16px 0px hsla(214, 91%, 27%, 0.1);
     --onboarding-card-buttons: 210, 40%, 96%;
     --in-review-button: 255, 166, 0;
+    --rejected-button: 244, 67, 54;
+    --published-button: 95, 190, 0;
     --mobile-main-text-color: 60, 60, 59;
     --mobile-gray: 248, 248, 248;
   }

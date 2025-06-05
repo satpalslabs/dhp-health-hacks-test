@@ -1,12 +1,12 @@
 "use client";
 
 import { Quiz } from "@/types";
-import { createContext, useState } from "react";
+import { createContext, Dispatch, SetStateAction, useState } from "react";
 
 // Define the context type
 export interface QuizContextType {
   quizzes: Quiz[];
-  updateQuizzes: (e: Quiz[]) => void;
+  updateQuizzes: Dispatch<SetStateAction<Quiz[]>>;
 }
 
 // Create context with an initial value of null
@@ -18,15 +18,11 @@ export const QuizContext = createContext<QuizContextType>({
 const QuizDataProvider = ({ children }: { children: React.ReactNode }) => {
   const [quizzes, setQuizzes] = useState<Quiz[]>([]);
 
-  function updateQuizzes(_quizzes: Quiz[]) {
-    setQuizzes(_quizzes);
-  }
-
   return (
     <QuizContext.Provider
       value={{
         quizzes,
-        updateQuizzes,
+        updateQuizzes: setQuizzes,
       }}
     >
       {children}

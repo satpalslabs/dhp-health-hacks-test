@@ -42,17 +42,16 @@ import {
 } from "@/components/ui/command";
 import { cn } from "@/lib/utils";
 import { PacksContext } from "@/context/pack-data-provider";
-import { TableRowType } from "./tips-table";
-import { Pack } from "@/types";
+import { Pack, Tip } from "@/types";
 
 const TableHeader = ({
   table,
   setOpen,
   setSelectedRows,
 }: {
-  table: Table<TableRowType>;
+  table: Table<Tip>;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  setSelectedRows: React.Dispatch<React.SetStateAction<TableRowType[]>>;
+  setSelectedRows: React.Dispatch<React.SetStateAction<Tip[]>>;
 }) => {
   const [filterDates, setFilterDates] = useState<{
     updatedAt: undefined | DateRange;
@@ -77,7 +76,7 @@ const TableHeader = ({
 
   useEffect(() => {
     table.getColumn("title")?.setFilterValue(deferredInputValue);
-  }, [deferredInputValue]);
+  }, [deferredInputValue, table]);
 
   const [selectedCategory, setSelectedCategory] = useState<Pack | null>(null);
   return (
@@ -357,14 +356,14 @@ export const SelectionControlBar = ({
   setDeleteDialogOpen,
   setOpenEditor,
 }: {
-  data: TableRowType[];
-  selectedRows: TableRowType[];
+  data: Tip[];
+  selectedRows: Tip[];
   setDeleteDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setOpenEditor: React.Dispatch<React.SetStateAction<boolean>>;
 }) => (
   <div className="flex items-center gap-3 text-button-filter-text font-inter font-medium text-sm mb-4 leading-6">
     <div>
-      {selectedRows.length} of {data.length} Articles
+      {selectedRows.length} of {data.length} Tips
     </div>
     <Separator />
     {selectedRows.length > 0 && (

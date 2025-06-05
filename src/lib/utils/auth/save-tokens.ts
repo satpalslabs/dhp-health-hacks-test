@@ -7,11 +7,14 @@ import { redirect } from "next/navigation";
 export interface ResponseWithEnv extends SignInResponse {
     environment: string
 }
-export async function saveUserTokens(credentials: ResponseWithEnv) {
+
+export async function saveUserTokens(data?: SignInResponse) {
     const cookieStore = await cookies();
 
     // Try to read the existing auth-data cookie
     const existingData = cookieStore.get("users")?.value;
+    const auth_data = cookieStore.get("auth-data")?.value;
+    const credentials = data ? data : auth_data ? JSON.parse(auth_data) : {}
     let parsedData = [];
     try {
         parsedData = existingData ? JSON.parse(existingData) : [];
@@ -42,6 +45,7 @@ export async function saveUserTokens(credentials: ResponseWithEnv) {
     });
 
 }
+
 export async function deleteUserTokens() {
     const cookieStore = await cookies();
     const activeEnv = cookieStore.get("active-env")?.value

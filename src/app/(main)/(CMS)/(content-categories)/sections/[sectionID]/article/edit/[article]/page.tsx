@@ -33,7 +33,7 @@ const Page = ({
 
       if (!section) return redirect("/sections");
       setSectionData(section);
-      
+
       const _articleData = await getSingleArticle(Number(article));
       if (!_articleData) return redirect(`/sections/${sectionID}`);
 
@@ -41,7 +41,7 @@ const Page = ({
       setArticleData(_articleData);
     }
     fetchData();
-  }, [params]);
+  }, [params, sections]);
 
   if (loading) {
     return (

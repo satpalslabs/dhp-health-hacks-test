@@ -85,7 +85,7 @@ const QuizTableHeader = ({
 
   useEffect(() => {
     table.getColumn("question")?.setFilterValue(deferredInputValue);
-  }, [deferredInputValue]);
+  }, [deferredInputValue, table]);
 
   return (
     <Collapsible className="group">
@@ -372,7 +372,7 @@ export const SelectionControlBar = ({
 }) => (
   <div className="flex items-center gap-3 text-button-filter-text font-inter font-medium text-sm mb-4 leading-6">
     <div>
-      {selectedRows.length} of {data.length} Articles
+      {selectedRows.length} of {data.length} Quizzes
     </div>
     <Separator />
     {selectedRows.length > 0 && (

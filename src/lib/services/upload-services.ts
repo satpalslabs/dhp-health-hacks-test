@@ -11,9 +11,14 @@ export async function uploadFiles(files: File[]) {
             method: "POST",
             body: formData,
         });
-        return await res.json();
+        const json = await res.json();
+        if (!res.ok) {
+            throw new Error(json.error ?? "Failed to upload media file.");
+        }
+
+        return json
     } catch (er) {
         console.error(er);
-        throw new Error("Error uploading files");
+        throw er
     }
 }

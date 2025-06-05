@@ -85,7 +85,7 @@ const TableHeader = ({
 
   useEffect(() => {
     table.getColumn("title")?.setFilterValue(deferredInputValue);
-  }, [deferredInputValue]);
+  }, [deferredInputValue, table]);
 
   // const subSections = tableData
   //   .filter(

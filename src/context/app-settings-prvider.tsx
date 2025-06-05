@@ -32,7 +32,7 @@ export function AppSettingsContextProvider({
       }
     };
     fetchUser();
-  }, []);
+  }, [router]);
 
   return (
     <AppSettingsContext.Provider value={appSettings}>

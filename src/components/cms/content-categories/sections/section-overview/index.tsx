@@ -13,7 +13,7 @@ import {
 } from "@/types";
 import { useMemo, useState } from "react";
 import Table from "./articles-table";
-import DetailedMobilePreview from "../../../articles/mobile-preview";
+import DetailedMobilePreview from "@/components/mobile-preview";
 
 export interface ArticleTableRow extends Article {
   section_data?: Section;

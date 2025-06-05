@@ -30,7 +30,7 @@ async function getArticles(): Promise<Article[]> {
 const fetchArticles = async (page: number) => {
   try {
     const res = await fetch(
-      `/api/strapi/articles?populate[0]=collection,quiz,source,content_type,content,thumbnail_icon&populate[1]=collection.collection_icon,collection.sub_section,quiz.answers,source.logo,content.image,content.video,content.image,content.icon,content.user_photo,content.reviews,content.percentage_cards,content.Quotes,content.bg_image&populate[2]=collection.sub_section.section,collection.sub_section.subsection_icon,collection.section.section_icon,content.reviews.user_photo,content.percentage_cards.icon&populate[3]=collection.sub_section.section.section_icon&pagination[pageSize]=100&pagination[page]${page}`
+      `/api/strapi/articles?populate[0]=collection,quiz,source,content_type,content,thumbnail_icon&populate[1]=collection.collection_icon,collection.sub_section,quiz.answers,source.logo,content.image,content.video,content.image,content.icon,content.user_photo,content.reviews,content.percentage_cards,content.Quotes,content.bg_image&populate[2]=collection.sub_section.section,collection.sub_section.subsection_icon,collection.section.section_icon,content.reviews.user_photo,content.percentage_cards.icon&populate[3]=collection.sub_section.section.section_icon&pagination[pageSize]=100&pagination[page]=${page}`
     );
     const json = await res.json();
     return json;
@@ -54,6 +54,8 @@ async function getSingleArticle(id: number): Promise<Article> {
 }
 
 async function PostArticle(data: FormBodyArticle): Promise<Article[]> {
+
+
   try {
     const response = await fetch(
       data.content_type == "content-video"
@@ -61,34 +63,22 @@ async function PostArticle(data: FormBodyArticle): Promise<Article[]> {
         : `/api/proxy/admin/cms/articles`,
       {
         method: "POST",
-        body: JSON.stringify({
-          data: {
-            ...data,
-            collection: [data.collection],
-            source: data.source ? [data.source] : null,
-            content_type: [
-              data.content_type == "content-page"
-                ? 1
-                : data.content_type == "content-webpage"
-                  ? 5
-                  : data.content_type == "content-video"
-                    ? 2
-                    : null,
-            ],
-          },
+        body: data.content_type == "content-video" ? JSON.stringify(updatedData(data)) : JSON.stringify({
+          data: updatedData(data)
         }),
         headers: {
           "Content-Type": "application/json",
         },
       }
     );
-
     if (!response.ok) {
       const errorData = await response
         .json()
         .catch(() => ({ error: "Unknown error" }));
+
       throw new Error(
-        errorData.error || `Error ${response.status}: ${response.statusText}`
+        (Array.isArray(errorData.message) ? errorData.message.join(", ") : errorData.error || errorData.message) ||
+        `Error ${response.status}: ${response.statusText}`
       );
     }
 
@@ -106,42 +96,24 @@ async function PutArticle(data: FormBodyArticle): Promise<Article[]> {
     const response = await fetch(
       data.content_type == "content-video"
         ? `/api/strapi/videos/${data.id}`
-        : `/api/strapi/articles/${data.id}`,
+        : `/api/proxy/admin/cms/articles/${data.id}`,
       {
         method: "PUT",
         body: JSON.stringify({
-          data: {
-            ...data,
-            collection: [data.collection],
-            source: data.source ? [data.source] : null,
-            content_type: [
-              data.content_type == "content-page"
-                ? 1
-                : data.content_type == "content-webpage"
-                  ? 5
-                  : data.content_type == "content-video"
-                    ? 2
-                    : null,
-            ],
-          },
+          data: updatedData(data),
         }),
         headers: {
           "Content-Type": "application/json",
         },
       }
     );
-
-    if (!response.ok) {
-      const errorData = await response
-        .json()
-        .catch(() => ({ error: "Unknown error" }));
-      throw new Error(
-        errorData.error || `Error ${response.status}: ${response.statusText}`
-      );
-    }
-
     const json = await response.json();
 
+    if (!response.ok) {
+      if (!response.ok) {
+        throw new Error(json.error ?? "Failed to Update article.");
+      }
+    }
     return json;
   } catch (err) {
     console.error("Failed to Add Article:", err);
@@ -185,18 +157,53 @@ async function UnpublishArticle(type: "video" | "article", id: number) {
     throw err;
   }
 }
-
-async function DeleteArticle(id: number) {
+async function changeStatusOfArticleOrVideo(type: "video" | "article", id: number, status: Article["status"]) {
   try {
-    // await UnpublishArticle("article", id);
-    const response = await fetch(`/api/proxy/admin/cms/articles/${id}`, {
-      method: "DELETE",
-    });
+    const response = await fetch(
+      type == "video"
+        ? `/api/strapi/videos/${id}`
+        : `/api/strapi/articles/${id}`,
+      {
+        method: "PUT",
+        body: JSON.stringify({
+          data: {
+            status,
+          },
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    if (!response.ok) {
+      const errorData = await response
+        .json()
+        .catch(() => ({ error: "Unknown error" }));
+      throw new Error(
+        errorData.error || `Error ${response.status}: ${response.statusText}`
+      );
+    }
 
     const json = await response.json();
 
+    return json;
+  } catch (err) {
+    console.error("Failed to Update status", err);
+    throw err;
+  }
+}
+
+async function DeleteArticle(id: number) {
+  try {
+    await UnpublishArticle("article", id);
+    const response = await fetch(`/api/proxy/admin/cms/articles/${id}`, {
+      method: "DELETE",
+    });
+    const json = await response.json();
+
     if (!response.ok) {
-      throw new Error("Failed to Delete article.");
+      throw new Error(json.error ?? "Failed to Delete article.");
     }
 
     return json;
@@ -223,6 +230,37 @@ async function getAppData(id: string) {
   }
 }
 
+function updatedData(data: FormBodyArticle) {
+  if (!data.source) {
+    throw new Error("Source is required.");
+  }
+  if (!data.collection || !data.content_type) {
+    throw new Error("Collection and content type are required.");
+  }
+  if (!data.title || !data.content) {
+    throw new Error("Title and content are required.");
+  }
+  if (!data.content_type) {
+    throw new Error("Content type is required.");
+  }
+
+  return {
+    ...data,
+    collection: [data.collection],
+    source: data.source ? [data.source] : null,
+    content_type:
+      data.content_type == "content-page"
+        ? [1]
+        : data.content_type == "content-webpage"
+          ? [5]
+          : data.content_type == "content-video"
+            ? [2]
+            : null,
+    key_points: data.content_type == "content-video" ? data.key_points ?? "" : undefined,
+    summery: ""
+  };
+};
+
 export {
   getArticles,
   getSingleArticle,
@@ -231,4 +269,5 @@ export {
   UnpublishArticle,
   DeleteArticle,
   getAppData,
+  changeStatusOfArticleOrVideo
 };

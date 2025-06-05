@@ -5,7 +5,7 @@ import { PreviewSidebar } from "@/components/mobile-preview-sidebar/preview-side
 import MobilePreview, {
   ThemeSwitching,
 } from "@/components/mobile-preview-sidebar/mobile";
-import ArticleMobilePreview from "@/components/cms/articles/mobile-preview";
+import ArticleMobilePreview from "@/components/mobile-preview";
 import { useContext, useDeferredValue, useEffect, useState } from "react";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { BookmarkMinus, Box, FileText, FolderClosed } from "lucide-react";
@@ -14,7 +14,7 @@ import {
   ContentContainer,
   ButtonGroup,
   CardBanner,
-} from "../mobile-preview/content-container";
+} from "@/components/mobile-preview/content-container";
 import { formSchema } from "./form-schema";
 import ArticleForm, { FormAccordionGroupContent } from "./article-form";
 import { Article } from "@/types";
@@ -25,7 +25,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { CollectionContext } from "@/context/collection-data-provider";
-import ContentComponent from "../mobile-preview/webpage-content-components";
+import ContentComponent from "@/components/mobile-preview/webpage-content-components";
 
 interface ArticleData extends Article {
   section_data?: {
@@ -217,7 +217,7 @@ export default function AddArticle({
               </div>
             ) : (
               <ContentContainer
-                className="mx-auto mt-4 bg-white"
+                className="mx-auto mt-4 bg-white h-fit"
                 article={
                   {
                     ...formData,

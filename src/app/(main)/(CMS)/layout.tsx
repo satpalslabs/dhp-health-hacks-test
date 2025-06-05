@@ -8,6 +8,7 @@ import QuizDataProvider from "@/context/quiz-data-provider";
 import SectionDataProvider from "@/context/section-data-provider";
 import SubSectionDataProvider from "@/context/sub-section-data-provider";
 import TipsDataProvider from "@/context/tips-data-provider";
+import VideoDataProvider from "@/context/video-data-provider";
 
 export default function Layout({
   children,
@@ -22,13 +23,15 @@ export default function Layout({
             <TipsDataProvider>
               <QuizDataProvider>
                 <ArticleDataProvider>
-                  <CollectionDataProvider>
-                    <NHSMedicinesDataProvider>
-                      <NHSConditionDataProvider>
-                        {children}
-                      </NHSConditionDataProvider>
-                    </NHSMedicinesDataProvider>
-                  </CollectionDataProvider>
+                  <VideoDataProvider>
+                    <CollectionDataProvider>
+                      <NHSMedicinesDataProvider>
+                        <NHSConditionDataProvider>
+                          {children}
+                        </NHSConditionDataProvider>
+                      </NHSMedicinesDataProvider>
+                    </CollectionDataProvider>
+                  </VideoDataProvider>
                 </ArticleDataProvider>
               </QuizDataProvider>
             </TipsDataProvider>

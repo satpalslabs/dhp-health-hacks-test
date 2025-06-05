@@ -12,66 +12,94 @@ import {
   useReactTable,
   VisibilityState,
 } from "@tanstack/react-table";
-import React, { useContext, useEffect, useState } from "react";
+import React, {
+  Dispatch,
+  ReactNode,
+  SetStateAction,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import { DataTable } from "../../table/table";
 import columns from "./article-columns";
 import ArticleTableHeader, { SelectionControlBar } from "./header";
 import { Article } from "@/types";
 import TableActions from "./table-actions";
-import { Ban, Globe, TriangleAlert } from "lucide-react";
+import { Ban, Check, Globe, TriangleAlert, Upload, X } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import ActionConfirmationDialog from "../journey/confirmation-dialog";
 import { ArticleContext } from "../../../context/article-data-provider";
-import { usePathname } from "next/navigation";
 import { Skeleton } from "@/components/ui/skeleton";
-import { DeleteArticle, getArticles } from "@/lib/services/article-services";
-import { DeleteVideo, getVideos } from "@/lib/services/video-services.";
+import {
+  changeStatusOfArticleOrVideo,
+  DeleteArticle,
+  getArticles,
+} from "@/lib/services/article-services";
+
+export const statusItems: {
+  name: string;
+  value: Article["status"];
+  icon: ReactNode;
+}[] = [
+  {
+    name: "Submit for Review",
+    value: "Submitted for Review",
+    icon: <Upload />,
+  },
+  {
+    name: "Approve",
+    value: "Approved",
+    icon: <Check />,
+  },
+  {
+    name: "Publish",
+    value: "Published",
+    icon: <Globe />,
+  },
+  {
+    name: "Reject",
+    value: "Rejected",
+    icon: <X />,
+  },
+];
 
 const ArticleTable = ({
   setArticles,
   loading,
   setLoading,
 }: {
-  setArticles: React.Dispatch<React.SetStateAction<Article[]>>;
+  setArticles: Dispatch<SetStateAction<Article[]>>;
   loading: boolean;
-  setLoading: React.Dispatch<React.SetStateAction<boolean>>;
+  setLoading: Dispatch<SetStateAction<boolean>>;
 }) => {
-  const pathname = usePathname();
-  const { articles: initialData, updateArticles: setData } =
-    useContext(ArticleContext);
+  const { articles, updateArticles } = useContext(ArticleContext);
   const [isProcessing, setIsProcessing] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
-  const [actualData, setActualData] = useState<Article[]>([]);
-  const [selectedRows, setSelectedRows] = React.useState<Article[]>([]);
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    []
-  );
-  const [pagination, setPagination] = React.useState({
+  const [selectedRows, setSelectedRows] = useState<Article[]>([]);
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const [pagination, setPagination] = useState({
     pageIndex: 0, //initial page index
     pageSize: 10, //default page size
   });
-  const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({});
-  const [rowSelection, setRowSelection] = React.useState<
-    Record<string, boolean>
-  >({});
-  const [sorting, setSorting] = React.useState<SortingState>([]);
-  const [action, setAction] = React.useState<
-    "Delete" | "Rejected" | "Approved"
-  >("Delete");
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
+  const [rowSelection, setRowSelection] = useState<Record<string, boolean>>({});
+  const [sorting, setSorting] = useState<SortingState>([]);
+  const [action, setAction] = useState<"Delete" | Article["status"]>("Delete");
 
-  const fetchData = async () => {
+  async function fetchData() {
     try {
-      const fetchData = pathname.includes("article") ? getArticles : getVideos;
-      const articles = await fetchData();
-      setActualData(articles);
-      setData(articles);
-      setArticles(articles);
-      setLoading(false);
+      if (articles.length == 0) {
+        const _articles = await getArticles();
+        updateArticles(_articles);
+        setArticles(_articles);
+        setLoading(false);
+      } else {
+        setLoading(false);
+      }
     } catch (error) {
       setLoading(false);
-      setActualData([]);
-      setData([]);
+      updateArticles([]);
       setArticles([]);
       toast({
         title: (
@@ -80,25 +108,25 @@ const ArticleTable = ({
             <span>Error Data Fetching</span>
           </div>
         ) as unknown as string,
-        description: `Unable to fetch ${
-          pathname.includes("article") ? "articles" : "Videos"
-        }.`,
+        description: `Unable to fetch articles`,
         variant: "destructive",
         className: "border border-red-500 bg-red-50 text-red-900",
       });
       console.error("Error fetching collections or articles:", error);
     }
-  };
+  }
 
+  // Fetch data when the component mounts
   useEffect(() => {
     fetchData();
   }, []);
 
-  const tableData = React.useMemo(
-    () => (loading ? Array(5).fill({}) : actualData),
-    [loading, actualData]
+  const tableData = useMemo(
+    () => (loading ? Array(5).fill({}) : articles),
+    [loading, articles]
   );
-  const tableColumns = React.useMemo(
+
+  const tableColumns = useMemo(
     () =>
       loading
         ? [
@@ -149,7 +177,7 @@ const ArticleTable = ({
               ),
             },
           ],
-    [loading, columns]
+    [loading]
   );
 
   const table = useReactTable({
@@ -187,54 +215,39 @@ const ArticleTable = ({
     // Pin the "actions" column to the right
   });
 
-  useEffect(() => {
-    let isMounted = true;
-    if (!initialData.length) return;
-    const filteredData = initialData;
-    if (isMounted) {
-      setActualData((prevData) =>
-        JSON.stringify(prevData) === JSON.stringify(filteredData)
-          ? prevData
-          : filteredData
-      );
-    }
+  const filteredRows = table.getFilteredRowModel().rows;
 
+  useEffect(() => {
+    if (!articles.length) return;
+    let filteredData = articles;
     // Select rows based on current selection state
     const selectedRowKeys = Object.keys(rowSelection).map(Number);
-    const selectedRowsData = filteredData.filter(
+    filteredData = filteredData.filter(
       (i: Article) => i.id && selectedRowKeys.includes(i.id)
     );
-
-    if (isMounted) {
-      setSelectedRows((prev) =>
-        JSON.stringify(prev) === JSON.stringify(selectedRowsData)
-          ? prev
-          : selectedRowsData
-      );
-    }
+    setSelectedRows((prev) =>
+      JSON.stringify(prev) === JSON.stringify(filteredData)
+        ? prev
+        : filteredData
+    );
 
     // Update articles based on filtered table rows
-    if (isMounted && filteredData.length > 0) {
-      const currentRows = table
-        .getFilteredRowModel()
-        .rows.map((i) => Number(i.id));
-      const articles: Article[] = filteredData.filter(
-        (i: Article) => i.id && currentRows.includes(i.id)
-      );
-
-      setArticles((prev) =>
-        JSON.stringify(prev) === JSON.stringify(articles) ? prev : articles
-      );
+    if (filteredData.length > 0) {
+      setArticles(filteredData);
+    } else {
+      const currentRows = filteredRows.map((i) => i.original);
+      setArticles(currentRows);
     }
+  }, [articles, rowSelection, setArticles, table, filteredRows]);
 
-    return () => {
-      isMounted = false;
-    };
-  }, [initialData, rowSelection, table.getFilteredRowModel().rows]);
+  const activeAction = useMemo(() => {
+    if (statusItems.some((i) => i.value === action)) {
+      return statusItems.find((i) => i.value === action);
+    }
+  }, [action]);
 
   const handleBulkAction = async () => {
     setIsProcessing(true);
-
     try {
       const selectedIds = [...new Set(selectedRows.map((i) => i.id))];
 
@@ -245,20 +258,16 @@ const ArticleTable = ({
         await Promise.all(
           selectedIds.map(async (id: number | null) => {
             if (id) {
-              if (pathname.includes("articles")) {
-                await DeleteArticle(id);
-              } else {
-                await DeleteVideo(id);
-              }
+              await DeleteArticle(id);
             }
           })
         );
-        updatedRows = actualData.filter(
+        updatedRows = articles.filter(
           (col) => col.id && !selectedIds.includes(col.id)
         );
 
         // Update state and show success toast
-        setData(updatedRows);
+        updateArticles(updatedRows);
         setDeleteDialogOpen(false);
         setIsProcessing(false);
         setRowSelection({});
@@ -271,29 +280,44 @@ const ArticleTable = ({
           } successfully ${action === "Delete" ? "deleted" : "updated"}`,
         });
       } else {
+        await Promise.all(
+          selectedIds.map(async (id: number | null) => {
+            if (id) {
+              await changeStatusOfArticleOrVideo("article", id, action);
+            }
+          })
+        );
+        updatedRows = articles.map((col) => {
+          if (col.id && selectedIds.includes(col.id)) {
+            col.status = action;
+          }
+          return col;
+        });
+
+        // Update state and show success toast
+        updateArticles(updatedRows);
         setDeleteDialogOpen(false);
         setIsProcessing(false);
         setRowSelection({});
-        return toast({
-          title: `Unable to ${action} `,
-          description: `Doesn't support yet`,
-          draggable: true,
-          className: "[&_.font-semibold]:text-[red]",
+        toast({
+          title: `${action} ${
+            selectedRows.length > 1 ? "Articles" : "Article"
+          }!`,
+          description: `${selectedRows.length} ${
+            selectedRows.length > 1 ? "Articles" : "Article"
+          } successfully ${action}`,
         });
       }
     } catch (er) {
       setIsProcessing(false);
-      setRowSelection({});
-      setDeleteDialogOpen(false);
       toast({
         title: `Something went Wrong!`,
-        description: `Unable to ${action} ${
-          selectedRows.length > 1 ? "Articles" : "Article"
-        }. Please try again later. ${er}`,
+        description: ` ${er}`,
         variant: "destructive",
       });
     }
   };
+
   return (
     <>
       <ArticleTableHeader
@@ -303,7 +327,7 @@ const ArticleTable = ({
       />
       {selectedRows.length > 0 && (
         <SelectionControlBar
-          data={actualData}
+          data={articles}
           selectedRows={selectedRows}
           setDeleteDialogOpen={setDeleteDialogOpen}
           setAction={setAction}
@@ -335,20 +359,21 @@ const ArticleTable = ({
             setDeleteDialogOpen(value);
           }
         }}
-        dialog_title={getDialogText(action, selectedRows.length).title}
+        dialog_title={
+          getDialogText(activeAction?.name ?? "", selectedRows.length).title
+        }
         dialog_description={
-          getDialogText(action, selectedRows.length).description
+          getDialogText(activeAction?.name ?? "", selectedRows.length)
+            .description
         }
         showLoader={isProcessing}
-        variant={action === "Delete" ? "destructive" : "secondary"}
-        icon={actionIcons[action] || <Ban />}
-        action={
-          action == "Approved"
-            ? "Publish"
-            : action == "Rejected"
-            ? "Unpublish"
-            : "Delete"
+        variant={
+          action === "Delete" || action == "Rejected"
+            ? "destructive"
+            : "secondary"
         }
+        icon={activeAction?.icon ?? <Ban />}
+        action={activeAction?.name ?? "Delete"}
         handleAction={handleBulkAction}
       />
     </>
@@ -357,15 +382,10 @@ const ArticleTable = ({
 
 export default ArticleTable;
 
-const getDialogText = (action: string, count: number) => ({
+const getDialogText = (action: string | null, count: number) => ({
   title: `${action} ${count > 1 ? "Articles" : "Article"}?`,
   description: `Are you sure you want to ${action} ${
     count > 1 ? "these Articles" : "this Article"
   }?`,
 });
 
-const actionIcons: Record<string, JSX.Element> = {
-  Delete: <TriangleAlert />,
-  Publish: <Globe />,
-  Unpublish: <Ban />,
-};

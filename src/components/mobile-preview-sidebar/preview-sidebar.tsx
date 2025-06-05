@@ -18,7 +18,7 @@ export function PreviewSidebar({
   return (
     <Sidebar
       collapsible="offcanvas"
-      className=" text-text-foreground "
+      className=" text-text-foreground h-[calc(100vh-30px)]"
       side="right"
     >
       <SidebarHeader className="flex h-[67px] flex-row items-center justify-between p-4">

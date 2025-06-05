@@ -48,6 +48,14 @@ export async function POST(req: NextRequest) {
     const path = req.nextUrl.pathname.replace(/^\/api\/proxy\//, '');
     const query = req.nextUrl.search;
     const activeEnv = req.cookies.get("active-env")?.value
+    // Staging environment is not supported for POST requests
+    // This is a safeguard to prevent accidental POST requests in staging
+    if (activeEnv == "staging") {
+        return NextResponse.json(
+            { error: "Staging environment is not supported for POST or Upload requests" },
+            { status: 400 }
+        );
+    }
     const configObject = getConfigObject(activeEnv ?? "experimental")
     const targetUrl = new URL(`${path}${query}`, configObject.BASE_URL).toString();
     const contentType = req.headers.get('Content-Type');
@@ -77,7 +85,15 @@ export async function POST(req: NextRequest) {
 export async function PUT(req: NextRequest) {
     const path = req.nextUrl.pathname.replace(/^\/api\/proxy\//, '');
     const query = req.nextUrl.search;
-    const activeEnv = req.cookies.get("active-env")?.value
+    const activeEnv = req.cookies.get("active-env")?.value;
+    // Staging environment is not supported for POST requests
+    // This is a safeguard to prevent accidental POST requests in staging
+    if (activeEnv == "staging") {
+        return NextResponse.json(
+            { error: "Staging environment is not supported for PUT requests" },
+            { status: 400 }
+        );
+    }
     const configObject = getConfigObject(activeEnv ?? "experimental")
     const targetUrl = new URL(`${path}${query}`, configObject.BASE_URL).toString();
     const contentType = req.headers.get('Content-Type');
@@ -115,7 +131,15 @@ export async function PUT(req: NextRequest) {
 
 export async function DELETE(req: NextRequest) {
     const path = req.nextUrl.pathname.replace(/^\/api\/proxy\//, '');
-    const activeEnv = req.cookies.get("active-env")?.value
+    const activeEnv = req.cookies.get("active-env")?.value;
+    // Staging environment is not supported for POST requests
+    // This is a safeguard to prevent accidental POST requests in staging
+    if (activeEnv == "staging") {
+        return NextResponse.json(
+            { error: "Staging environment is not supported for DELETE requests" },
+            { status: 400 }
+        );
+    }
     const configObject = getConfigObject(activeEnv ?? "experimental")
     const targetUrl = new URL(path, configObject.BASE_URL).toString();
 

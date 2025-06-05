@@ -1,4 +1,4 @@
-import Articles from "@/components/cms/articles";
+import Videos from "@/components/cms/videos";
 import MainLayout from "@/components/main-layout";
 
 const DefaultArticles = () => (
@@ -10,7 +10,7 @@ const DefaultArticles = () => (
       },
     ]}
   >
-    <Articles />
+    <Videos />
   </MainLayout>
 );
 export default DefaultArticles;

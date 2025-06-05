@@ -30,7 +30,7 @@ export async function getVideos(): Promise<Article[]> {
 const fetchVideos = async (page: number) => {
   try {
     const res = await fetch(
-      `/api/strapi/videos?populate[0]=collection,tips,quiz,source,thumbnail_icon,subtitles&populate[1]=collection.section,collection.sub_section,collection.collection_icon,tips.tips_categories,quiz.answers,source.logo,subtitles.subtitle_file&populate[2]=collection.section.section_icon,collection.sub_section.section,tips.tips_categories.icon,tips.tips_categories.bg_image,tips.tips_categories.associated_conditions&populate[3]=collection.sub_section.section.section_icon&pagination[pageSize]=100&pagination[page]=${page}`
+      `/api/proxy/admin/cms/videos?pageSize=100&page=${page}`
     );
     const json = await res.json();
     return json;
@@ -42,7 +42,7 @@ const fetchVideos = async (page: number) => {
 export async function getSingleVideo(id: number): Promise<Article> {
   try {
     const res = await fetch(
-      `/api/strapi/videos/${id}?populate[0]=collection,tips,quiz,source,thumbnail_icon,subtitles&populate[1]=source.logo,subtitles.subtitle_file,quiz.answers,tips.tips_categories`
+      `/api/strapi/videos/${id}?populate[0]=collection,tips,quiz,source,thumbnail_icon,subtitles&populate[1]=source.logo,subtitles.subtitle_file,quiz.answers,tips.tips_categories,collection.section,collection.sub_section&populate[2]=collection.sub_section.section`
     );
     const json = await res.json();
     const data = json.data;
@@ -62,7 +62,7 @@ export async function DeleteVideo(id: number) {
     const json = await response.json();
 
     if (!response.ok) {
-      throw new Error("Failed to Delete video.");
+      throw new Error(json.error ?? "Failed to Delete article.");
     }
 
     return json;
